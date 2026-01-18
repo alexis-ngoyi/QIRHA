@@ -1,0 +1,128 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:qirha/api/shared_preferences.dart';
+import 'package:qirha/main/commandes/commande_status.dart';
+import 'package:qirha/main/commandes/toutes.dart';
+import 'package:qirha/res/colors.dart';
+import 'package:qirha/res/utils.dart';
+import 'package:qirha/widgets/need_to_login.dart';
+
+class TabMesCommandesScreen extends StatefulWidget {
+  const TabMesCommandesScreen(
+      {super.key, required this.initialIndex, required this.canReturn});
+  final bool canReturn;
+  final int initialIndex;
+
+  @override
+  State<TabMesCommandesScreen> createState() => _TabMesCommandesScreenState();
+}
+
+class _TabMesCommandesScreenState extends State<TabMesCommandesScreen>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  final List<Widget> tabViews = const <Widget>[
+    MesCommandesTabTout(),
+    CommandeStatus(status: "1"), //  PAYE | VALIDE
+    CommandeStatus(status: "5"), // NON PAYE
+    CommandeStatus(status: "3"), // EN ATTENTE
+    CommandeStatus(status: "6"), // EN PREPARATION
+    CommandeStatus(status: "4"), // EXPEDIE
+    CommandeStatus(status: "2"), // SUPPRIME
+    Center()
+  ];
+
+  final List<Tab> tabs = <Tab>[
+    const Tab(
+      text: 'Toutes',
+    ),
+    const Tab(
+      text: 'Validée',
+    ),
+    const Tab(
+      text: 'Non payée',
+    ),
+    const Tab(
+      text: 'Attente',
+    ),
+    const Tab(
+      text: 'Préparation',
+    ),
+    const Tab(
+      text: 'Expediée',
+    ),
+    const Tab(
+      text: 'Supprimée',
+    ),
+    const Tab(
+      text: 'Donner un avis',
+    ),
+  ];
+
+  late String? utilisateur_id;
+  bool? needToLogin;
+  late Timer main_timer;
+  authGuard() {
+    // Define the interval duration in milliseconds
+    const intervalDuration = Duration(seconds: 1);
+
+    // Set up a periodic timer
+    main_timer = Timer.periodic(intervalDuration, (timer) async {
+      if (utilisateur_id == null) {
+        setState(() {
+          needToLogin = true;
+        });
+      } else {
+        setState(() {
+          needToLogin = false;
+        });
+      }
+      timer.cancel();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    utilisateur_id = prefs.getString('utilisateur_id');
+    authGuard();
+    _tabController = TabController(
+        initialIndex: widget.initialIndex, length: tabs.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    main_timer.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _tabController.animateTo(widget.initialIndex));
+    return needToLogin == false
+        ? DefaultTabController(
+            length: tabs.length,
+            child: Scaffold(
+                backgroundColor: GREY,
+                appBar: MesCommandesAppBar(context,
+                    canReturn: widget.canReturn,
+                    tabs: tabs,
+                    controller: _tabController),
+                body: IconTheme(
+                    data: const IconThemeData(color: Colors.black),
+                    child: TabBarView(
+                        controller: _tabController, children: tabViews))),
+          )
+        : (needToLogin == true
+            ? const Scaffold(body: NeedToLogin())
+            : const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ));
+  }
+}

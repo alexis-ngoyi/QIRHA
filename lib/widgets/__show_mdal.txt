@@ -1,0 +1,56 @@
+showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return DraggableScrollableSheet(
+                            initialChildSize:
+                                200 / MediaQuery.of(context).size.height,
+                            minChildSize: 0.1,
+                            maxChildSize: 1.0,
+                            expand: false,
+                            builder: (BuildContext context,
+                                ScrollController scrollController) {
+                              return Container(
+                                color: Colors.white,
+                                child: ListView.builder(
+                                  controller: scrollController,
+                                  itemCount: 20,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return ListTile(
+                                      title: Text('Item $index'),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+
+
+
+
+
+
+
+
+
+                       builder: (BuildContext context,
+                        ScrollController scrollController) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.only(top: 20),
+                        decoration: BoxDecoration(
+                            border:
+                                Border(top: BorderSide(width: 5, color: GREY)),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(13)),
+                        child: SingleChildScrollView(
+                          controller: scrollController,
+                          child: Column(
+                            children: [],
+                          ),
+                        ),
+                      );
+                    },
