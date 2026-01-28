@@ -7,8 +7,8 @@ class ApiServices {
   Dio dio = Dio(
     BaseOptions(
       baseUrl: 'http://192.168.0.104:5000/api/v1',
-      connectTimeout: const Duration(seconds: 25),
-      receiveTimeout: const Duration(seconds: 25),
+      connectTimeout: const Duration(seconds: 40),
+      receiveTimeout: const Duration(seconds: 40),
     ),
   );
 
