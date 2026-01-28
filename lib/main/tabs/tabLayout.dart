@@ -6,7 +6,6 @@ import 'package:qirha/model/categorie.dart';
 import 'package:qirha/model/main_categorie_model.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:qirha/api/services.dart';
-import 'package:qirha/functions/prix_promo_format.dart';
 import 'package:qirha/model/produit.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
@@ -38,18 +37,19 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
       setState(() {
         allProduits.add(
           ProduitModel(
+            nom: produit['nom'],
+            url_image: produit['url_image'],
+            status: produit['status'],
+            description: produit['description'],
+            est_en_promo: produit['est_en_promo'],
+            taux_reduction: (produit['taux_reduction']).toDouble(),
+            prix_promo: (produit['prix_promo'] as num?)?.toDouble(),
+            prix_minimum: (produit['prix_minimum'] as num?)?.toDouble(),
             cree_le: produit['cree_le'],
             date_fin: produit['date_fin'],
-            description: produit['description'],
-            img: produit['img'],
-            isReduction: produit['isReduction'],
-            libelle: produit['libelle'],
-            prix: produit['prix'],
-            prix_promo: produit['prix_promo'],
+            fournisseur_id: produit['fournisseur_id'].toString(),
+            nom_fournisseur: produit['nom_fournisseur'],
             produit_id: produit['produit_id'].toString(),
-            quantite_en_stock: produit['quantite_en_produit'].toString(),
-            reduction: produit['reduction'].toString(),
-            taux: produit['taux'].toString(),
           ),
         );
       });
@@ -152,7 +152,7 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
             mainAxisSpacing: 12,
             children: [
               for (var i = 0; i < allProduits.length; i++)
-                cardImageProduit(context, produit: allProduits[i]),
+                ProduitCardView(context, produit: allProduits[i]),
             ],
           ),
         ),

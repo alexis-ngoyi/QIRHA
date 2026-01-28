@@ -37,7 +37,7 @@ class _MessagerieDiscussionsState extends State<MessagerieDiscussions> {
     DiscussionModel(
       isCommande: true,
       sender: "Pantalon blue",
-      img: img_bazard3,
+      img: placeholder,
       time: '01:00 AM',
       pending: 0,
       msg: "J'ai recu mon affaire, c'est tres joli",
@@ -45,7 +45,7 @@ class _MessagerieDiscussionsState extends State<MessagerieDiscussions> {
     DiscussionModel(
       isCommande: true,
       sender: "TV samsung",
-      img: img_bazard6,
+      img: placeholder,
       time: '01:00 AM',
       pending: 0,
       msg: "J'ai recu mon affaire, mais ca ne s'allume pas ",
@@ -53,7 +53,7 @@ class _MessagerieDiscussionsState extends State<MessagerieDiscussions> {
     DiscussionModel(
       isCommande: true,
       sender: "Lacoste",
-      img: img_bazard5,
+      img: placeholder,
       time: '01:00 AM',
       pending: 0,
       msg:

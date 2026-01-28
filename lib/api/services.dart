@@ -18,299 +18,282 @@ class ApiServices {
         "login": login,
         "mot_de_passe": password,
       };
-
-      // Make the API call
       Response response = await dio.post('/login', data: jsonData);
-      dynamic responseData = response.data;
-
-      return responseData;
+      return response.data;
     } catch (error) {
-      print("LOGIN EXCEPTION : $error");
-      print("EXCEPTION : $error");
+      print("EXCEPTION [loginUser] (/login) : $error");
       return [];
     }
   }
 
   getCategories() async {
     try {
-      Response response = await dio.get('/categories');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/categories');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print("EXCEPTION [getCategories] (/categories) : $error");
       return [];
     }
   }
 
   getHotCategories() async {
     try {
-      Response response = await dio.get('/hot/categories');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/hot/categories');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print("EXCEPTION [getHotCategories] (/hot/categories) : $error");
       return [];
     }
   }
 
   getProduits() async {
     try {
-      Response response = await dio.get('/produits');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/produits');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print("EXCEPTION [getProduits] (/produits) : $error");
       return [];
     }
   }
 
   getProduitsBazard() async {
     try {
-      Response response = await dio.get('/produits/bazard');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/produits/bazard');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print("EXCEPTION [getProduitsBazard] (/produits/bazard) : $error");
       return [];
     }
   }
 
   getProduitGallery(String produit_id) async {
     try {
-      Response response = await dio.get('/produit-gallery/$produit_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/produit-gallery/$produit_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitGallery] (/produit-gallery/$produit_id) : $error",
+      );
       return [];
     }
   }
 
   getMainCategorie() async {
     try {
-      Response response = await dio.get('/main-categories');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/main-categories');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print("EXCEPTION [getMainCategorie] (/main-categories) : $error");
       return [];
     }
   }
 
   getallGroupeByMainCategorie(mainCategorieId) async {
     try {
-      Response response = await dio.get(
+      Response response = await dio.post(
         '/groupe-categories/main/$mainCategorieId',
       );
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getallGroupeByMainCategorie] (/groupe-categories/main/$mainCategorieId) : $error",
+      );
       return [];
     }
   }
 
   getProduitsCouleurs(String? produit_id) async {
     try {
-      Response response = await dio.get('/produit-couleur/$produit_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/produit-couleur/$produit_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitsCouleurs] (/produit-couleur/$produit_id) : $error",
+      );
       return [];
     }
   }
 
   getProduitsGallery(String? produit_id, String? produit_couleur_id) async {
     try {
-      Response response = await dio.get(
+      Response response = await dio.post(
         '/produits/gallery/$produit_id/$produit_couleur_id',
       );
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitsGallery] (/produits/gallery/$produit_id/$produit_couleur_id) : $error",
+      );
       return [];
     }
   }
 
   getProduitsTailles(String? produit_id) async {
     try {
-      Response response = await dio.get('/produit-taille/$produit_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/produit-taille/$produit_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitsTailles] (/produit-taille/$produit_id) : $error",
+      );
       return [];
     }
   }
 
   getProduitCaracteristique(String? produit_id) async {
     try {
-      Response response = await dio.get('/produit-caracteristique/$produit_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post(
+        '/produit-caracteristique/$produit_id',
+      );
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitCaracteristique] (/produit-caracteristique/$produit_id) : $error",
+      );
       return [];
     }
   }
 
   getProduitOfCategorie(String? categorie_id) async {
     try {
-      Response response = await dio.get('/produits/categorie/$categorie_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/produits/categorie/$categorie_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitOfCategorie] (/produits/categorie/$categorie_id) : $error",
+      );
       return [];
     }
   }
 
   getAllTailles() async {
     try {
-      Response response = await dio.get('/tailles');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/tailles');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print("EXCEPTION [getAllTailles] (/tailles) : $error");
       return [];
     }
   }
 
   getAllCouleurs() async {
     try {
-      Response response = await dio.get('/couleurs');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/couleurs');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print("EXCEPTION [getAllCouleurs] (/couleurs) : $error");
       return [];
     }
   }
 
   getMainCategorieGroupes(String? main_categorie_id) async {
     try {
-      Response response = await dio.get(
+      Response response = await dio.post(
         '/groupe-categories/main/$main_categorie_id',
       );
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getMainCategorieGroupes] (/groupe-categories/main/$main_categorie_id) : $error",
+      );
       return [];
     }
   }
 
   getCategoriesOfGroupe(String? groupe_id) async {
     try {
-      Response response = await dio.get('/categories/groupe/$groupe_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/categories/groupe/$groupe_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getCategoriesOfGroupe] (/categories/groupe/$groupe_id) : $error",
+      );
       return [];
     }
   }
 
   getProduitOfMainCategorie(String? main_categorie_id) async {
     try {
-      Response response = await dio.get(
+      Response response = await dio.post(
         '/produits/main-categorie/$main_categorie_id',
       );
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitOfMainCategorie] (/produits/main-categorie/$main_categorie_id) : $error",
+      );
       return [];
     }
   }
 
   getProduitOfGroupe(String? groupe_id) async {
     try {
-      Response response = await dio.get('/produits/groupe/$groupe_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/produits/groupe/$groupe_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitOfGroupe] (/produits/groupe/$groupe_id) : $error",
+      );
       return [];
     }
   }
 
   getProduitAvisStats(String? produit_id) async {
     try {
-      Response response = await dio.get('/produit-avis-type/$produit_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/produit-avis-type/$produit_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitAvisStats] (/produit-avis-type/$produit_id) : $error",
+      );
       return [];
     }
   }
 
   getProduitAvis(String? produit_id) async {
     try {
-      Response response = await dio.get('/produit-avis/produit/$produit_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/produit-avis/produit/$produit_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getProduitAvis] (/produit-avis/produit/$produit_id) : $error",
+      );
       return [];
     }
   }
 
   getCommandes(String? utilisateur_id) async {
     try {
-      Response response = await dio.get('/commandes/user/$utilisateur_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/commandes/user/$utilisateur_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getCommandes] (/commandes/user/$utilisateur_id) : $error",
+      );
       return [];
     }
   }
 
   getArticlesCommande(String? commande_id) async {
     try {
-      Response response = await dio.get('/articles-commande/$commande_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/articles-commande/$commande_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getArticlesCommande] (/articles-commande/$commande_id) : $error",
+      );
       return [];
     }
   }
 
   getPanierUtilisateur(String? utilisateur_id) async {
     try {
-      Response response = await dio.get('/panier-utilisateur/$utilisateur_id');
-      List<dynamic> responseData = response.data;
-
-      return responseData;
+      Response response = await dio.post('/panier-utilisateur/$utilisateur_id');
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [getPanierUtilisateur] (/panier-utilisateur/$utilisateur_id) : $error",
+      );
       return [];
     }
   }
@@ -325,19 +308,15 @@ class ApiServices {
         'quantite': panierItem.quantite,
         'photo_cover': panierItem.image_id,
       };
-
       Response response = await dio.post(
         '/panier-utilisateur/$utilisateur_id',
         data: data,
-        onSendProgress: (int sent, int total) {
-          print('sending panier item : $sent / $total');
-        },
       );
-      Map<String, dynamic> responseData = response.data;
-
-      return responseData;
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [addPanierItem] (/panier-utilisateur/$utilisateur_id) : $error",
+      );
       return [];
     }
   }
@@ -347,11 +326,11 @@ class ApiServices {
       Response response = await dio.delete(
         '/delete-all/panier-utilisateur/$utilisateur_id',
       );
-      Map<String, dynamic> responseData = response.data;
-
-      return responseData;
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [deleteAllPanierUtilisateur] (/delete-all/panier-utilisateur/$utilisateur_id) : $error",
+      );
       return [];
     }
   }
@@ -366,16 +345,15 @@ class ApiServices {
         'quantite': panierItem.quantite,
         'image_id': panierItem.image_id,
       };
-
       Response response = await dio.post(
         '/delete-one/panier-utilisateur/$utilisateur_id',
         data: data,
       );
-      Map<String, dynamic> responseData = response.data;
-
-      return responseData;
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [deletePanierItem] (/delete-one/panier-utilisateur/$utilisateur_id) : $error",
+      );
       return [];
     }
   }
@@ -386,18 +364,19 @@ class ApiServices {
     List<ArticlesCommandeModel> panierArticles,
   ) async {
     try {
-      var articles = [];
+      var articles = panierArticles
+          .map(
+            (e) => {
+              'produit_id': e.produit_id,
+              'photo_cover': e.image_id,
+              'quantite': e.quantite,
+              'prix_unitaire': e.prix_unitaire,
+              'taille_id': e.taille_id,
+              'couleur_id': e.couleur_id,
+            },
+          )
+          .toList();
 
-      for (var i = 0; i < panierArticles.length; i++) {
-        articles.add({
-          'produit_id': panierArticles[i].produit_id,
-          'photo_cover': panierArticles[i].image_id,
-          'quantite': panierArticles[i].quantite,
-          'prix_unitaire': panierArticles[i].prix_unitaire,
-          'taille_id': panierArticles[i].taille_id,
-          'couleur_id': panierArticles[i].couleur_id,
-        });
-      }
       Object data = {
         'utilisateur_id': utilisateur_id,
         'date_commande': getFullDateString(),
@@ -410,11 +389,11 @@ class ApiServices {
         '/enregistrement-commande-complete/$utilisateur_id',
         data: data,
       );
-      Map<String, dynamic> responseData = response.data;
-
-      return responseData;
+      return response.data;
     } catch (error) {
-      print("EXCEPTION : $error");
+      print(
+        "EXCEPTION [enregisterCommande] (/enregistrement-commande-complete/$utilisateur_id) : $error",
+      );
       return [];
     }
   }

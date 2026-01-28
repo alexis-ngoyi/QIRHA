@@ -8,7 +8,6 @@ import 'package:qirha/widgets/filter_widget.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/widgets/cart_widget.dart';
-import 'package:qirha/functions/prix_promo_format.dart';
 import 'package:qirha/main/search.dart';
 import 'package:qirha/model/categorie.dart';
 import 'package:qirha/model/produit.dart';
@@ -16,8 +15,11 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
 class ProduitOfCategorieOfGroupe extends StatefulWidget {
-  const ProduitOfCategorieOfGroupe(
-      {super.key, required this.categorie, required this.typeView});
+  const ProduitOfCategorieOfGroupe({
+    super.key,
+    required this.categorie,
+    required this.typeView,
+  });
   final CategorieModel categorie;
   final String typeView; //[HOT | DEFAULT]
   @override
@@ -38,27 +40,29 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
       allProduits = [];
     });
 
-    var produits = await ApiServices()
-        .getProduitOfCategorie(widget.categorie.categorie_id.toString());
+    var produits = await ApiServices().getProduitOfCategorie(
+      widget.categorie.categorie_id.toString(),
+    );
 
     produits.forEach((produit) {
       setState(() {
-        double pourcentage =
-            double.parse(produit['pourcentage_reduction'].toString());
-        double prix = double.parse(produit['prix']);
-        double reduction = pourcentage * prix / 100;
-
-        allProduits.add(ProduitModel(
-            img: produit['image'].toString(),
-            libelle: produit['nom'].toString(),
-            prix: produit['prix'].toString(),
-            reduction: reduction.toString(),
-            description: produit['description'].toString(),
-            isReduction: produit['pourcentage_reduction'] != 0,
-            taux: produit['pourcentage_reduction'].toString(),
+        allProduits.add(
+          ProduitModel(
+            nom: produit['nom'],
+            url_image: produit['url_image'],
+            status: produit['status'],
+            description: produit['description'],
+            est_en_promo: produit['est_en_promo'],
+            taux_reduction: (produit['taux_reduction'] as num?)?.toDouble(),
+            prix_promo: (produit['prix_promo'] as num?)?.toDouble(),
+            prix_minimum: (produit['prix_minimum'] as num?)?.toDouble(),
+            cree_le: produit['cree_le'],
+            date_fin: produit['date_fin'],
+            fournisseur_id: produit['fournisseur_id'].toString(),
+            nom_fournisseur: produit['nom_fournisseur'],
             produit_id: produit['produit_id'].toString(),
-            prix_promo:
-                promoPrix(produit['prix'], produit['pourcentage_reduction'])));
+          ),
+        );
       });
     });
   }
@@ -83,18 +87,24 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
       floatingActionButton: currentScrollPosition > 100
           ? FloatingActionButton(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100)),
+                borderRadius: BorderRadius.circular(100),
+              ),
               backgroundColor: WHITE,
               onPressed: () {
-                _mainScrollController.animateTo(0,
-                    curve: Curves.ease, duration: const Duration(seconds: 1));
+                _mainScrollController.animateTo(
+                  0,
+                  curve: Curves.ease,
+                  duration: const Duration(seconds: 1),
+                );
               },
               child: const HeroIcon(HeroIcons.arrowUp),
             )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: PreferredSize(
-          preferredSize: MediaQuery.of(context).size, child: const Row()),
+        preferredSize: MediaQuery.of(context).size,
+        child: const Row(),
+      ),
       body: IconTheme(
         data: const IconThemeData(color: Colors.black),
         child: NotificationListener<ScrollNotification>(
@@ -118,8 +128,10 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
               Container(
                 color: WHITE,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 13, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 13,
+                    horizontal: 10,
+                  ),
                   child: appBarProduitOfCategorieOfGroupe(context),
                 ),
               ),
@@ -131,27 +143,22 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StickyHeader(
-                          header: Container(
-                            width: MediaQuery.of(context).size.width,
-                            color: WHITE,
-                            child: Column(
-                              children: [
-                                MyFilterWidget(
-                                  top: 120,
-                                )
-                              ],
-                            ),
-                          ),
-                          content: Column(
-                            children: [
-                              espacementWidget(height: 10),
-                              produitView(context),
-                            ],
-                          ))
+                        header: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: WHITE,
+                          child: Column(children: [MyFilterWidget(top: 120)]),
+                        ),
+                        content: Column(
+                          children: [
+                            espacementWidget(height: 10),
+                            produitView(context),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -172,13 +179,11 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
             mainAxisSpacing: 12,
             children: [
               for (var i = 0; i < allProduits.length; i++)
-                cardImageProduit(context, produit: allProduits[i]),
+                ProduitCardView(context, produit: allProduits[i]),
             ],
           ),
         ),
-        espacementWidget(
-          height: 50,
-        ),
+        espacementWidget(height: 50),
         noMoreProduit(),
       ],
     );
@@ -195,49 +200,46 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
         Row(
           children: [
             GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const HeroIcon(
-                  HeroIcons.chevronLeft,
-                  size: 25,
-                )),
-            espacementWidget(
-              width: 20,
+              onTap: () => Navigator.pop(context),
+              child: const HeroIcon(HeroIcons.chevronLeft, size: 25),
             ),
+            espacementWidget(width: 20),
             customText(
               currentTitle.length > 23
                   ? '${currentTitle.substring(0, 23)}...'
                   : currentTitle,
               style: TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold, color: DARK),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: DARK,
+              ),
             ),
           ],
         ),
         Row(
           children: [
             appBarActionIconItem(
-                route: const SearchBarScreen(),
-                icon: HeroIcons.magnifyingGlass),
-            espacementWidget(width: 8),
-            MyCartWidget(
-              size: 24,
-              color: DARK,
+              route: const SearchBarScreen(),
+              icon: HeroIcons.magnifyingGlass,
             ),
+            espacementWidget(width: 8),
+            MyCartWidget(size: 24, color: DARK),
           ],
-        )
+        ),
       ],
     );
   }
 
-  Widget appBarActionIconItem(
-      {required Widget route, required HeroIcons icon}) {
+  Widget appBarActionIconItem({
+    required Widget route,
+    required HeroIcons icon,
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: GestureDetector(
-          onTap: () => CustomPageRoute(route, context),
-          child: HeroIcon(
-            icon,
-            size: 25,
-          )),
+        onTap: () => CustomPageRoute(route, context),
+        child: HeroIcon(icon, size: 25),
+      ),
     );
   }
 }

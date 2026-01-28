@@ -276,7 +276,7 @@ customNetWorkImage({
   );
 }
 
-Column currentProduitDetail({ProduitModel? produit}) {
+Column ProduitDetailView({ProduitModel? produit}) {
   return Column(
     children: [
       Stack(
@@ -285,14 +285,19 @@ Column currentProduitDetail({ProduitModel? produit}) {
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: FadeInImage.assetNetwork(
-                placeholder: placeholder,
-                image: demoPic, // produit?.img as String,
-                fit: BoxFit.cover,
+              child: SizedBox(
+                height: 200,
+                child: FadeInImage.assetNetwork(
+                  placeholder: placeholder,
+                  image: (produit?.url_image as String) == ''
+                      ? demoPic
+                      : (produit?.url_image as String),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-          if (produit?.isReduction == true)
+          if (produit?.est_en_promo == true)
             Positioned(
               left: 10,
               bottom: 0,
@@ -303,7 +308,7 @@ Column currentProduitDetail({ProduitModel? produit}) {
                   border: Border.all(color: BLUE, width: .6),
                 ),
                 child: customCenterText(
-                  '- ${produit?.taux as String}%',
+                  '- ${(produit?.taux_reduction) as String}%',
                   style: TextStyle(color: BLUE, fontSize: 8),
                 ),
               ),
@@ -311,7 +316,7 @@ Column currentProduitDetail({ProduitModel? produit}) {
         ],
       ),
       Container(
-        decoration: BoxDecoration(color: WHITE),
+        decoration: BoxDecoration(color: Color.fromARGB(144, 239, 239, 240)),
         height: 75,
         child: Column(
           children: [
@@ -324,7 +329,7 @@ Column currentProduitDetail({ProduitModel? produit}) {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  produit?.isReduction == true
+                  produit?.est_en_promo == true
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -338,7 +343,7 @@ Column currentProduitDetail({ProduitModel? produit}) {
                             ),
                             espacementWidget(width: 5),
                             customText(
-                              formatMoney(produit.prix as String),
+                              formatMoney(produit.prix_minimum as String),
                               style: const TextStyle(
                                 fontSize: 8,
                                 fontWeight: FontWeight.normal,
@@ -352,7 +357,7 @@ Column currentProduitDetail({ProduitModel? produit}) {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             customText(
-                              formatMoney(produit!.prix.toString()),
+                              formatMoney(produit!.prix_minimum.toString()),
                               style: TextStyle(
                                 color: BLUE,
                                 fontSize: 12,
@@ -362,9 +367,10 @@ Column currentProduitDetail({ProduitModel? produit}) {
                           ],
                         ),
                   customText(
-                    produit.libelle.toString(),
+                    produit.nom.toString(),
                     maxLines: 2,
                     style: const TextStyle(
+                      color: Color.fromARGB(225, 0, 0, 0),
                       fontSize: 11,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -379,7 +385,7 @@ Column currentProduitDetail({ProduitModel? produit}) {
   );
 }
 
-GestureDetector cardImageProduit(
+GestureDetector ProduitCardView(
   BuildContext context, {
   required ProduitModel produit,
 }) {
@@ -391,7 +397,7 @@ GestureDetector cardImageProduit(
         decoration: BoxDecoration(color: WHITE),
         child: Stack(
           children: [
-            currentProduitDetail(produit: produit),
+            ProduitDetailView(produit: produit),
             Positioned(
               left: 0,
               top: 0,
@@ -450,13 +456,13 @@ GestureDetector cardImageProduit(
                   padding: const EdgeInsets.all(5.0),
                   margin: const EdgeInsets.all(5.0),
                   decoration: BoxDecoration(
-                    color: BLUE,
+                    color: GREY,
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: HeroIcon(
                     HeroIcons.shoppingCart,
-                    size: 17,
-                    color: WHITE,
+                    size: 14,
+                    color: BLUE,
                   ),
                 ),
               ),
@@ -931,7 +937,7 @@ Container BazardRapidItem(
                       espacementWidget(height: 4),
                       HeroIcon(HeroIcons.bolt, size: 12, color: WHITE),
                       customText(
-                        '-${produit.taux as String}%',
+                        '-${produit.taux_reduction as String}%',
                         style: TextStyle(
                           fontSize: 9,
                           color: WHITE,
@@ -963,7 +969,7 @@ Container BazardRapidItem(
                           ),
                           espacementWidget(width: 5),
                           customText(
-                            formatMoney(produit.prix as String),
+                            formatMoney(produit.taux_reduction as String),
                             style: const TextStyle(
                               fontSize: 8,
                               fontWeight: FontWeight.normal,
@@ -977,7 +983,7 @@ Container BazardRapidItem(
                       SizedBox(
                         width: 120,
                         child: customText(
-                          '${produit.libelle}',
+                          '${produit.nom}',
                           maxLines: 2,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
@@ -999,7 +1005,11 @@ Container BazardRapidItem(
   );
 }
 
-Padding RapidCardFeatureItem(HeroIcons icon, String text, Color color) {
+Padding FonctionnaliteAccessRapideItem(
+  HeroIcons icon,
+  String text,
+  Color color,
+) {
   return Padding(
     padding: const EdgeInsets.all(3.0),
     child: SizedBox(

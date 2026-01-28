@@ -6,7 +6,6 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
-import 'package:qirha/widgets/combo/custom_button.dart';
 import 'package:qirha/widgets/custom_loading.dart';
 import 'package:qirha/main/bazard/bazard_home.dart';
 import 'package:qirha/model/carousel_main.dart';
@@ -16,7 +15,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:qirha/widgets/need_to_login.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class ToutTabScreen extends StatefulWidget {
@@ -28,11 +26,9 @@ class ToutTabScreen extends StatefulWidget {
 
 class _ToutTabScreenState extends State<ToutTabScreen> {
   final List<MainCarouselModel> imageList = <MainCarouselModel>[
-    // MainCarouselModel(img: banner_1),
+    MainCarouselModel(img: banner_3),
     MainCarouselModel(img: banner_4),
-    MainCarouselModel(img: banner_3),
     MainCarouselModel(img: banner_5),
-    MainCarouselModel(img: banner_3),
   ];
 
   int _currentCarouselBannerIndex = 0;
@@ -69,31 +65,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
     });
   }
 
-  final List<ProduitModel> bazardProduits = <ProduitModel>[];
-  getProduitsBazard() async {
-    var produits = await ApiServices().getProduitsBazard();
-
-    produits.forEach((produit) {
-      setState(() {
-        bazardProduits.add(
-          ProduitModel(
-            cree_le: produit['cree_le'],
-            date_fin: produit['date_fin'],
-            description: produit['description'],
-            img: produit['img'],
-            isReduction: produit['isReduction'],
-            libelle: produit['libelle'],
-            prix: produit['prix'],
-            prix_promo: produit['prix_promo'],
-            produit_id: produit['produit_id'].toString(),
-            quantite_en_stock: produit['quantite_en_produit'].toString(),
-            reduction: produit['reduction'].toString(),
-            taux: produit['taux'].toString(),
-          ),
-        );
-      });
-    });
-  }
+  final List<ProduitModel> ListProduitEnReduction = <ProduitModel>[];
 
   final List<ProduitModel> allProduits = <ProduitModel>[];
   getProduits() async {
@@ -103,20 +75,45 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
       setState(() {
         allProduits.add(
           ProduitModel(
+            nom: produit['nom'],
+            url_image: produit['url_image'],
+            status: produit['status'],
+            description: produit['description'],
+            est_en_promo: produit['est_en_promo'],
+            taux_reduction: double.tryParse(
+              produit['taux_reduction'].toString(),
+            ),
+            prix_promo: double.tryParse(produit['prix_promo'].toString()),
+            prix_minimum: double.tryParse(produit['prix_minimum'].toString()),
             cree_le: produit['cree_le'],
             date_fin: produit['date_fin'],
-            description: produit['description'],
-            img: produit['img'],
-            isReduction: produit['isReduction'],
-            libelle: produit['libelle'],
-            prix: produit['prix'],
-            prix_promo: produit['prix_promo'],
+            fournisseur_id: produit['fournisseur_id'].toString(),
+            nom_fournisseur: produit['nom_fournisseur'],
             produit_id: produit['produit_id'].toString(),
-            quantite_en_stock: produit['quantite_en_produit'].toString(),
-            reduction: produit['reduction'].toString(),
-            taux: produit['taux'].toString(),
           ),
         );
+
+        if (produit['est_en_promo'] == true) {
+          ListProduitEnReduction.add(
+            ProduitModel(
+              nom: produit['nom'],
+              url_image: produit['url_image'],
+              status: produit['status'],
+              description: produit['description'],
+              est_en_promo: produit['est_en_promo'],
+              taux_reduction: double.tryParse(
+                produit['taux_reduction'].toString(),
+              ),
+              prix_promo: double.tryParse(produit['prix_promo'].toString()),
+              prix_minimum: double.tryParse(produit['prix_minimum'].toString()),
+              cree_le: produit['cree_le'],
+              date_fin: produit['date_fin'],
+              fournisseur_id: produit['fournisseur_id'].toString(),
+              nom_fournisseur: produit['nom_fournisseur'],
+              produit_id: produit['produit_id'].toString(),
+            ),
+          );
+        }
       });
     });
   }
@@ -173,9 +170,6 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
     minutes = '00';
     remainingSeconds = '00';
 
-    // Load produit bazard
-    getProduitsBazard();
-
     // Load all produits
     getProduits();
 
@@ -222,44 +216,6 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
                 ],
               ),
             ),
-            if (needToLogin == true)
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 5,
-                  ),
-                  height: 45,
-                  width: MediaQuery.of(context).size.width,
-                  color: const Color.fromARGB(
-                    255,
-                    221,
-                    216,
-                    216,
-                  ).withOpacity(.35),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      customText(
-                        'Bienvenue sur Qirha',
-                        style: TextStyle(fontSize: 11, color: DARK),
-                      ),
-                      MyButtonWidget(
-                        onPressed: () => triggerAuthentification(context),
-                        label: 'Se connecter',
-                        bgColor: GREEN,
-                        labelColor: WHITE,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 0,
-                        ),
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
           ],
         ),
       ),
@@ -269,9 +225,11 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
   Column MainScreenContent(BuildContext context) {
     return Column(
       children: [
-        // Bazar
-        if (bazardProduits.isNotEmpty) BazardRow(),
-        RapidCardFeature(),
+        // Bazar reduction
+        if (ListProduitEnReduction.isNotEmpty) ProduitsEnReduction(),
+
+        FonctionnaliteAccessRapide(),
+
         // espacementWidget(height: 5),
         labelWithIcon(icon: HeroIcons.star, label: 'Meilleure suggestion'),
         StickyHeader(
@@ -284,7 +242,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
               mainAxisSpacing: 12,
               children: [
                 for (var i = 0; i < allProduits.length; i++)
-                  cardImageProduit(context, produit: allProduits[i]),
+                  ProduitCardView(context, produit: allProduits[i]),
               ],
             ),
           ),
@@ -423,7 +381,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
 
   //  BAZARD RAPID
 
-  GestureDetector BazardRow() {
+  GestureDetector ProduitsEnReduction() {
     return GestureDetector(
       onTap: () => CustomPageRoute(BazardHomePage(), context),
       child: Column(
@@ -458,41 +416,53 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
               ],
             ),
           ),
-          BazardRapid(),
+          SizedBox(
+            height: 230,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: ListProduitEnReduction.length,
+                itemBuilder: (BuildContext context, int i) {
+                  return BazardRapidItem(
+                    context,
+                    reduction: true,
+                    produit: ListProduitEnReduction[i],
+                  );
+                },
+              ),
+            ),
+          ),
         ],
-      ),
-    );
-  }
-
-  SizedBox BazardRapid() {
-    return SizedBox(
-      height: 230,
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: bazardProduits.length,
-          itemBuilder: (BuildContext context, int i) {
-            return BazardRapidItem(
-              context,
-              reduction: true,
-              produit: bazardProduits[i],
-            );
-          },
-        ),
       ),
     );
   }
 
   //  RAPID FEATURE
 
-  Wrap RapidCardFeature() {
+  Wrap FonctionnaliteAccessRapide() {
     return Wrap(
       children: [
-        RapidCardFeatureItem(HeroIcons.heart, 'Mes favoris', Colors.black),
-        RapidCardFeatureItem(HeroIcons.truck, 'Mes comandes', Colors.black),
-        RapidCardFeatureItem(HeroIcons.gift, 'Faire un Cadeau', Colors.black),
-        RapidCardFeatureItem(HeroIcons.users, 'Parrainez un ami', Colors.black),
+        FonctionnaliteAccessRapideItem(
+          HeroIcons.heart,
+          'Mes favoris',
+          Colors.black,
+        ),
+        FonctionnaliteAccessRapideItem(
+          HeroIcons.truck,
+          'Mes comandes',
+          Colors.black,
+        ),
+        FonctionnaliteAccessRapideItem(
+          HeroIcons.gift,
+          'Faire un Cadeau',
+          Colors.black,
+        ),
+        FonctionnaliteAccessRapideItem(
+          HeroIcons.users,
+          'Parrainez un ami',
+          Colors.black,
+        ),
       ],
     );
   }

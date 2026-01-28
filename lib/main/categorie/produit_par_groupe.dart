@@ -8,7 +8,6 @@ import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/widgets/filter_widget.dart';
 import 'package:qirha/widgets/cart_widget.dart';
-import 'package:qirha/functions/prix_promo_format.dart';
 import 'package:qirha/main/categorie/produit_of_categorie_of_groupe.dart';
 import 'package:qirha/main/search.dart';
 import 'package:qirha/model/categorie.dart';
@@ -18,8 +17,11 @@ import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
 
 class ProduitParGroupe extends StatefulWidget {
-  const ProduitParGroupe(
-      {super.key, required this.groupe, required this.typeView});
+  const ProduitParGroupe({
+    super.key,
+    required this.groupe,
+    required this.typeView,
+  });
   final GroupeCategorieModel groupe;
   final String typeView; //[HOT | DEFAULT]
   @override
@@ -39,27 +41,29 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
       allProduits = [];
     });
 
-    var produits =
-        await ApiServices().getProduitOfGroupe(widget.groupe.id.toString());
+    var produits = await ApiServices().getProduitOfGroupe(
+      widget.groupe.id.toString(),
+    );
 
     produits.forEach((produit) {
       setState(() {
-        double pourcentage =
-            double.parse(produit['pourcentage_reduction'].toString());
-        double prix = double.parse(produit['prix']);
-        double reduction = pourcentage * prix / 100;
-
-        allProduits.add(ProduitModel(
-            img: produit['image'].toString(),
-            libelle: produit['nom'].toString(),
-            prix: produit['prix'].toString(),
-            reduction: reduction.toString(),
-            description: produit['description'].toString(),
-            isReduction: produit['pourcentage_reduction'] != 0,
-            taux: produit['pourcentage_reduction'].toString(),
+        allProduits.add(
+          ProduitModel(
+            nom: produit['nom'],
+            url_image: produit['url_image'],
+            status: produit['status'],
+            description: produit['description'],
+            est_en_promo: produit['est_en_promo'],
+            taux_reduction: (produit['taux_reduction'] as num?)?.toDouble(),
+            prix_promo: (produit['prix_promo'] as num?)?.toDouble(),
+            prix_minimum: (produit['prix_minimum'] as num?)?.toDouble(),
+            cree_le: produit['cree_le'],
+            date_fin: produit['date_fin'],
+            fournisseur_id: produit['fournisseur_id'].toString(),
+            nom_fournisseur: produit['nom_fournisseur'],
             produit_id: produit['produit_id'].toString(),
-            prix_promo:
-                promoPrix(produit['prix'], produit['pourcentage_reduction'])));
+          ),
+        );
       });
     });
   }
@@ -84,18 +88,24 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
       floatingActionButton: currentScrollPosition > 100
           ? FloatingActionButton(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100)),
+                borderRadius: BorderRadius.circular(100),
+              ),
               backgroundColor: WHITE,
               onPressed: () {
-                _mainScrollController.animateTo(0,
-                    curve: Curves.ease, duration: const Duration(seconds: 1));
+                _mainScrollController.animateTo(
+                  0,
+                  curve: Curves.ease,
+                  duration: const Duration(seconds: 1),
+                );
               },
               child: const HeroIcon(HeroIcons.arrowUp),
             )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: PreferredSize(
-          preferredSize: MediaQuery.of(context).size, child: const Row()),
+        preferredSize: MediaQuery.of(context).size,
+        child: const Row(),
+      ),
       body: IconTheme(
         data: const IconThemeData(color: Colors.black),
         child: NotificationListener<ScrollNotification>(
@@ -119,8 +129,10 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
               Container(
                 color: WHITE,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 13, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 13,
+                    horizontal: 10,
+                  ),
                   child: appBarProduitParGroupe(context),
                 ),
               ),
@@ -134,25 +146,22 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
                       espacementWidget(height: 5),
                       otherCategorieRow(),
                       StickyHeader(
-                          header: Container(
-                            width: MediaQuery.of(context).size.width,
-                            color: WHITE,
-                            child: Column(
-                              children: [
-                                MyFilterWidget(),
-                              ],
-                            ),
-                          ),
-                          content: Column(
-                            children: [
-                              espacementWidget(height: 10),
-                              produitView(context),
-                            ],
-                          ))
+                        header: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: WHITE,
+                          child: Column(children: [MyFilterWidget()]),
+                        ),
+                        content: Column(
+                          children: [
+                            espacementWidget(height: 10),
+                            produitView(context),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -173,13 +182,11 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
             mainAxisSpacing: 12,
             children: [
               for (var i = 0; i < allProduits.length; i++)
-                cardImageProduit(context, produit: allProduits[i]),
+                ProduitCardView(context, produit: allProduits[i]),
             ],
           ),
         ),
-        espacementWidget(
-          height: 50,
-        ),
+        espacementWidget(height: 50),
         noMoreProduit(),
       ],
     );
@@ -199,34 +206,41 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
         child: Row(
           children: [
             espacementWidget(width: 4),
-            for (var index = 0;
-                index < widget.groupe.categorie!.length;
-                index++)
+            for (
+              var index = 0;
+              index < widget.groupe.categorie!.length;
+              index++
+            )
               groupeCategorieItems(
-                  index: 1,
-                  img: widget.groupe.categorie![index].img.toString().isEmpty ||
-                          widget.groupe.categorie![index].img == null
-                      ? categorie_default
-                      : widget.groupe.categorie![index].img.toString(),
-                  text: widget.groupe.categorie![index].libelle.toString(),
-                  press: () => {
-                        CustomPageRoute(
-                            ProduitOfCategorieOfGroupe(
-                                typeView: 'DEFAULT',
-                                categorie: widget.groupe.categorie![index]),
-                            context)
-                      }),
+                index: 1,
+                img:
+                    widget.groupe.categorie![index].img.toString().isEmpty ||
+                        widget.groupe.categorie![index].img == null
+                    ? categorie_default
+                    : widget.groupe.categorie![index].img.toString(),
+                text: widget.groupe.categorie![index].libelle.toString(),
+                press: () => {
+                  CustomPageRoute(
+                    ProduitOfCategorieOfGroupe(
+                      typeView: 'DEFAULT',
+                      categorie: widget.groupe.categorie![index],
+                    ),
+                    context,
+                  ),
+                },
+              ),
           ],
         ),
       ),
     );
   }
 
-  GestureDetector groupeCategorieItems(
-      {required String img,
-      required String text,
-      required Function() press,
-      required int index}) {
+  GestureDetector groupeCategorieItems({
+    required String img,
+    required String text,
+    required Function() press,
+    required int index,
+  }) {
     return GestureDetector(
       onTap: press,
       child: Container(
@@ -253,8 +267,10 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4.0,
+                    horizontal: 8,
+                  ),
                   child: SizedBox(
                     width: 55,
                     child: customCenterText(
@@ -282,49 +298,46 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
         Row(
           children: [
             GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const HeroIcon(
-                  HeroIcons.chevronLeft,
-                  size: 25,
-                )),
-            espacementWidget(
-              width: 20,
+              onTap: () => Navigator.pop(context),
+              child: const HeroIcon(HeroIcons.chevronLeft, size: 25),
             ),
+            espacementWidget(width: 20),
             customText(
               currentTitle.length > 23
                   ? '${currentTitle.substring(0, 23)}...'
                   : currentTitle,
               style: TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold, color: DARK),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: DARK,
+              ),
             ),
           ],
         ),
         Row(
           children: [
             appBarActionIconItem(
-                route: const SearchBarScreen(),
-                icon: HeroIcons.magnifyingGlass),
-            espacementWidget(width: 8),
-            MyCartWidget(
-              size: 24,
-              color: DARK,
+              route: const SearchBarScreen(),
+              icon: HeroIcons.magnifyingGlass,
             ),
+            espacementWidget(width: 8),
+            MyCartWidget(size: 24, color: DARK),
           ],
-        )
+        ),
       ],
     );
   }
 
-  Widget appBarActionIconItem(
-      {required Widget route, required HeroIcons icon}) {
+  Widget appBarActionIconItem({
+    required Widget route,
+    required HeroIcons icon,
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: GestureDetector(
-          onTap: () => CustomPageRoute(route, context),
-          child: HeroIcon(
-            icon,
-            size: 25,
-          )),
+        onTap: () => CustomPageRoute(route, context),
+        child: HeroIcon(icon, size: 25),
+      ),
     );
   }
 }

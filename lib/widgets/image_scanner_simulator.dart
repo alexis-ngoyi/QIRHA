@@ -143,7 +143,7 @@ class _ImageScannerSimulatorState extends State<ImageScannerSimulator> {
                               // for (var i = 0;
                               //     i < nouveauteImageList.length;
                               //     i++)
-                              //   cardImageProduit(context,
+                              //   ProduitCardView(context,
                               //       reduction: false,
                               //       i: i,
                               //       image: nouveauteImageList[i],

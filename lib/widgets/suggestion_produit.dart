@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:qirha/api/services.dart';
-
-import 'package:qirha/functions/prix_promo_format.dart';
 import 'package:qirha/model/produit.dart';
 import 'package:qirha/res/utils.dart';
 
@@ -21,22 +19,23 @@ class _SuggestionProduitWidgetState extends State<SuggestionProduitWidget> {
 
     produits.forEach((produit) {
       setState(() {
-        double pourcentage =
-            double.parse(produit['pourcentage_reduction'].toString());
-        double prix = double.parse(produit['prix']);
-        double reduction = pourcentage * prix / 100;
-
-        allProduits.add(ProduitModel(
-            img: produit['image'].toString(),
-            libelle: produit['nom'].toString(),
-            prix: produit['prix'].toString(),
-            reduction: reduction.toString(),
-            description: produit['description'].toString(),
-            isReduction: produit['pourcentage_reduction'] != 0,
-            taux: produit['pourcentage_reduction'].toString(),
+        allProduits.add(
+          ProduitModel(
+            nom: produit['nom'],
+            url_image: produit['url_image'],
+            status: produit['status'],
+            description: produit['description'],
+            est_en_promo: produit['est_en_promo'],
+            taux_reduction: (produit['taux_reduction'] as num?)?.toDouble(),
+            prix_promo: (produit['prix_promo'] as num?)?.toDouble(),
+            prix_minimum: (produit['prix_minimum'] as num?)?.toDouble(),
+            cree_le: produit['cree_le'],
+            date_fin: produit['date_fin'],
+            fournisseur_id: produit['fournisseur_id'].toString(),
+            nom_fournisseur: produit['nom_fournisseur'],
             produit_id: produit['produit_id'].toString(),
-            prix_promo:
-                promoPrix(produit['prix'], produit['pourcentage_reduction'])));
+          ),
+        );
       });
     });
   }
@@ -62,11 +61,11 @@ class _SuggestionProduitWidgetState extends State<SuggestionProduitWidget> {
             mainAxisSpacing: 12,
             children: [
               for (var i = 0; i < allProduits.length; i++)
-                cardImageProduit(context, produit: allProduits[i]),
+                ProduitCardView(context, produit: allProduits[i]),
             ],
           ),
         ),
-        if (allProduits.isNotEmpty) espacementWidget(height: 120)
+        if (allProduits.isNotEmpty) espacementWidget(height: 120),
       ],
     );
   }

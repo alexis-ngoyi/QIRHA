@@ -45,7 +45,8 @@ class DetailProduit extends StatefulWidget {
 class _DetailProduitState extends State<DetailProduit> {
   late ProduitModel produit = widget.produit;
   late String couleurQuantiteRestant = '';
-  late bool reduction = double.parse(widget.produit.reduction.toString()) > 0;
+  late bool reduction =
+      double.parse(widget.produit.taux_reduction.toString()) > 0;
 
   final List<ProduitCaracteristiqueModel> produitCaracteristique = [];
   final List<ProduitCaracteristiqueModel> produitCaracteristiqueArgumentVente =
@@ -1091,7 +1092,7 @@ class _DetailProduitState extends State<DetailProduit> {
         children: [
           customText(
             formatMoney(
-              '${produit.isReduction == true ? produit.prix_promo : produit.prix}',
+              '${produit.est_en_promo == true ? produit.prix_promo : produit.prix_minimum}',
             ),
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),

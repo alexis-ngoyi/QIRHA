@@ -26,19 +26,6 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/miss_permissions.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:qirha/widgets/camera_gallery_preview.dart';
-import 'package:qirha/main/tabs/beaute_sante.dart';
-import 'package:qirha/main/tabs/bijoux.dart';
-import 'package:qirha/main/tabs/bureaux.dart';
-import 'package:qirha/main/tabs/chaussures.dart';
-import 'package:qirha/main/tabs/electromenagers.dart';
-import 'package:qirha/main/tabs/electroniques.dart';
-import 'package:qirha/main/tabs/enfants.dart';
-import 'package:qirha/main/tabs/femmes.dart';
-import 'package:qirha/main/tabs/hommes.dart';
-import 'package:qirha/main/tabs/jouets.dart';
-import 'package:qirha/main/tabs/maison.dart';
-import 'package:qirha/main/tabs/sommeil.dart';
-import 'package:qirha/main/tabs/sports.dart';
 import 'package:qirha/main/tabs/tout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -78,11 +65,12 @@ class MyApp extends StatelessWidget {
         }
       },
       initialRoute: '/',
-      title: 'qirha',
+      title: 'Qirha',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: BLUE),
         useMaterial3: true,
+        fontFamily: 'Lato',
       ),
       home: const HeroIconTheme(
         style: HeroIconStyle.outline,
@@ -664,7 +652,7 @@ class _SearchWithCameraState extends State<SearchWithCamera>
 
     // ignore: use_build_context_synchronously
     return CustomPageRoute(
-      ImageScannerSimulator(selectedImage: assetEntity as AssetEntity),
+      ImageScannerSimulator(selectedImage: assetEntity),
       context,
     );
   }
