@@ -154,7 +154,7 @@ class _MyFilterWidgetState extends State<MyFilterWidget> {
       allTailles = [];
     });
 
-    var tailles = await ApiServices().getAllTailles();
+    var tailles = [];
 
     tailles.forEach((taille) {
       setState(() {
@@ -180,7 +180,7 @@ class _MyFilterWidgetState extends State<MyFilterWidget> {
       allCouleurs = [];
     });
 
-    var couleurs = await ApiServices().getAllCouleurs();
+    var couleurs = [];
     couleurs.forEach((couleur) {
       setState(() {
         allCouleurs.add(

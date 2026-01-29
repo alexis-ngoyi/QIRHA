@@ -56,16 +56,6 @@ class ApiServices {
     }
   }
 
-  getProduitsBazard() async {
-    try {
-      Response response = await dio.post('/produits/bazard');
-      return response.data;
-    } catch (error) {
-      print("EXCEPTION [getProduitsBazard] (/produits/bazard) : $error");
-      return [];
-    }
-  }
-
   getProduitGallery(String produit_id) async {
     try {
       Response response = await dio.post('/produit-gallery/$produit_id');
@@ -102,18 +92,6 @@ class ApiServices {
     }
   }
 
-  getProduitsCouleurs(String? produit_id) async {
-    try {
-      Response response = await dio.post('/produit-couleur/$produit_id');
-      return response.data;
-    } catch (error) {
-      print(
-        "EXCEPTION [getProduitsCouleurs] (/produit-couleur/$produit_id) : $error",
-      );
-      return [];
-    }
-  }
-
   getProduitsGallery(String? produit_id, String? produit_couleur_id) async {
     try {
       Response response = await dio.post(
@@ -123,18 +101,6 @@ class ApiServices {
     } catch (error) {
       print(
         "EXCEPTION [getProduitsGallery] (/produits/gallery/$produit_id/$produit_couleur_id) : $error",
-      );
-      return [];
-    }
-  }
-
-  getProduitsTailles(String? produit_id) async {
-    try {
-      Response response = await dio.post('/produit-taille/$produit_id');
-      return response.data;
-    } catch (error) {
-      print(
-        "EXCEPTION [getProduitsTailles] (/produit-taille/$produit_id) : $error",
       );
       return [];
     }
@@ -162,26 +128,6 @@ class ApiServices {
       print(
         "EXCEPTION [getProduitOfCategorie] (/produits/categorie/$categorie_id) : $error",
       );
-      return [];
-    }
-  }
-
-  getAllTailles() async {
-    try {
-      Response response = await dio.post('/tailles');
-      return response.data;
-    } catch (error) {
-      print("EXCEPTION [getAllTailles] (/tailles) : $error");
-      return [];
-    }
-  }
-
-  getAllCouleurs() async {
-    try {
-      Response response = await dio.post('/couleurs');
-      return response.data;
-    } catch (error) {
-      print("EXCEPTION [getAllCouleurs] (/couleurs) : $error");
       return [];
     }
   }

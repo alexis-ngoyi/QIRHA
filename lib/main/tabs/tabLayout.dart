@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:qirha/functions/money_format.dart';
 import 'package:qirha/model/categorie.dart';
 import 'package:qirha/model/main_categorie_model.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
@@ -30,8 +31,10 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
   }
 
   final List<ProduitModel> allProduits = <ProduitModel>[];
-  getProduitOfCategorieOrGroupe() async {
-    var produits = await ApiServices().getProduits();
+  getProduitOfMainCategorie() async {
+    var produits = await ApiServices().getProduitOfMainCategorie(
+      widget.mainCategorie.main_categorie_id,
+    );
 
     produits.forEach((produit) {
       setState(() {
@@ -42,9 +45,9 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
             status: produit['status'],
             description: produit['description'],
             est_en_promo: produit['est_en_promo'],
-            taux_reduction: (produit['taux_reduction']).toDouble(),
-            prix_promo: (produit['prix_promo'] as num?)?.toDouble(),
-            prix_minimum: (produit['prix_minimum'] as num?)?.toDouble(),
+            taux_reduction: parseDouble(produit['taux_reduction']),
+            prix_promo: parseDouble(produit['prix_promo']),
+            prix_minimum: parseDouble(produit['prix_minimum']),
             cree_le: produit['cree_le'],
             date_fin: produit['date_fin'],
             fournisseur_id: produit['fournisseur_id'].toString(),
@@ -87,7 +90,7 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
     getallGroupeByMainCategorie();
 
     // Produit of categorie [params]
-    getProduitOfCategorieOrGroupe();
+    getProduitOfMainCategorie();
 
     // Current title [current]
     currentTitle = widget.mainCategorie.nom_main_categorie.toString();

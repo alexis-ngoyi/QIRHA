@@ -33,10 +33,7 @@ class _CouleurProduitPickerState extends State<CouleurProduitPicker> {
       produitCouleurs = [];
     });
 
-    var couleurs = await ApiServices().getProduitsCouleurs(
-      widget.produit.produit_id,
-    );
-
+    var couleurs = [];
     couleurs.forEach((couleur) {
       setState(() {
         produitCouleurs.add(

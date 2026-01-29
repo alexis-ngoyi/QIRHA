@@ -20,12 +20,10 @@ import 'package:qirha/widgets/need_to_login.dart';
 import 'package:qirha/widgets/produit_image_viewer.dart';
 import 'package:qirha/widgets/rate_stars.dart';
 import 'package:qirha/widgets/reactive_icon_widget.dart';
-import 'package:qirha/widgets/taille_produit_picker.dart';
 import 'package:qirha/widgets/text_collapse_widget.dart';
 import 'package:qirha/main/bazard/bazard_home.dart';
 import 'package:qirha/main/categorie/send_message_produit.dart';
 import 'package:qirha/model/model_produit_couleur.dart';
-import 'package:qirha/model/model_produit_taille.dart';
 import 'package:qirha/model/produit.dart';
 import 'package:qirha/model/produit_avis.dart';
 import 'package:qirha/model/produit_caracteristique_model.dart';
@@ -450,7 +448,7 @@ class _DetailProduitState extends State<DetailProduit> {
           customDivider(),
           selectCouleur(produit),
           espacementWidget(height: 20),
-          selectTaille(),
+
           espacementWidget(height: 5),
           if (widget.isModal == false) delaiTraitement(),
           if (widget.isModal == false) delaiLivraison(),
@@ -1048,21 +1046,6 @@ class _DetailProduitState extends State<DetailProduit> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Padding selectTaille() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: TailleProduitPicker(
-        produit: produit,
-        selectedTailleProduit: (ProduitTailleModel selectedTailleProduit) {
-          // print('selected taille : ${selectedTailleProduit.code_taille}');
-          setState(() {
-            taille_id = selectedTailleProduit.taille_id.toString();
-          });
-        },
       ),
     );
   }
