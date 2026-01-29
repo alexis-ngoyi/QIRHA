@@ -403,69 +403,17 @@ GestureDetector ProduitCardView(
             Positioned(
               left: 6,
               top: 6,
-              child: GestureDetector(
-                // detailModal
-                onTap: () => {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (BuildContext context) {
-                      return DraggableScrollableSheet(
-                        initialChildSize: .78,
-                        minChildSize: 0.1,
-                        maxChildSize: 1.0,
-                        expand: false,
-                        builder:
-                            (
-                              BuildContext context,
-                              ScrollController scrollController,
-                            ) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: const EdgeInsets.only(top: 20),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(width: 5, color: GREY),
-                                  ),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(13),
-                                ),
-                                child: SingleChildScrollView(
-                                  controller: scrollController,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      const SizedBox(),
-                                      SizedBox(
-                                        height: 600,
-                                        child: DetailProduit(
-                                          isModal: true,
-                                          produit: produit,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                      );
-                    },
-                  ),
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  margin: const EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                    color: GREY,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: HeroIcon(
-                    HeroIcons.shoppingCart,
-                    size: 14,
-                    color: PRIMARY,
-                  ),
+              child: Container(
+                padding: const EdgeInsets.all(5.0),
+                margin: const EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: GREY,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: HeroIcon(
+                  HeroIcons.shoppingCart,
+                  size: 14,
+                  color: PRIMARY,
                 ),
               ),
             ),

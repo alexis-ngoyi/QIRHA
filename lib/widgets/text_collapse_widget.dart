@@ -17,7 +17,7 @@ class _CustomTextCollapseState extends State<CustomTextCollapse> {
   @override
   void initState() {
     super.initState();
-    maxLines = 1;
+    maxLines = 2;
   }
 
   @override
@@ -37,26 +37,24 @@ class _CustomTextCollapseState extends State<CustomTextCollapse> {
         children: [
           Expanded(
             child: SizedBox(
-              child: customText(widget.label,
-                  maxLines: maxLines,
-                  softWrap: true,
-                  overflow: TextOverflow.fade,
-                  style: TextStyle(fontSize: 11, color: DARK)),
+              child: customText(
+                widget.label,
+                maxLines: maxLines,
+                softWrap: true,
+                overflow: TextOverflow.fade,
+                style: TextStyle(fontSize: 11, color: DARK),
+              ),
             ),
           ),
-          if (maxLines == 1)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  maxLines = 100;
-                });
-              },
-              child: HeroIcon(
-                HeroIcons.chevronDown,
-                size: 15,
-                color: DARK,
-              ),
-            )
+
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                maxLines = maxLines == 100 ? 1 : 100;
+              });
+            },
+            child: HeroIcon(HeroIcons.chevronDown, size: 15, color: DARK),
+          ),
         ],
       ),
     );

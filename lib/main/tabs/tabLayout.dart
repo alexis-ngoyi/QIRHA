@@ -30,11 +30,22 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
     setState(() {});
   }
 
-  final List<ProduitModel> allProduits = <ProduitModel>[];
-  getProduitOfMainCategorie() async {
-    var produits = await ApiServices().getProduitOfMainCategorie(
-      widget.mainCategorie.main_categorie_id,
-    );
+  List<ProduitModel> allProduits = <ProduitModel>[];
+  getProduitOfMainCategorie({groupe_id = 0}) async {
+    setState(() {
+      allProduits = [];
+    });
+
+    var produits = [];
+
+    if (groupe_id == 0) {
+      produits = await ApiServices().getProduitOfMainCategorie(
+        widget.mainCategorie.main_categorie_id,
+      );
+    } else {
+      print("THIS GROUPE : $groupe_id");
+      produits = await ApiServices().getProduitOfGroupe(groupe_id);
+    }
 
     produits.forEach((produit) {
       setState(() {
@@ -74,7 +85,7 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
       setState(() {
         allGroupeByMainCategorie.add(
           GroupeCategorieModel(
-            id: groupe['groupe_categorie_id'].toString(),
+            id: groupe['groupe_id'].toString(),
             groupe: groupe['nom_groupe'].toString(),
           ),
         );
@@ -176,13 +187,18 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                getProduitOfMainCategorie();
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 2.0,
                   horizontal: 4,
                 ),
-                child: SizedBox(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(right: BorderSide(width: 1)),
+                  ),
                   width: 55,
                   child: customCenterText(
                     "Tout",
@@ -202,14 +218,24 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
               index++
             )
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  getProduitOfMainCategorie(
+                    groupe_id: allGroupeByMainCategorie[index].id,
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 5,
                     horizontal: 6,
                   ),
-                  child: SizedBox(
+                  child: Container(
                     width: 70,
+                    padding: const EdgeInsets.only(right: 8),
+                    decoration: BoxDecoration(
+                      border: index != allGroupeByMainCategorie.length - 1
+                          ? Border(right: BorderSide(width: 1))
+                          : null,
+                    ),
                     child: customCenterText(
                       allGroupeByMainCategorie[index].groupe.toString(),
                       softWrap: true,

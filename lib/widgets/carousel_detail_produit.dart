@@ -16,14 +16,11 @@ class CarouselDetailProduit extends StatefulWidget {
     super.key,
     required this.getCurrentIndex,
     required this.currentProduit,
-    required this.reduction,
-    required this.getQuantiteRestant,
     required this.currentProduitImage,
   });
   final void Function(int currentIndex) getCurrentIndex;
-  final void Function(String quantiteRestant) getQuantiteRestant;
   final ProduitModel currentProduit;
-  final bool reduction;
+
   final void Function(String currentProduitImage) currentProduitImage;
 
   @override
@@ -34,9 +31,9 @@ class _CarouselDetailProduitState extends State<CarouselDetailProduit> {
   final CarouselSliderController _controllerCategorieSlider =
       CarouselSliderController();
   int currentIndex = 0;
-  PhotoGalleryProduitModel? currentProduitImage;
+  GalleryProduitModel? currentProduitImage;
   bool isLoading = true;
-  final List<PhotoGalleryProduitModel> gallerieList = [];
+  final List<GalleryProduitModel> gallerieList = [];
 
   getProduitsGallery({String produit_couleur_id = "0"}) async {
     setState(() {
@@ -45,17 +42,14 @@ class _CarouselDetailProduitState extends State<CarouselDetailProduit> {
 
     var galleries = await ApiServices().getProduitsGallery(
       widget.currentProduit.produit_id.toString(),
-      produit_couleur_id,
     );
 
     galleries.forEach((g) {
       setState(() {
         gallerieList.add(
-          PhotoGalleryProduitModel(
-            img: g['produit_couleur_image'],
-            image_id: g['image_id'].toString(),
-            restant: g['quantite_en_stock'].toString(),
-            libelle: g['produit_couleur_nom'],
+          GalleryProduitModel(
+            produit_gallery_id: g['produit_gallery_id'],
+            url_image: g['url_image'].toString(),
           ),
         );
       });
@@ -68,16 +62,6 @@ class _CarouselDetailProduitState extends State<CarouselDetailProduit> {
 
       // Emitting default data
       widget.getCurrentIndex.call(currentIndex);
-
-      // emit  quantiteRestant
-      widget.getQuantiteRestant.call(
-        gallerieList[currentIndex].restant.toString(),
-      );
-
-      // emit image_id
-      widget.currentProduitImage.call(
-        gallerieList[currentIndex].image_id.toString(),
-      );
     });
   }
 
@@ -105,7 +89,7 @@ class _CarouselDetailProduitState extends State<CarouselDetailProduit> {
                 child: Center(child: CircularProgressIndicator()),
               ),
         Positioned(
-          bottom: widget.reduction ? 38 : 5,
+          bottom: widget.currentProduit.est_en_promo == true ? 38 : 5,
           left: 10,
           child: Row(
             children: [
@@ -135,21 +119,6 @@ class _CarouselDetailProduitState extends State<CarouselDetailProduit> {
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 7),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 2,
-                ),
-                decoration: BoxDecoration(
-                  color: GREY,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: customText(
-                  isLoading ? "..." : '${currentProduitImage?.libelle}',
-                  style: TextStyle(fontSize: 12, color: DARK),
-                ),
-              ),
             ],
           ),
         ),
@@ -170,8 +139,8 @@ class _CarouselDetailProduitState extends State<CarouselDetailProduit> {
                 width: MediaQuery.of(context).size.width,
                 child: FadeInImage.assetNetwork(
                   placeholder: placeholder,
-                  image: gallery.img as String,
-                  fit: BoxFit.contain,
+                  image: gallery.url_image as String,
+                  fit: BoxFit.cover,
                 ),
               ),
             );
@@ -181,7 +150,7 @@ class _CarouselDetailProduitState extends State<CarouselDetailProduit> {
       options: CarouselOptions(
         autoPlay: false,
         enlargeCenterPage: true,
-        aspectRatio: 1.1,
+        aspectRatio: 1,
         autoPlayCurve: Curves.fastOutSlowIn,
         enableInfiniteScroll: true,
         viewportFraction: 1,
@@ -194,14 +163,14 @@ class _CarouselDetailProduitState extends State<CarouselDetailProduit> {
             widget.getCurrentIndex.call(index);
 
             // emit  quantiteRestant
-            widget.getQuantiteRestant.call(
-              gallerieList[currentIndex].restant.toString(),
-            );
+            // widget.getQuantiteRestant.call(
+            //   gallerieList[currentIndex].restant.toString(),
+            // );
 
-            // emit image_id
-            widget.currentProduitImage.call(
-              gallerieList[currentIndex].image_id.toString(),
-            );
+            // // emit image_id
+            // widget.currentProduitImage.call(
+            //   gallerieList[currentIndex].image_id.toString(),
+            // );
           });
         },
       ),

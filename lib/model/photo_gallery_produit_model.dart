@@ -1,12 +1,9 @@
-class PhotoGalleryProduitModel {
-  String? img;
-  String? libelle;
-  String? restant;
-  String? image_id;
+class GalleryProduitModel {
+  int? produit_gallery_id;
+  String? url_image;
 
-  PhotoGalleryProduitModel(
-      {required this.img,
-      required this.libelle,
-      required this.restant,
-      required this.image_id});
+  GalleryProduitModel({
+    required this.produit_gallery_id,
+    required this.url_image,
+  });
 }

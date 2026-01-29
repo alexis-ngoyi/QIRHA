@@ -92,15 +92,13 @@ class ApiServices {
     }
   }
 
-  getProduitsGallery(String? produit_id, String? produit_couleur_id) async {
+  getProduitsGallery(String? produit_id) async {
     try {
-      Response response = await dio.post(
-        '/produits/gallery/$produit_id/$produit_couleur_id',
-      );
+      Response response = await dio.post('/produit/uploaded-image/$produit_id');
       return response.data;
     } catch (error) {
       print(
-        "EXCEPTION [getProduitsGallery] (/produits/gallery/$produit_id/$produit_couleur_id) : $error",
+        "EXCEPTION [getProduitsGallery] (/produit/uploaded-image/$produit_id) : $error",
       );
       return [];
     }
@@ -115,6 +113,20 @@ class ApiServices {
     } catch (error) {
       print(
         "EXCEPTION [getProduitCaracteristique] (/produit-caracteristique/$produit_id) : $error",
+      );
+      return [];
+    }
+  }
+
+  getProduitAllCaracteristiques(String? produit_id) async {
+    try {
+      Response response = await dio.post(
+        '/attributs-produit/$produit_id/all-caracteristiques',
+      );
+      return response.data;
+    } catch (error) {
+      print(
+        "EXCEPTION [getProduitAllCaracteristiques] ('/attributs-produit/$produit_id/all-caracteristiques) : $error",
       );
       return [];
     }
