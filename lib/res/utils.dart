@@ -281,42 +281,41 @@ Column ProduitDetailView({ProduitModel? produit}) {
     children: [
       Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: SizedBox(
-                height: 200,
-                child: FadeInImage.assetNetwork(
-                  placeholder: placeholder,
-                  image: (produit?.url_image as String) == ''
-                      ? demoPic
-                      : (produit?.url_image as String),
-                  fit: BoxFit.cover,
-                ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: SizedBox(
+              height: 200,
+              child: FadeInImage.assetNetwork(
+                placeholder: placeholder,
+                image: (produit?.url_image?.isEmpty ?? true)
+                    ? demoPic
+                    : produit!.url_image!,
+                fit: BoxFit.cover,
               ),
             ),
           ),
           if (produit?.est_en_promo == true)
             Positioned(
-              left: 10,
-              bottom: 0,
+              right: 10,
+              bottom: 10,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
-                  border: Border.all(color: PRIMARY, width: .6),
+                  border: Border.all(color: DANGER, width: .6),
                 ),
                 child: customCenterText(
-                  '- ${(produit?.taux_reduction) as String}%',
-                  style: TextStyle(color: PRIMARY, fontSize: 8),
+                  '- ${((produit?.taux_reduction ?? 0) * 100).toStringAsFixed(0)}%',
+                  style: TextStyle(color: DANGER, fontSize: 8),
                 ),
               ),
             ),
         ],
       ),
       Container(
-        decoration: BoxDecoration(color: Color.fromARGB(144, 239, 239, 240)),
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(144, 239, 239, 240),
+        ),
         height: 75,
         child: Column(
           children: [
@@ -326,15 +325,15 @@ Column ProduitDetailView({ProduitModel? produit}) {
                 horizontal: 8.0,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   produit?.est_en_promo == true
                       ? Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             customText(
-                              formatMoney(produit!.prix_promo.toString()),
+                              formatMoney(
+                                produit?.prix_promo?.toString() ?? '0',
+                              ),
                               style: TextStyle(
                                 color: PRIMARY,
                                 fontSize: 10,
@@ -343,7 +342,9 @@ Column ProduitDetailView({ProduitModel? produit}) {
                             ),
                             espacementWidget(width: 5),
                             customText(
-                              formatMoney(produit.prix_minimum as String),
+                              formatMoney(
+                                produit?.prix_minimum?.toString() ?? '0',
+                              ),
                               style: const TextStyle(
                                 fontSize: 8,
                                 fontWeight: FontWeight.normal,
@@ -354,20 +355,21 @@ Column ProduitDetailView({ProduitModel? produit}) {
                           ],
                         )
                       : Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             customText(
-                              formatMoney(produit!.prix_minimum.toString()),
+                              formatMoney(
+                                produit?.prix_minimum?.toString() ?? '0',
+                              ),
                               style: TextStyle(
                                 color: PRIMARY,
                                 fontSize: 12,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w800,
                               ),
                             ),
                           ],
                         ),
                   customText(
-                    produit.nom.toString(),
+                    produit?.nom ?? '',
                     maxLines: 2,
                     style: const TextStyle(
                       color: Color.fromARGB(225, 0, 0, 0),
@@ -399,8 +401,8 @@ GestureDetector ProduitCardView(
           children: [
             ProduitDetailView(produit: produit),
             Positioned(
-              left: 0,
-              top: 0,
+              left: 6,
+              top: 6,
               child: GestureDetector(
                 // detailModal
                 onTap: () => {
@@ -898,69 +900,34 @@ Container BazardRapidItem(
       onTap: () => CustomPageRoute(DetailProduit(produit: produit), context),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: Container(
-          width: 150,
-          height: 210,
-          color: WHITE,
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 140,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: 200,
+                  width: 170,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
                     child: FadeInImage.assetNetwork(
                       placeholder: placeholder,
-                      image: demoPic, // produit.img as String,
+                      image: produit.url_image?.isNotEmpty == true
+                          ? produit.url_image!
+                          : demoPic,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  width: 35,
-                  height: 35,
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: PRIMARY,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    children: [
-                      espacementWidget(height: 4),
-                      HeroIcon(HeroIcons.bolt, size: 12, color: WHITE),
-                      customText(
-                        '-${produit.taux_reduction as String}%',
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: WHITE,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                child: Padding(
+
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           customText(
-                            formatMoney('${produit.prix_promo}'),
+                            formatMoney(produit.prix_promo?.toString() ?? '0'),
                             style: TextStyle(
                               color: PRIMARY,
                               fontSize: 10,
@@ -969,7 +936,9 @@ Container BazardRapidItem(
                           ),
                           espacementWidget(width: 5),
                           customText(
-                            formatMoney(produit.taux_reduction as String),
+                            formatMoney(
+                              produit.prix_minimum?.toString() ?? '0',
+                            ),
                             style: const TextStyle(
                               fontSize: 8,
                               fontWeight: FontWeight.normal,
@@ -983,7 +952,7 @@ Container BazardRapidItem(
                       SizedBox(
                         width: 120,
                         child: customText(
-                          '${produit.nom}',
+                          produit.nom ?? '',
                           maxLines: 2,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
@@ -996,9 +965,40 @@ Container BazardRapidItem(
                     ],
                   ),
                 ),
+              ],
+            ),
+
+            Positioned(
+              top: 0,
+              left: 0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(0),
+                  topLeft: Radius.circular(8),
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(8),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(color: PRIMARY),
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      HeroIcon(HeroIcons.bolt, size: 12, color: WHITE),
+                      espacementWidget(width: 5),
+                      customText(
+                        '-${((produit.taux_reduction ?? 0) * 100).toStringAsFixed(0)}%',
+                        style: TextStyle(
+                          fontSize: 9,
+                          color: WHITE,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     ),

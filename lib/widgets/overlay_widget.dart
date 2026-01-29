@@ -141,7 +141,7 @@ class _MyOverlayWidgetState extends State<MyOverlayWidget> {
                       child: HeroIcon(
                         HeroIcons.chevronDown,
                         size: 25,
-                        color: PRIMARY,,
+                        color: PRIMARY,
                       ),
                     ),
                   ],

@@ -6,6 +6,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
+import 'package:qirha/functions/money_format.dart';
 import 'package:qirha/widgets/custom_loading.dart';
 import 'package:qirha/main/bazard/bazard_home.dart';
 import 'package:qirha/model/carousel_main.dart';
@@ -81,11 +82,9 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
             status: produit['status'],
             description: produit['description'],
             est_en_promo: produit['est_en_promo'],
-            taux_reduction: double.tryParse(
-              produit['taux_reduction'].toString(),
-            ),
-            prix_promo: double.tryParse(produit['prix_promo'].toString()),
-            prix_minimum: double.tryParse(produit['prix_minimum'].toString()),
+            taux_reduction: parseDouble(produit['taux_reduction']),
+            prix_promo: parseDouble(produit['prix_promo']),
+            prix_minimum: parseDouble(produit['prix_minimum']),
             cree_le: produit['cree_le'],
             date_fin: produit['date_fin'],
             fournisseur_id: produit['fournisseur_id'].toString(),
@@ -102,11 +101,9 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
               status: produit['status'],
               description: produit['description'],
               est_en_promo: produit['est_en_promo'],
-              taux_reduction: double.tryParse(
-                produit['taux_reduction'].toString(),
-              ),
-              prix_promo: double.tryParse(produit['prix_promo'].toString()),
-              prix_minimum: double.tryParse(produit['prix_minimum'].toString()),
+              taux_reduction: parseDouble(produit['taux_reduction']),
+              prix_promo: parseDouble(produit['prix_promo']),
+              prix_minimum: parseDouble(produit['prix_minimum']),
               cree_le: produit['cree_le'],
               date_fin: produit['date_fin'],
               fournisseur_id: produit['fournisseur_id'].toString(),
@@ -418,7 +415,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
             ),
           ),
           SizedBox(
-            height: 230,
+            height: 290,
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: ListView.builder(
