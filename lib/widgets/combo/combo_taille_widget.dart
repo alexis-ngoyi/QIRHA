@@ -4,11 +4,12 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
 class MyComboTailleWidget extends StatefulWidget {
-  const MyComboTailleWidget(
-      {super.key,
-      required this.onSelectedTailleList,
-      required this.allTailles,
-      required this.defaultItems});
+  const MyComboTailleWidget({
+    super.key,
+    required this.onSelectedTailleList,
+    required this.allTailles,
+    required this.defaultItems,
+  });
   final Function(List<TailleProduitModel> listTaille) onSelectedTailleList;
   final List<TailleProduitModel> allTailles;
   final List<TailleProduitModel> defaultItems;
@@ -62,22 +63,27 @@ class _MyComboTailleWidgetState extends State<MyComboTailleWidget> {
                     padding: const EdgeInsets.all(6),
                     width: 50,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                            width: 1,
-                            color: currentTailleItems
-                                    .contains(widget.allTailles[index])
-                                ? BLUE
-                                : Colors.black.withOpacity(.1))),
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        width: 1,
+                        color:
+                            currentTailleItems.contains(
+                              widget.allTailles[index],
+                            )
+                            ? PRIMARY
+                            : Colors.black.withOpacity(.1),
+                      ),
+                    ),
                     child: customCenterText(
-                        widget.allTailles[index].code_taille as String,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 11, color: DARK)),
+                      widget.allTailles[index].code_taille as String,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 11, color: DARK),
+                    ),
                   ),
-                )
+                ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

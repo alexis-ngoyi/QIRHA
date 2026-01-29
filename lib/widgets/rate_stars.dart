@@ -20,33 +20,13 @@ class _CustomRateStarsState extends State<CustomRateStars> {
   Row lesEtoiles() {
     return Row(
       children: [
-        Icon(
-          Icons.star,
-          size: 13,
-          color: BLUE,
-        ),
-        Icon(
-          Icons.star,
-          size: 13,
-          color: BLUE,
-        ),
-        Icon(
-          Icons.star,
-          size: 13,
-          color: BLUE,
-        ),
-        Icon(
-          Icons.star,
-          size: 13,
-          color: BLUE,
-        ),
-        Icon(
-          Icons.star_half,
-          size: 13,
-          color: BLUE,
-        ),
+        Icon(Icons.star, size: 13, color: PRIMARY),
+        Icon(Icons.star, size: 13, color: PRIMARY),
+        Icon(Icons.star, size: 13, color: PRIMARY),
+        Icon(Icons.star, size: 13, color: PRIMARY),
+        Icon(Icons.star_half, size: 13, color: PRIMARY),
         espacementWidget(width: 3),
-        customText('(30)', style: TextStyle(color: LIGHT, fontSize: 12))
+        customText('(30)', style: TextStyle(color: LIGHT, fontSize: 12)),
       ],
     );
   }

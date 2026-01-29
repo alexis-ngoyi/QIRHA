@@ -24,13 +24,14 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
 
   List<MessageModel> messages = [
     MessageModel(
-        img: '',
-        msg:
-            'Bonjour! Votre commande a bien ete valide et paye, veuillez attendre votre livraison dans les prochaines 24h',
-        isPending: true,
-        user: '',
-        inbox: true,
-        time: '10:00 PM')
+      img: '',
+      msg:
+          'Bonjour! Votre commande a bien ete valide et paye, veuillez attendre votre livraison dans les prochaines 24h',
+      isPending: true,
+      user: '',
+      inbox: true,
+      time: '10:00 PM',
+    ),
   ];
   @override
   Widget build(BuildContext context) {
@@ -42,42 +43,41 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
           children: [
             GestureDetector(
               onTap: () => Navigator.of(context).pop(),
-              child: const HeroIcon(
-                HeroIcons.chevronLeft,
-                size: 25,
-              ),
+              child: const HeroIcon(HeroIcons.chevronLeft, size: 25),
             ),
-            espacementWidget(
-              width: 4,
-            ),
+            espacementWidget(width: 4),
             SizedBox(
               width: 30,
               height: 30,
               child: customNetWorkImage(image: widget.data.img, radius: 100),
             ),
-            espacementWidget(
-              width: 4,
-            ),
+            espacementWidget(width: 4),
             Column(
               children: [
-                customText(widget.data.sender,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 19)),
+                customText(
+                  widget.data.sender,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 19,
+                  ),
+                ),
                 if (widget.data.isCommande) espacementWidget(height: 4),
                 if (widget.data.isCommande)
                   Row(
                     children: [
                       cardStatus(
-                          color: GREEN,
-                          label: 'Paye',
-                          icon: HeroIcons.banknotes),
+                        color: GREEN,
+                        label: 'Paye',
+                        icon: HeroIcons.banknotes,
+                      ),
                       espacementWidget(width: 8),
                       cardStatus(
-                          color: ORANGE,
-                          label: 'En preparation',
-                          icon: HeroIcons.arrowRightOnRectangle),
+                        color: ORANGE,
+                        label: 'En preparation',
+                        icon: HeroIcons.arrowRightOnRectangle,
+                      ),
                     ],
-                  )
+                  ),
               ],
             ),
           ],
@@ -85,24 +85,14 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
         actions: [
           GestureDetector(
             onTap: () => {},
-            child: const HeroIcon(
-              HeroIcons.phone,
-              size: 24,
-            ),
+            child: const HeroIcon(HeroIcons.phone, size: 24),
           ),
-          espacementWidget(
-            width: 15,
-          ),
+          espacementWidget(width: 15),
           GestureDetector(
             onTap: () => {},
-            child: const HeroIcon(
-              HeroIcons.videoCamera,
-              size: 24,
-            ),
+            child: const HeroIcon(HeroIcons.videoCamera, size: 24),
           ),
-          espacementWidget(
-            width: 20,
-          ),
+          espacementWidget(width: 20),
         ],
       ),
       backgroundColor: WHITE,
@@ -111,10 +101,7 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: Image.asset(
-              img_bg,
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset(img_bg, fit: BoxFit.cover),
           ),
           Column(
             children: [
@@ -136,10 +123,12 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                    color: WHITE,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
+                  color: WHITE,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                ),
                 child: Column(
                   children: [
                     messageInputBox(),
@@ -148,16 +137,19 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
                       children: [
                         // HeroIcon(HeroIcons.cog6Tooth),
                         GestureDetector(
-                            onTap: () => setState(() {
-                                  triggerEmojis = !triggerEmojis;
-                                }),
-                            child: HeroIcon(triggerEmojis
+                          onTap: () => setState(() {
+                            triggerEmojis = !triggerEmojis;
+                          }),
+                          child: HeroIcon(
+                            triggerEmojis
                                 ? HeroIcons.xMark
-                                : HeroIcons.faceSmile)),
+                                : HeroIcons.faceSmile,
+                          ),
+                        ),
                         HeroIcon(HeroIcons.photo),
                         HeroIcon(HeroIcons.camera),
                         HeroIcon(HeroIcons.microphone),
-                        MyCartWidget(color: DARK)
+                        MyCartWidget(color: DARK),
                       ],
                     ),
                     if (triggerEmojis)
@@ -173,32 +165,37 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
                                     TextSelection textSelection =
                                         myTextController.selection;
                                     String newText = myTextController.text
-                                        .replaceRange(textSelection.start,
-                                            textSelection.end, emojis_list[i]);
+                                        .replaceRange(
+                                          textSelection.start,
+                                          textSelection.end,
+                                          emojis_list[i],
+                                        );
                                     final emojiLength = emojis_list[i].length;
                                     myTextController.text = newText;
-                                    myTextController.selection =
-                                        textSelection.copyWith(
-                                      baseOffset:
-                                          textSelection.start + emojiLength,
-                                      extentOffset:
-                                          textSelection.start + emojiLength,
-                                    );
+                                    myTextController.selection = textSelection
+                                        .copyWith(
+                                          baseOffset:
+                                              textSelection.start + emojiLength,
+                                          extentOffset:
+                                              textSelection.start + emojiLength,
+                                        );
                                   }),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: customText(emojis_list[i],
-                                        style: TextStyle(fontSize: 20)),
+                                    child: customText(
+                                      emojis_list[i],
+                                      style: TextStyle(fontSize: 20),
+                                    ),
                                   ),
-                                )
+                                ),
                             ],
                           ),
                         ),
                       ),
-                    espacementWidget(height: 13)
+                    espacementWidget(height: 13),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ],
@@ -218,9 +215,10 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
                 maxLines: 1000,
                 controller: myTextController,
                 decoration: const InputDecoration(
-                    border: UnderlineInputBorder(borderSide: BorderSide.none),
-                    hintText: 'Ecrire votre message',
-                    hintStyle: TextStyle(fontSize: 13)),
+                  border: UnderlineInputBorder(borderSide: BorderSide.none),
+                  hintText: 'Ecrire votre message',
+                  hintStyle: TextStyle(fontSize: 13),
+                ),
               ),
             ),
           ),
@@ -232,10 +230,10 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
             child: HeroIcon(
               HeroIcons.paperAirplane,
               size: 20,
-              color: myTextController.text.isEmpty ? LIGHT : BLUE,
+              color: myTextController.text.isEmpty ? LIGHT : PRIMARY,
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -252,7 +250,9 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
             child: Container(
               constraints: BoxConstraints(minWidth: 30, maxWidth: 350),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7), color: WHITE),
+                borderRadius: BorderRadius.circular(7),
+                color: WHITE,
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -263,16 +263,22 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        customText('Vous',
-                            style: TextStyle(fontSize: 10, color: LIGHT)),
+                        customText(
+                          'Vous',
+                          style: TextStyle(fontSize: 10, color: LIGHT),
+                        ),
                         espacementWidget(width: 10),
-                        customText(data.time,
-                            style: TextStyle(fontSize: 10, color: LIGHT))
+                        customText(
+                          data.time,
+                          style: TextStyle(fontSize: 10, color: LIGHT),
+                        ),
                       ],
                     ),
-                    customText(data.msg,
-                        maxLines: 1000,
-                        style: TextStyle(fontSize: 13, color: DARK)),
+                    customText(
+                      data.msg,
+                      maxLines: 1000,
+                      style: TextStyle(fontSize: 13, color: DARK),
+                    ),
                   ],
                 ),
               ),
@@ -302,11 +308,14 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
             padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
             child: Container(
               constraints: BoxConstraints(
-                  minWidth: 30,
-                  maxWidth: MediaQuery.of(context).size.width * .6),
+                minWidth: 30,
+                maxWidth: MediaQuery.of(context).size.width * .6,
+              ),
               child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7), color: GREEN),
+                  borderRadius: BorderRadius.circular(7),
+                  color: GREEN,
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -317,16 +326,22 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          customText(widget.data.sender,
-                              style: TextStyle(fontSize: 10, color: LIGHT)),
+                          customText(
+                            widget.data.sender,
+                            style: TextStyle(fontSize: 10, color: LIGHT),
+                          ),
                           espacementWidget(width: 10),
-                          customText(data.time,
-                              style: TextStyle(fontSize: 10, color: LIGHT))
+                          customText(
+                            data.time,
+                            style: TextStyle(fontSize: 10, color: LIGHT),
+                          ),
                         ],
                       ),
-                      customText(data.msg,
-                          maxLines: 1000,
-                          style: TextStyle(fontSize: 13, color: WHITE)),
+                      customText(
+                        data.msg,
+                        maxLines: 1000,
+                        style: TextStyle(fontSize: 13, color: WHITE),
+                      ),
                     ],
                   ),
                 ),
@@ -334,7 +349,7 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
             ),
           ),
         ),
-        espacementWidget(width: 100)
+        espacementWidget(width: 100),
       ],
     );
   }
@@ -345,13 +360,16 @@ class _MessagerieDiscussionsOpenState extends State<MessagerieDiscussionsOpen> {
       final date =
           "${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}";
       setState(() {
-        messages.add(MessageModel(
+        messages.add(
+          MessageModel(
             user: '',
             img: '',
             inbox: false,
             time: date,
             isPending: true,
-            msg: myTextController.text.trim()));
+            msg: myTextController.text.trim(),
+          ),
+        );
 
         // Future.delayed(
         //     Duration(milliseconds: 50),

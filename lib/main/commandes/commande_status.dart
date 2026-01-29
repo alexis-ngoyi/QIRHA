@@ -41,15 +41,17 @@ class _CommandeStatusState extends State<CommandeStatus> {
     commandes.forEach((commande) {
       if (commande['status'] == widget.status) {
         setState(() {
-          ListCommandes.add(CommandeModel(
-            commande_id: commande['commande_id'],
-            date_commande: commande['date_commande'],
-            montant_total: commande['montant_total'],
-            nom_utilisateur: commande['utilisateur']['nom_utilisateur'],
-            status: commande['status'],
-            utilisateur_id:
-                commande['utilisateur']['utilisateur_id'].toString(),
-          ));
+          ListCommandes.add(
+            CommandeModel(
+              commande_id: commande['commande_id'],
+              date_commande: commande['date_commande'],
+              montant_total: commande['montant_total'],
+              nom_utilisateur: commande['utilisateur']['nom_utilisateur'],
+              status: commande['status'],
+              utilisateur_id: commande['utilisateur']['utilisateur_id']
+                  .toString(),
+            ),
+          );
         });
       }
     });
@@ -95,74 +97,78 @@ class _CommandeStatusState extends State<CommandeStatus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: GREY,
-        body: isLoading == false
-            ? Column(
-                children: [
-                  needLogin == false
-                      ? SingleChildScrollView(
-                          child: ListCommandes.isNotEmpty
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    espacementWidget(height: 8),
-                                    for (var index = 0;
-                                        index < ListCommandes.length;
-                                        index++)
-                                      GestureDetector(
-                                        onTap: () => CustomPageRoute(
-                                            DetailCommandeProduit(
-                                              commande: ListCommandes[index],
-                                            ),
-                                            context),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(6.0),
-                                          child: commandeItem(context,
-                                              commande: ListCommandes[index]),
+      backgroundColor: GREY,
+      body: isLoading == false
+          ? Column(
+              children: [
+                needLogin == false
+                    ? SingleChildScrollView(
+                        child: ListCommandes.isNotEmpty
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  espacementWidget(height: 8),
+                                  for (
+                                    var index = 0;
+                                    index < ListCommandes.length;
+                                    index++
+                                  )
+                                    GestureDetector(
+                                      onTap: () => CustomPageRoute(
+                                        DetailCommandeProduit(
+                                          commande: ListCommandes[index],
+                                        ),
+                                        context,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: commandeItem(
+                                          context,
+                                          commande: ListCommandes[index],
                                         ),
                                       ),
-                                    espacementWidget(height: 5),
-                                    Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: Container(
-                                        color: WHITE,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 15),
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: customCenterText(
-                                            'Je ne trouve pas ma commande',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 13, color: DARK)),
+                                    ),
+                                  espacementWidget(height: 5),
+                                  Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Container(
+                                      color: WHITE,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 15,
+                                      ),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: customCenterText(
+                                        'Je ne trouve pas ma commande',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: DARK,
+                                        ),
                                       ),
                                     ),
-                                    espacementWidget(height: 10),
-                                  ],
-                                )
-                              : const Center(
-                                  child: NoCommandeWidget(),
-                                ),
-                        )
-                      : (needLogin == true
+                                  ),
+                                  espacementWidget(height: 10),
+                                ],
+                              )
+                            : const Center(child: NoCommandeWidget()),
+                      )
+                    : (needLogin == true
                           ? const Scaffold(body: NeedToLogin())
                           : const Scaffold(
-                              body: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ))
-                ],
-              )
-            : const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ));
+                              body: Center(child: CircularProgressIndicator()),
+                            )),
+              ],
+            )
+          : const Scaffold(body: Center(child: CircularProgressIndicator())),
+    );
   }
 
-  Container commandeItem(BuildContext context,
-      {required CommandeModel commande}) {
+  Container commandeItem(
+    BuildContext context, {
+    required CommandeModel commande,
+  }) {
     return Container(
       color: WHITE,
       padding: const EdgeInsets.all(10),
@@ -179,15 +185,22 @@ class _CommandeStatusState extends State<CommandeStatus> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   customText(
-                      'Commande #$prefixCodeCommande${commande.commande_id}',
-                      style: const TextStyle(fontSize: 11)),
+                    'Commande #$prefixCodeCommande${commande.commande_id}',
+                    style: const TextStyle(fontSize: 11),
+                  ),
                   Row(
                     children: [
-                      customText("Montant total d'article : ",
-                          style: const TextStyle(fontSize: 11)),
-                      customText(formatMoney(commande.montant_total.toString()),
-                          style: const TextStyle(
-                              fontSize: 11, fontWeight: FontWeight.w900)),
+                      customText(
+                        "Montant total d'article : ",
+                        style: const TextStyle(fontSize: 11),
+                      ),
+                      customText(
+                        formatMoney(commande.montant_total.toString()),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -196,19 +209,19 @@ class _CommandeStatusState extends State<CommandeStatus> {
                 onTap: () {},
                 child: Row(
                   children: [
-                    customText('Plus de details',
-                        style: TextStyle(
-                            color: BLUE,
-                            fontSize: 11,
-                            overflow: TextOverflow.ellipsis)),
-                    espacementWidget(width: 5),
-                    const HeroIcon(
-                      HeroIcons.chevronRight,
-                      size: 12,
+                    customText(
+                      'Plus de details',
+                      style: TextStyle(
+                        color: PRIMARY,
+                        fontSize: 11,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
+                    espacementWidget(width: 5),
+                    const HeroIcon(HeroIcons.chevronRight, size: 12),
                   ],
                 ),
-              )
+              ),
             ],
           ),
           customDivider(),
@@ -220,16 +233,24 @@ class _CommandeStatusState extends State<CommandeStatus> {
                 color: statusCommandeColor(commande.status.toString()),
               ),
               espacementWidget(width: 5),
-              customText(statusCommande(commande.status.toString()),
-                  style: TextStyle(
-                      color: statusCommandeColor(commande.status.toString()),
-                      fontSize: 11,
-                      overflow: TextOverflow.ellipsis)),
+              customText(
+                statusCommande(commande.status.toString()),
+                style: TextStyle(
+                  color: statusCommandeColor(commande.status.toString()),
+                  fontSize: 11,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
-          customText(commande.date_commande.toString(),
-              style: TextStyle(
-                  color: LIGHT, fontSize: 11, overflow: TextOverflow.ellipsis)),
+          customText(
+            commande.date_commande.toString(),
+            style: TextStyle(
+              color: LIGHT,
+              fontSize: 11,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
     );

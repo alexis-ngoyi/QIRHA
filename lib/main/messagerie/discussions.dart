@@ -67,7 +67,7 @@ class _MessagerieDiscussionsState extends State<MessagerieDiscussions> {
       backgroundColor: WHITE,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        backgroundColor: BLUE,
+        backgroundColor: PRIMARY,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
         child: HeroIcon(HeroIcons.plus, color: WHITE),
       ),
@@ -149,7 +149,7 @@ class _MessagerieDiscussionsState extends State<MessagerieDiscussions> {
                                       children: [
                                         cardStatus(
                                           hide: data.isCommande,
-                                          color: BLUE,
+                                          color: PRIMARY,
                                           label: 'Commande',
                                           icon: HeroIcons.banknotes,
                                         ),
@@ -176,7 +176,7 @@ class _MessagerieDiscussionsState extends State<MessagerieDiscussions> {
                                 data.time,
                                 style: TextStyle(
                                   fontSize: 10,
-                                  color: data.pending != 0 ? BLUE : DARK,
+                                  color: data.pending != 0 ? PRIMARY : DARK,
                                 ),
                               ),
                             ),
@@ -209,7 +209,7 @@ class _MessagerieDiscussionsState extends State<MessagerieDiscussions> {
                                     height: 15,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(100),
-                                      color: BLUE,
+                                      color: PRIMARY,
                                     ),
                                     child: Center(
                                       child: customText(

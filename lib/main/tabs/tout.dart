@@ -26,6 +26,7 @@ class ToutTabScreen extends StatefulWidget {
 
 class _ToutTabScreenState extends State<ToutTabScreen> {
   final List<MainCarouselModel> imageList = <MainCarouselModel>[
+    MainCarouselModel(img: banner_1),
     MainCarouselModel(img: banner_3),
     MainCarouselModel(img: banner_4),
     MainCarouselModel(img: banner_5),
@@ -193,7 +194,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
       backgroundColor: GREY,
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
-        backgroundColor: BLUE,
+        backgroundColor: PRIMARY,
         triggerMode: RefreshIndicatorTriggerMode.onEdge,
         color: WHITE,
         child: Stack(
@@ -309,14 +310,14 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14),
           child: Row(
             children: [
-              HeroIcon(icon, size: 13, color: BLUE),
+              HeroIcon(icon, size: 13, color: PRIMARY),
               espacementWidget(width: 10),
               customText(
                 title,
                 softWrap: true,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 11, color: BLUE),
+                style: TextStyle(fontSize: 11, color: PRIMARY),
               ),
             ],
           ),
@@ -333,7 +334,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
-            color: BLUE,
+            color: PRIMARY,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(
@@ -348,7 +349,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
-            color: BLUE,
+            color: PRIMARY,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(
@@ -363,7 +364,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
-            color: BLUE,
+            color: PRIMARY,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(
@@ -397,7 +398,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
                     HeroIcon(
                       HeroIcons.bolt,
                       size: 20,
-                      color: BLUE,
+                      color: PRIMARY,
                       style: HeroIconStyle.solid,
                     ),
                     Padding(
@@ -484,7 +485,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
               color:
                   (Theme.of(context).brightness == Brightness.dark
                           ? WHITE
-                          : BLUE)
+                          : PRIMARY)
                       .withOpacity(
                         _currentCarouselBannerIndex == entry.key ? 0.9 : 0.4,
                       ),
@@ -527,7 +528,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
         autoPlay: true,
         enlargeCenterPage: false,
         viewportFraction:
-            0.95, // chaque image occupe 95% → on voit 1 image + moitié de la suivante
+            0.99, // chaque image occupe 99% → pour laisser la prochaine image charger rapidement dans les 0.1% restant
         enableInfiniteScroll: true,
         autoPlayCurve: Curves.easeInOut,
         autoPlayAnimationDuration: const Duration(milliseconds: 800),

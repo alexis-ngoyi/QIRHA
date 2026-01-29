@@ -184,7 +184,7 @@ class _ConfirmationCommandeProduitState
                     style: TextStyle(
                       fontSize: 14,
                       overflow: TextOverflow.ellipsis,
-                      color: BLUE,
+                      color: PRIMARY,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -209,7 +209,7 @@ class _ConfirmationCommandeProduitState
                       child: MyButtonWidget(
                         onPressed: () => enregisterCommande(),
                         label: 'ENREGISTER LA COMMANDE',
-                        bgColor: BLUE,
+                        bgColor: PRIMARY,
                         labelColor: WHITE,
                       ),
                     ),
@@ -384,7 +384,7 @@ class _ConfirmationCommandeProduitState
                   text: "2023-11-20 ~ 2023-11-25",
                   style: TextStyle(
                     fontSize: 11,
-                    color: BLUE,
+                    color: PRIMARY,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -425,11 +425,11 @@ class _ConfirmationCommandeProduitState
               ),
               Row(
                 children: [
-                  HeroIcon(HeroIcons.pencilSquare, size: 14, color: BLUE),
+                  HeroIcon(HeroIcons.pencilSquare, size: 14, color: PRIMARY),
                   espacementWidget(width: 7),
                   customText(
                     "Modifier l'adresse",
-                    style: TextStyle(color: BLUE, fontSize: 11),
+                    style: TextStyle(color: PRIMARY, fontSize: 11),
                   ),
                 ],
               ),
@@ -474,11 +474,11 @@ class _ConfirmationCommandeProduitState
               ),
               Row(
                 children: [
-                  HeroIcon(HeroIcons.truck, size: 14, color: BLUE),
+                  HeroIcon(HeroIcons.truck, size: 14, color: PRIMARY),
                   espacementWidget(width: 7),
                   customText(
                     "Toutes les agences",
-                    style: TextStyle(color: BLUE, fontSize: 11),
+                    style: TextStyle(color: PRIMARY, fontSize: 11),
                   ),
                 ],
               ),
@@ -496,7 +496,7 @@ class _ConfirmationCommandeProduitState
                 ),
                 TextSpan(
                   text: " Republique du Congo ",
-                  style: TextStyle(fontSize: 11, color: BLUE),
+                  style: TextStyle(fontSize: 11, color: PRIMARY),
                 ),
               ],
             ),
@@ -511,19 +511,19 @@ class _ConfirmationCommandeProduitState
                     padding: const EdgeInsets.symmetric(horizontal: 7),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(3),
-                      border: Border.all(width: 1, color: BLUE),
+                      border: Border.all(width: 1, color: PRIMARY),
                     ),
                     child: Row(
                       children: [
                         HeroIcon(
                           HeroIcons.buildingStorefront,
                           size: 14,
-                          color: BLUE,
+                          color: PRIMARY,
                         ),
                         espacementWidget(width: 7),
                         customText(
                           "BZV",
-                          style: TextStyle(color: BLUE, fontSize: 11),
+                          style: TextStyle(color: PRIMARY, fontSize: 11),
                         ),
                       ],
                     ),
@@ -539,15 +539,15 @@ class _ConfirmationCommandeProduitState
                     padding: const EdgeInsets.symmetric(horizontal: 7),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(3),
-                      border: Border.all(width: 1, color: BLUE),
+                      border: Border.all(width: 1, color: PRIMARY),
                     ),
                     child: Row(
                       children: [
-                        HeroIcon(HeroIcons.mapPin, size: 14, color: BLUE),
+                        HeroIcon(HeroIcons.mapPin, size: 14, color: PRIMARY),
                         espacementWidget(width: 7),
                         customText(
                           "PNR",
-                          style: TextStyle(color: BLUE, fontSize: 11),
+                          style: TextStyle(color: PRIMARY, fontSize: 11),
                         ),
                       ],
                     ),
@@ -562,7 +562,7 @@ class _ConfirmationCommandeProduitState
           Center(
             child: customText(
               "Configurer l'adresse d'expedition ici",
-              style: TextStyle(color: BLUE, fontSize: 11),
+              style: TextStyle(color: PRIMARY, fontSize: 11),
             ),
           ),
           // espacementWidget(height: 5),
@@ -591,11 +591,11 @@ class _ConfirmationCommandeProduitState
               ),
               Row(
                 children: [
-                  HeroIcon(HeroIcons.mapPin, size: 14, color: BLUE),
+                  HeroIcon(HeroIcons.mapPin, size: 14, color: PRIMARY),
                   espacementWidget(width: 7),
                   customText(
                     "voir l'itineraire",
-                    style: TextStyle(color: BLUE, fontSize: 11),
+                    style: TextStyle(color: PRIMARY, fontSize: 11),
                   ),
                 ],
               ),
@@ -616,7 +616,7 @@ class _ConfirmationCommandeProduitState
                   ),
                   TextSpan(
                     text: " Qirha Shop ",
-                    style: TextStyle(fontSize: 11, color: BLUE),
+                    style: TextStyle(fontSize: 11, color: PRIMARY),
                   ),
                   TextSpan(
                     text:
@@ -629,7 +629,7 @@ class _ConfirmationCommandeProduitState
                   ),
                   TextSpan(
                     text: " Qui sommes-nous ",
-                    style: TextStyle(fontSize: 11, color: BLUE),
+                    style: TextStyle(fontSize: 11, color: PRIMARY),
                   ),
                 ],
               ),
@@ -709,7 +709,7 @@ class _ConfirmationCommandeProduitState
               ),
               customText(
                 "Total restant : ${article.quantite_en_stock} articles",
-                style: TextStyle(fontSize: 9, color: BLUE),
+                style: TextStyle(fontSize: 9, color: PRIMARY),
               ),
             ],
           ),

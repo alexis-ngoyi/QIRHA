@@ -121,7 +121,7 @@ class _BazardHomePageState extends State<BazardHomePage> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
-            color: BLUE,
+            color: PRIMARY,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(
@@ -136,7 +136,7 @@ class _BazardHomePageState extends State<BazardHomePage> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
-            color: BLUE,
+            color: PRIMARY,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(
@@ -151,7 +151,7 @@ class _BazardHomePageState extends State<BazardHomePage> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
-            color: BLUE,
+            color: PRIMARY,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(
@@ -168,7 +168,7 @@ class _BazardHomePageState extends State<BazardHomePage> {
 
   AppBar BazardAppBar(BuildContext context, {required List<Widget> tabs}) {
     return AppBar(
-      backgroundColor: BLUE,
+      backgroundColor: PRIMARY,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(80),
         child: Container(
@@ -218,11 +218,11 @@ class _BazardHomePageState extends State<BazardHomePage> {
           ),
           child: Row(
             children: [
-              HeroIcon(HeroIcons.plus, size: 12, color: BLUE),
+              HeroIcon(HeroIcons.plus, size: 12, color: PRIMARY),
               espacementWidget(width: 5),
               customText(
                 "Je m'abonne",
-                style: TextStyle(fontSize: 11, color: BLUE),
+                style: TextStyle(fontSize: 11, color: PRIMARY),
               ),
             ],
           ),

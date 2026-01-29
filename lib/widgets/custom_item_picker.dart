@@ -4,8 +4,11 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
 class CustomItemPicker extends StatefulWidget {
-  const CustomItemPicker(
-      {super.key, required this.selectedItems, required this.selectedTab});
+  const CustomItemPicker({
+    super.key,
+    required this.selectedItems,
+    required this.selectedTab,
+  });
   final void Function(FilterModel selectedItems) selectedItems;
   final FilterModel selectedTab;
 
@@ -57,16 +60,20 @@ class _CustomItemPickerState extends State<CustomItemPicker> {
                 margin: const EdgeInsets.all(5),
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(
-                        width: 1,
-                        color: currentItems.contains(itemList[index])
-                            ? BLUE
-                            : Colors.black.withOpacity(.1))),
-                child: customText(itemList[index].label as String,
-                    style: const TextStyle(fontSize: 11)),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    width: 1,
+                    color: currentItems.contains(itemList[index])
+                        ? PRIMARY
+                        : Colors.black.withOpacity(.1),
+                  ),
+                ),
+                child: customText(
+                  itemList[index].label as String,
+                  style: const TextStyle(fontSize: 11),
+                ),
               ),
-            )
+            ),
         ],
       ),
     );

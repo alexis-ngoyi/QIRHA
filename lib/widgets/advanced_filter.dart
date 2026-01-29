@@ -27,7 +27,7 @@ class _AdvancedFilterState extends State<AdvancedFilter> {
     FilterModel(id: 7, label: 'Genre'),
     FilterModel(id: 8, label: 'Reduction'),
     FilterModel(id: 9, label: 'Marque'),
-    FilterModel(id: 10, label: 'Motif')
+    FilterModel(id: 10, label: 'Motif'),
   ];
 
   late FilterModel _currentFiltreTab = filterTabList[0];
@@ -47,54 +47,36 @@ class _AdvancedFilterState extends State<AdvancedFilter> {
       backgroundColor: WHITE,
       body: Column(
         children: [
-          espacementWidget(
-            height: 30,
-          ),
+          espacementWidget(height: 30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                    onTap: () => {
-                          Navigator.pop(context),
-                        },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                      child: HeroIcon(
-                        HeroIcons.xMark,
-                        size: 20,
-                      ),
-                    )),
+                  onTap: () => {Navigator.pop(context)},
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                    child: HeroIcon(HeroIcons.xMark, size: 20),
+                  ),
+                ),
                 customText(
                   'FILTRE',
                   style: TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.bold, color: DARK),
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: DARK,
+                  ),
                 ),
-                espacementWidget(
-                  width: 20,
-                ),
+                espacementWidget(width: 20),
               ],
             ),
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-            color: GREY,
-          ),
+          Divider(height: 1, thickness: 1, color: GREY),
           Expanded(
-            child: Row(
-              children: [
-                leftSide(context),
-                mainSide(context),
-              ],
-            ),
+            child: Row(children: [leftSide(context), mainSide(context)]),
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-            color: GREY,
-          ),
+          Divider(height: 1, thickness: 1, color: GREY),
           Padding(
             padding: const EdgeInsets.all(15),
             child: Row(
@@ -103,24 +85,29 @@ class _AdvancedFilterState extends State<AdvancedFilter> {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 5),
                   padding: const EdgeInsets.all(6),
-                  decoration:
-                      BoxDecoration(border: Border.all(width: 1, color: GREY)),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: GREY),
+                  ),
                   child: customText(
                     'EFFACER',
                     style: TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.bold, color: DARK),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: DARK,
+                    ),
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 5),
-                  color: BLUE,
+                  color: PRIMARY,
                   padding: const EdgeInsets.all(6),
                   child: customText(
                     'VALIDER',
                     style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: WHITE),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: WHITE,
+                    ),
                   ),
                 ),
               ],
@@ -133,18 +120,21 @@ class _AdvancedFilterState extends State<AdvancedFilter> {
 
   Expanded mainSide(BuildContext context) {
     return Expanded(
-        child: SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
           child: CustomItemPicker(
-        selectedTab: _currentFiltreTab,
-        selectedItems: (FilterModel selectedItems) {
-          selectedfilterTabList.add(
-              FilterModelGroup(list: [_currentFiltreTab, _currentFiltreTab]));
-          widget.selectedFilter.call(selectedfilterTabList);
-        },
-      )),
-    ));
+            selectedTab: _currentFiltreTab,
+            selectedItems: (FilterModel selectedItems) {
+              selectedfilterTabList.add(
+                FilterModelGroup(list: [_currentFiltreTab, _currentFiltreTab]),
+              );
+              widget.selectedFilter.call(selectedfilterTabList);
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Container leftSide(BuildContext context) {
@@ -174,12 +164,13 @@ class _AdvancedFilterState extends State<AdvancedFilter> {
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontSize: 12,
-                          color: _currentFiltreTab.id == i ? BLUE : DARK),
+                        fontSize: 12,
+                        color: _currentFiltreTab.id == i ? PRIMARY : DARK,
+                      ),
                     ),
                   ),
                 ),
-              )
+              ),
           ],
         ),
       ),

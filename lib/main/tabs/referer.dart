@@ -61,7 +61,7 @@ class _MainTabFemmesScreenState extends State<MainTabFemmesScreen> {
               color:
                   (Theme.of(context).brightness == Brightness.dark
                           ? WHITE
-                          : BLUE)
+                          : PRIMARY)
                       .withOpacity(
                         _currentCarouselBannerIndex == entry.key ? 0.9 : 0.4,
                       ),

@@ -8,10 +8,13 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
 class TailleProduitPicker extends StatefulWidget {
-  const TailleProduitPicker(
-      {super.key, required this.selectedTailleProduit, required this.produit});
+  const TailleProduitPicker({
+    super.key,
+    required this.selectedTailleProduit,
+    required this.produit,
+  });
   final void Function(ProduitTailleModel selectedTailleProduit)
-      selectedTailleProduit;
+  selectedTailleProduit;
   final ProduitModel produit;
 
   @override
@@ -24,15 +27,19 @@ class _TailleProduitPickerState extends State<TailleProduitPicker> {
 
   final List<ProduitTailleModel> produitTailles = <ProduitTailleModel>[];
   getProduitTailles() async {
-    var tailles =
-        await ApiServices().getProduitsTailles(widget.produit.produit_id);
+    var tailles = await ApiServices().getProduitsTailles(
+      widget.produit.produit_id,
+    );
 
     tailles.forEach((taille) {
       setState(() {
-        produitTailles.add(ProduitTailleModel(
+        produitTailles.add(
+          ProduitTailleModel(
             code_taille: taille['taille']['code_taille'],
             taille_id: taille['taille']['taille_id'].toString(),
-            nom_taille: taille['taille']['nom_taille']));
+            nom_taille: taille['taille']['nom_taille'],
+          ),
+        );
       });
 
       // select default
@@ -74,7 +81,10 @@ class _TailleProduitPickerState extends State<TailleProduitPicker> {
                   customText(
                     ' ${currentTailleProduit?.code_taille}',
                     style: TextStyle(
-                        color: DARK, fontSize: 10, fontWeight: FontWeight.bold),
+                      color: DARK,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
               ],
             ),
@@ -82,58 +92,66 @@ class _TailleProduitPickerState extends State<TailleProduitPicker> {
               children: [
                 HeroIcon(
                   HeroIcons.clipboardDocumentList,
-                  color: BLUE,
+                  color: PRIMARY,
                   size: 14,
                 ),
                 espacementWidget(width: 5),
-                customText('Tableau des tailles',
-                    style: TextStyle(color: DARK, fontSize: 11))
+                customText(
+                  'Tableau des tailles',
+                  style: TextStyle(color: DARK, fontSize: 11),
+                ),
               ],
-            )
+            ),
           ],
         ),
         espacementWidget(height: 10),
         SizedBox(
           height: 25,
           child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: produitTailles.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      currentTailleProduit = produitTailles[index];
-                      currentIndex = index;
-                      widget.selectedTailleProduit.call(produitTailles[index]);
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 3),
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                            width: 1,
-                            color:
-                                currentTailleProduit == produitTailles[index] &&
-                                        currentIndex == index
-                                    ? BLUE
-                                    : Colors.black.withOpacity(.1))),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: Container(
-                          width: 30,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Center(
-                            child: customText(
-                                produitTailles[index].code_taille as String,
-                                style: const TextStyle(fontSize: 11)),
-                          )),
+            scrollDirection: Axis.horizontal,
+            itemCount: produitTailles.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    currentTailleProduit = produitTailles[index];
+                    currentIndex = index;
+                    widget.selectedTailleProduit.call(produitTailles[index]);
+                  });
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 3),
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                      width: 1,
+                      color:
+                          currentTailleProduit == produitTailles[index] &&
+                              currentIndex == index
+                          ? PRIMARY
+                          : Colors.black.withOpacity(.1),
                     ),
                   ),
-                );
-              }),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Container(
+                      width: 30,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: customText(
+                          produitTailles[index].code_taille as String,
+                          style: const TextStyle(fontSize: 11),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ],
     );

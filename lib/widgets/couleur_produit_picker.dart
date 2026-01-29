@@ -8,13 +8,14 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
 class CouleurProduitPicker extends StatefulWidget {
-  const CouleurProduitPicker(
-      {super.key,
-      required this.selectedCouleurProduit,
-      required this.produit,
-      required this.defaultSelectedCouleur});
+  const CouleurProduitPicker({
+    super.key,
+    required this.selectedCouleurProduit,
+    required this.produit,
+    required this.defaultSelectedCouleur,
+  });
   final void Function(ProduitCouleurModel selectedCouleurProduit)
-      selectedCouleurProduit;
+  selectedCouleurProduit;
   final ProduitModel produit;
   final int defaultSelectedCouleur;
 
@@ -32,15 +33,19 @@ class _CouleurProduitPickerState extends State<CouleurProduitPicker> {
       produitCouleurs = [];
     });
 
-    var couleurs =
-        await ApiServices().getProduitsCouleurs(widget.produit.produit_id);
+    var couleurs = await ApiServices().getProduitsCouleurs(
+      widget.produit.produit_id,
+    );
 
     couleurs.forEach((couleur) {
       setState(() {
-        produitCouleurs.add(ProduitCouleurModel(
+        produitCouleurs.add(
+          ProduitCouleurModel(
             code_couleur: formatColor(couleur['couleur']['code_couleur']),
             couleur_id: couleur['couleur']['couleur_id'].toString(),
-            nom_couleur: couleur['couleur']['nom_couleur']));
+            nom_couleur: couleur['couleur']['nom_couleur'],
+          ),
+        );
       });
     });
 
@@ -58,7 +63,8 @@ class _CouleurProduitPickerState extends State<CouleurProduitPicker> {
   void didUpdateWidget(covariant CouleurProduitPicker oldWidget) {
     if (widget.defaultSelectedCouleur != oldWidget.defaultSelectedCouleur) {
       print(
-          'defaultSelectedCouleur changed to ${widget.defaultSelectedCouleur}');
+        'defaultSelectedCouleur changed to ${widget.defaultSelectedCouleur}',
+      );
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -90,7 +96,10 @@ class _CouleurProduitPickerState extends State<CouleurProduitPicker> {
               customText(
                 '${currentCouleurProduit!.nom_couleur}',
                 style: TextStyle(
-                    color: DARK, fontSize: 10, fontWeight: FontWeight.bold),
+                  color: DARK,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
           ],
         ),
@@ -98,38 +107,40 @@ class _CouleurProduitPickerState extends State<CouleurProduitPicker> {
         SizedBox(
           height: 35,
           child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: produitCouleurs.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      currentCouleurProduit = produitCouleurs[index];
-                      currentIndex = index;
-                      widget.selectedCouleurProduit
-                          .call(produitCouleurs[index]);
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 2),
-                    padding: const EdgeInsets.all(3),
-                    decoration:
-                        currentCouleurProduit == produitCouleurs[index] &&
-                                currentIndex == index
-                            ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(40),
-                                border: Border.all(width: 1, color: BLUE))
-                            : null,
-                    child: Container(
-                      width: 15,
-                      height: 10,
-                      decoration: BoxDecoration(
+            scrollDirection: Axis.horizontal,
+            itemCount: produitCouleurs.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    currentCouleurProduit = produitCouleurs[index];
+                    currentIndex = index;
+                    widget.selectedCouleurProduit.call(produitCouleurs[index]);
+                  });
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  padding: const EdgeInsets.all(3),
+                  decoration:
+                      currentCouleurProduit == produitCouleurs[index] &&
+                          currentIndex == index
+                      ? BoxDecoration(
                           borderRadius: BorderRadius.circular(40),
-                          color: produitCouleurs[index].code_couleur),
+                          border: Border.all(width: 1, color: PRIMARY),
+                        )
+                      : null,
+                  child: Container(
+                    width: 15,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: produitCouleurs[index].code_couleur,
                     ),
                   ),
-                );
-              }),
+                ),
+              );
+            },
+          ),
         ),
       ],
     );

@@ -269,7 +269,7 @@ class _ProduitParCategorieHotState extends State<ProduitParCategorieHot>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: text == currentTitle
-              ? Border.all(width: 1, color: BLUE)
+              ? Border.all(width: 1, color: PRIMARY)
               : null,
           color: WHITE,
         ),

@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:qirha/res/colors.dart';
 
 class MyReactiveIconWidget extends StatefulWidget {
-  const MyReactiveIconWidget(
-      {super.key,
-      required this.icon,
-      required this.size,
-      required this.padding,
-      required this.onTap,
-      required this.color,
-      required this.activeIcon,
-      required this.activeColor,
-      required this.isActive,
-      required this.isLoading});
+  const MyReactiveIconWidget({
+    super.key,
+    required this.icon,
+    required this.size,
+    required this.padding,
+    required this.onTap,
+    required this.color,
+    required this.activeIcon,
+    required this.activeColor,
+    required this.isActive,
+    required this.isLoading,
+  });
 
   final IconData icon;
   final IconData activeIcon;
@@ -51,7 +52,8 @@ class _MyReactiveIconWidgetState extends State<MyReactiveIconWidget> {
             margin: const EdgeInsets.only(left: 15),
             height: 10,
             width: 10,
-            child: CircularProgressIndicator(color: BLUE, strokeWidth: 2))
+            child: CircularProgressIndicator(color: PRIMARY, strokeWidth: 2),
+          )
         : GestureDetector(
             onTap: widget.onTap,
             child: Padding(

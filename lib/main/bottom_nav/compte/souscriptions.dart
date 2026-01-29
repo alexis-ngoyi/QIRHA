@@ -44,7 +44,7 @@ class _CompteSouscriptionsEmailState extends State<CompteSouscriptionsEmail> {
               margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 7),
               padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
               decoration: BoxDecoration(
-                color: BLUE,
+                color: PRIMARY,
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Column(
@@ -155,7 +155,7 @@ class _CompteSouscriptionsEmailState extends State<CompteSouscriptionsEmail> {
                   ),
                   customText(
                     " $frequence",
-                    style: TextStyle(fontSize: 11, color: BLUE),
+                    style: TextStyle(fontSize: 11, color: PRIMARY),
                   ),
                 ],
               ),

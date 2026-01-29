@@ -90,7 +90,7 @@ class _ImageScannerSimulatorState extends State<ImageScannerSimulator> {
                   onTap: () => Navigator.of(context).pop(),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: BLUE,
+                      color: PRIMARY,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     padding: const EdgeInsets.symmetric(
@@ -109,7 +109,7 @@ class _ImageScannerSimulatorState extends State<ImageScannerSimulator> {
                 ),
               ],
             ),
-          ).asGlass(tintColor: BLUE, blurX: 2.0, blurY: 2.0),
+          ).asGlass(tintColor: PRIMARY, blurX: 2.0, blurY: 2.0),
         ],
       ),
     );

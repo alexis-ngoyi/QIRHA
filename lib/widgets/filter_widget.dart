@@ -52,8 +52,10 @@ class _MyFiltreItemWidgetState extends State<MyFiltreItemWidget> {
             decoration: BoxDecoration(color: WHITE),
             child: Center(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
                     customText(
@@ -63,9 +65,7 @@ class _MyFiltreItemWidgetState extends State<MyFiltreItemWidget> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: DARK, fontSize: 13),
                     ),
-                    espacementWidget(
-                      width: 10,
-                    ),
+                    espacementWidget(width: 10),
                     Container(
                       padding: const EdgeInsets.all(2.0),
                       decoration: BoxDecoration(
@@ -102,20 +102,22 @@ class _MyFiltreItemWidgetState extends State<MyFiltreItemWidget> {
             return Container(
               padding: const EdgeInsets.only(top: 20),
               decoration: BoxDecoration(
-                  border: Border(top: BorderSide(width: 5, color: GREY)),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(13)),
+                border: Border(top: BorderSide(width: 5, color: GREY)),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(13),
+              ),
               child: ListView.builder(
                 controller: scrollController,
                 itemCount: array.length,
                 itemBuilder: (BuildContext context, int index) {
                   return customlistTile(
-                      title: array[index].title,
-                      subtitle: array[index].subtitle,
-                      press: () => {
-                            widget.onSelectedItem.call(array[index]),
-                            Navigator.pop(context)
-                          });
+                    title: array[index].title,
+                    subtitle: array[index].subtitle,
+                    press: () => {
+                      widget.onSelectedItem.call(array[index]),
+                      Navigator.pop(context),
+                    },
+                  );
                 },
               ),
             );
@@ -156,11 +158,13 @@ class _MyFilterWidgetState extends State<MyFilterWidget> {
 
     tailles.forEach((taille) {
       setState(() {
-        allTailles.add(TailleProduitModel(
-          code_taille: taille['code_taille'],
-          nom_taille: taille['nom_taille'],
-          taille_id: taille['taille_id'],
-        ));
+        allTailles.add(
+          TailleProduitModel(
+            code_taille: taille['code_taille'],
+            nom_taille: taille['nom_taille'],
+            taille_id: taille['taille_id'],
+          ),
+        );
       });
     });
   }
@@ -179,11 +183,13 @@ class _MyFilterWidgetState extends State<MyFilterWidget> {
     var couleurs = await ApiServices().getAllCouleurs();
     couleurs.forEach((couleur) {
       setState(() {
-        allCouleurs.add(ProduitCouleurModel(
-          code_couleur: formatColor(couleur['code_couleur']),
-          nom_couleur: couleur['nom_couleur'],
-          couleur_id: couleur['couleur_id'].toString(),
-        ));
+        allCouleurs.add(
+          ProduitCouleurModel(
+            code_couleur: formatColor(couleur['code_couleur']),
+            nom_couleur: couleur['nom_couleur'],
+            couleur_id: couleur['couleur_id'].toString(),
+          ),
+        );
       });
     });
   }
@@ -213,22 +219,25 @@ class _MyFilterWidgetState extends State<MyFilterWidget> {
           // [Type produit]
           MyFiltreItemWidget(
             typeItem: 1, //[ Type produit]
-            color: BLUE,
+            color: PRIMARY,
             text: 'Type',
             arrayList: <TypeProduit>[
               TypeProduit(
-                  title: 'Recommander',
-                  subtitle: 'Produit recommander par qirha '),
+                title: 'Recommander',
+                subtitle: 'Produit recommander par qirha ',
+              ),
               TypeProduit(
-                  title: 'Les plus vendu',
-                  subtitle: 'Produit les plus dans les derniers 30jrs'),
+                title: 'Les plus vendu',
+                subtitle: 'Produit les plus dans les derniers 30jrs',
+              ),
               TypeProduit(
-                  title: 'Les plus populaires',
-                  subtitle:
-                      'Produit les plus demandes dans les derniers 30jrs '),
+                title: 'Les plus populaires',
+                subtitle: 'Produit les plus demandes dans les derniers 30jrs ',
+              ),
               TypeProduit(
-                  title: 'En reduction',
-                  subtitle: "Produit en reduction jusqu'a -30% "),
+                title: 'En reduction',
+                subtitle: "Produit en reduction jusqu'a -30% ",
+              ),
             ],
             onSelectedItem: (selectedItem) => {print(selectedItem)},
             icon: HeroIcons.chevronDown,
@@ -236,34 +245,36 @@ class _MyFilterWidgetState extends State<MyFilterWidget> {
 
           // [ Type Taille]
           MyOverlayWidget(
-              top: widget.top,
-              onSelectedTailles: (TailleProduitModel item) {
-                selectedTailleItem.add(item);
-              },
-              onSelectedCouleurs: (item) {},
-              defaultCouleurs: [],
-              defaultTailles: selectedTailleItem,
-              text: 'Taille',
-              type: 1,
-              tailles: allTailles,
-              couleurs: []),
+            top: widget.top,
+            onSelectedTailles: (TailleProduitModel item) {
+              selectedTailleItem.add(item);
+            },
+            onSelectedCouleurs: (item) {},
+            defaultCouleurs: [],
+            defaultTailles: selectedTailleItem,
+            text: 'Taille',
+            type: 1,
+            tailles: allTailles,
+            couleurs: [],
+          ),
 
           // [ Type Couleur]
           MyOverlayWidget(
-              top: widget.top,
-              onSelectedTailles: (item) {},
-              onSelectedCouleurs: (ProduitCouleurModel item) {
-                selectedCouleurItem.add(item);
-              },
-              defaultCouleurs: selectedCouleurItem,
-              defaultTailles: [],
-              text: 'Couleur',
-              type: 2,
-              tailles: [],
-              couleurs: allCouleurs),
+            top: widget.top,
+            onSelectedTailles: (item) {},
+            onSelectedCouleurs: (ProduitCouleurModel item) {
+              selectedCouleurItem.add(item);
+            },
+            defaultCouleurs: selectedCouleurItem,
+            defaultTailles: [],
+            text: 'Couleur',
+            type: 2,
+            tailles: [],
+            couleurs: allCouleurs,
+          ),
 
           // boxFiltreItem(
-          //     color: BLUE,
+          //     color: PRIMARY,
           //     text: 'Filtre',
           //     icon: HeroIcons.adjustmentsVertical,
           //     onTap: () {
@@ -282,11 +293,12 @@ class _MyFilterWidgetState extends State<MyFilterWidget> {
     );
   }
 
-  boxFiltreItem(
-      {required String text,
-      required HeroIcons icon,
-      required Color color,
-      required Function() onTap}) {
+  boxFiltreItem({
+    required String text,
+    required HeroIcons icon,
+    required Color color,
+    required Function() onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: GestureDetector(
@@ -298,8 +310,10 @@ class _MyFilterWidgetState extends State<MyFilterWidget> {
             decoration: BoxDecoration(color: WHITE),
             child: Center(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
                     customText(
@@ -309,20 +323,14 @@ class _MyFilterWidgetState extends State<MyFilterWidget> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: DARK, fontSize: 13),
                     ),
-                    espacementWidget(
-                      width: 10,
-                    ),
+                    espacementWidget(width: 10),
                     Container(
                       padding: const EdgeInsets.all(2.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         color: GREY,
                       ),
-                      child: HeroIcon(
-                        icon,
-                        size: 25,
-                        color: color,
-                      ),
+                      child: HeroIcon(icon, size: 25, color: color),
                     ),
                   ],
                 ),

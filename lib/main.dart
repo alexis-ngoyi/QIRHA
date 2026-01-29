@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
       title: 'Qirha',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: BLUE),
+        colorScheme: ColorScheme.fromSeed(seedColor: PRIMARY),
         useMaterial3: true,
         fontFamily: 'Lato',
       ),
@@ -189,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
         BottomNavigationBarItem(
           icon: Badge(
             isLabelVisible: isLogged,
-            backgroundColor: BLUE,
+            backgroundColor: PRIMARY,
             label: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 1),
               child: Text('$nbCommandes', style: const TextStyle(fontSize: 6)),
@@ -370,7 +370,7 @@ class _SearchWithCameraState extends State<SearchWithCamera>
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: BLUE,
+                  color: PRIMARY,
                 ),
               ),
             ),
@@ -468,7 +468,7 @@ class _SearchWithCameraState extends State<SearchWithCamera>
                       ),
                     ),
             ),
-          ).asGlass(tintColor: BLUE),
+          ).asGlass(tintColor: PRIMARY),
           espacementWidget(height: 10),
           isAuth
               ? photoManagerAlbumList(context)

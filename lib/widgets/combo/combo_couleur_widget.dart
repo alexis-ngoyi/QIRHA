@@ -4,11 +4,12 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
 class MyComboCouleurWidget extends StatefulWidget {
-  const MyComboCouleurWidget(
-      {super.key,
-      required this.onSelectedCouleurList,
-      required this.allCouleurs,
-      required this.defaultItems});
+  const MyComboCouleurWidget({
+    super.key,
+    required this.onSelectedCouleurList,
+    required this.allCouleurs,
+    required this.defaultItems,
+  });
   final Function(List<ProduitCouleurModel> listTaille) onSelectedCouleurList;
   final List<ProduitCouleurModel> allCouleurs;
   final List<ProduitCouleurModel> defaultItems;
@@ -43,8 +44,9 @@ class _MyComboCouleurWidgetState extends State<MyComboCouleurWidget> {
                 GestureDetector(
                   onTap: () {
                     // supprime si existe deja
-                    if (currentCouleurItems
-                        .contains(widget.allCouleurs[index])) {
+                    if (currentCouleurItems.contains(
+                      widget.allCouleurs[index],
+                    )) {
                       setState(() {
                         currentCouleurItems.remove(widget.allCouleurs[index]);
                         widget.onSelectedCouleurList.call(currentCouleurItems);
@@ -63,22 +65,27 @@ class _MyComboCouleurWidgetState extends State<MyComboCouleurWidget> {
                     padding: const EdgeInsets.all(6),
                     //width: 50,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                            width: 1,
-                            color: currentCouleurItems
-                                    .contains(widget.allCouleurs[index])
-                                ? BLUE
-                                : Colors.black.withOpacity(.1))),
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        width: 1,
+                        color:
+                            currentCouleurItems.contains(
+                              widget.allCouleurs[index],
+                            )
+                            ? PRIMARY
+                            : Colors.black.withOpacity(.1),
+                      ),
+                    ),
                     child: customCenterText(
-                        widget.allCouleurs[index].nom_couleur as String,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 11, color: DARK)),
+                      widget.allCouleurs[index].nom_couleur as String,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 11, color: DARK),
+                    ),
                   ),
-                )
+                ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

@@ -42,7 +42,7 @@ copyToClipBoard(
 buildSnack(BuildContext context, {String msg = "test"}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: BLUE,
+      backgroundColor: PRIMARY,
       dismissDirection: DismissDirection.horizontal,
       content: Text(msg),
     ),
@@ -110,7 +110,7 @@ Padding labelWithIcon({required String label, required HeroIcons icon}) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        HeroIcon(icon, size: 20, color: BLUE, style: HeroIconStyle.solid),
+        HeroIcon(icon, size: 20, color: PRIMARY, style: HeroIconStyle.solid),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: customText(
@@ -305,11 +305,11 @@ Column ProduitDetailView({ProduitModel? produit}) {
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
-                  border: Border.all(color: BLUE, width: .6),
+                  border: Border.all(color: PRIMARY, width: .6),
                 ),
                 child: customCenterText(
                   '- ${(produit?.taux_reduction) as String}%',
-                  style: TextStyle(color: BLUE, fontSize: 8),
+                  style: TextStyle(color: PRIMARY, fontSize: 8),
                 ),
               ),
             ),
@@ -336,7 +336,7 @@ Column ProduitDetailView({ProduitModel? produit}) {
                             customText(
                               formatMoney(produit!.prix_promo.toString()),
                               style: TextStyle(
-                                color: BLUE,
+                                color: PRIMARY,
                                 fontSize: 10,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -359,7 +359,7 @@ Column ProduitDetailView({ProduitModel? produit}) {
                             customText(
                               formatMoney(produit!.prix_minimum.toString()),
                               style: TextStyle(
-                                color: BLUE,
+                                color: PRIMARY,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -462,7 +462,7 @@ GestureDetector ProduitCardView(
                   child: HeroIcon(
                     HeroIcons.shoppingCart,
                     size: 14,
-                    color: BLUE,
+                    color: PRIMARY,
                   ),
                 ),
               ),
@@ -693,7 +693,7 @@ AppBar MyAppBar(BuildContext context, {required List<Widget> tabs}) {
                   child: Container(
                     width: 50,
                     height: 40,
-                    decoration: BoxDecoration(color: BLUE),
+                    decoration: BoxDecoration(color: PRIMARY),
                     child: HeroIcon(
                       HeroIcons.magnifyingGlass,
                       size: 20,
@@ -757,7 +757,7 @@ Container simpleSearchBar(BuildContext context) {
               child: Container(
                 width: 50,
                 height: 45,
-                decoration: BoxDecoration(color: BLUE),
+                decoration: BoxDecoration(color: PRIMARY),
                 child: HeroIcon(
                   HeroIcons.magnifyingGlass,
                   size: 20,
@@ -869,7 +869,7 @@ Padding customAppSearchBar(BuildContext context) {
                   child: Container(
                     width: 50,
                     height: 45,
-                    decoration: BoxDecoration(color: BLUE),
+                    decoration: BoxDecoration(color: PRIMARY),
                     child: HeroIcon(
                       HeroIcons.magnifyingGlass,
                       size: 20,
@@ -929,7 +929,7 @@ Container BazardRapidItem(
                   height: 35,
                   margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: BLUE,
+                    color: PRIMARY,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
@@ -962,7 +962,7 @@ Container BazardRapidItem(
                           customText(
                             formatMoney('${produit.prix_promo}'),
                             style: TextStyle(
-                              color: BLUE,
+                              color: PRIMARY,
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
                             ),
@@ -1165,7 +1165,7 @@ Padding informationLivraisonView() {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(width: 50, height: 1, color: BLUE),
+        Container(width: 50, height: 1, color: PRIMARY),
         SizedBox(
           width: 200,
           child: customCenterText(
@@ -1176,7 +1176,7 @@ Padding informationLivraisonView() {
             style: TextStyle(fontSize: 12, color: DARK),
           ),
         ),
-        Container(width: 50, height: 1, color: BLUE),
+        Container(width: 50, height: 1, color: PRIMARY),
       ],
     ),
   );

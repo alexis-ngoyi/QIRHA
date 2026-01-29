@@ -33,8 +33,9 @@ class _MyCartWidgetState extends State<MyCartWidget> {
     if (utilisateur_id != null) {
       // Set up a periodic timer
       main_timer = Timer.periodic(intervalDuration, (timer) async {
-        var articles =
-            await ApiServices().getPanierUtilisateur(utilisateur_id.toString());
+        var articles = await ApiServices().getPanierUtilisateur(
+          utilisateur_id.toString(),
+        );
 
         setState(() {
           cart = articles.length;
@@ -65,11 +66,7 @@ class _MyCartWidgetState extends State<MyCartWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => CustomPageRoute(
-          TabPanierScreen(
-            canReturn: true,
-          ),
-          context),
+      onTap: () => CustomPageRoute(TabPanierScreen(canReturn: true), context),
       child: Stack(
         children: [
           HeroIcon(
@@ -79,31 +76,38 @@ class _MyCartWidgetState extends State<MyCartWidget> {
           ),
           if (isLogged)
             Positioned(
-                right: 0,
-                child: cart < 10
-                    ? Container(
-                        height: 13,
-                        width: 13,
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                            color: BLUE,
-                            borderRadius: BorderRadius.circular(100)),
-                        child: Center(
-                          child: customText('$cart',
-                              style: TextStyle(fontSize: 6, color: WHITE)),
+              right: 0,
+              child: cart < 10
+                  ? Container(
+                      height: 13,
+                      width: 13,
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        color: PRIMARY,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Center(
+                        child: customText(
+                          '$cart',
+                          style: TextStyle(fontSize: 6, color: WHITE),
                         ),
-                      )
-                    : Container(
-                        height: 13,
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                            color: BLUE,
-                            borderRadius: BorderRadius.circular(100)),
-                        child: Center(
-                          child: customText('$cart',
-                              style: TextStyle(fontSize: 6, color: WHITE)),
+                      ),
+                    )
+                  : Container(
+                      height: 13,
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        color: PRIMARY,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Center(
+                        child: customText(
+                          '$cart',
+                          style: TextStyle(fontSize: 6, color: WHITE),
                         ),
-                      ))
+                      ),
+                    ),
+            ),
         ],
       ),
     );

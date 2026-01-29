@@ -111,7 +111,7 @@ class _TabCategorieScreenState extends State<TabCategorieScreen> {
                                                 color:
                                                     _currentMainCategorieIndexPage ==
                                                         i
-                                                    ? BLUE
+                                                    ? PRIMARY
                                                     : DARK,
                                               ),
                                             ),

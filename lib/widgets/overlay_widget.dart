@@ -20,17 +20,18 @@ class MyOverlayWidget extends StatefulWidget {
   final Function(ProduitCouleurModel item) onSelectedCouleurs;
   final double top;
 
-  const MyOverlayWidget(
-      {super.key,
-      required this.text,
-      required this.type,
-      this.tailles = const [],
-      this.couleurs = const [],
-      this.defaultTailles = const [],
-      this.defaultCouleurs = const [],
-      required this.onSelectedTailles,
-      required this.onSelectedCouleurs,
-      this.top = 240.0});
+  const MyOverlayWidget({
+    super.key,
+    required this.text,
+    required this.type,
+    this.tailles = const [],
+    this.couleurs = const [],
+    this.defaultTailles = const [],
+    this.defaultCouleurs = const [],
+    required this.onSelectedTailles,
+    required this.onSelectedCouleurs,
+    this.top = 240.0,
+  });
   @override
   _MyOverlayWidgetState createState() => _MyOverlayWidgetState();
 }
@@ -83,16 +84,19 @@ class _MyOverlayWidgetState extends State<MyOverlayWidget> {
                   defaultItems: widget.defaultCouleurs,
                   onSelectedCouleurList:
                       (List<ProduitCouleurModel> listCouleurs) {
-                    print(listCouleurs);
-                  },
+                        print(listCouleurs);
+                      },
                 ),
               MyButtonWidget(
-                  onPressed: closeOverlay,
-                  label: 'Fermer',
-                  bgColor: DANGER,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  labelColor: WHITE)
+                onPressed: closeOverlay,
+                label: 'Fermer',
+                bgColor: DANGER,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                labelColor: WHITE,
+              ),
             ],
           ),
         ),
@@ -114,8 +118,10 @@ class _MyOverlayWidgetState extends State<MyOverlayWidget> {
             decoration: BoxDecoration(color: WHITE),
             child: Center(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
                     customText(
@@ -125,9 +131,7 @@ class _MyOverlayWidgetState extends State<MyOverlayWidget> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: DARK, fontSize: 13),
                     ),
-                    espacementWidget(
-                      width: 10,
-                    ),
+                    espacementWidget(width: 10),
                     Container(
                       padding: const EdgeInsets.all(2.0),
                       decoration: BoxDecoration(
@@ -137,7 +141,7 @@ class _MyOverlayWidgetState extends State<MyOverlayWidget> {
                       child: HeroIcon(
                         HeroIcons.chevronDown,
                         size: 25,
-                        color: BLUE,
+                        color: PRIMARY,,
                       ),
                     ),
                   ],

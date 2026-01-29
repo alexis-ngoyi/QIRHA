@@ -16,8 +16,9 @@ class NumeroDePaiementCommande extends StatefulWidget {
 }
 
 class _NumeroDePaiementCommandeState extends State<NumeroDePaiementCommande> {
-  MaskedTextController myTextController =
-      MaskedTextController(mask: '00 000 00 00');
+  MaskedTextController myTextController = MaskedTextController(
+    mask: '00 000 00 00',
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,32 +27,30 @@ class _NumeroDePaiementCommandeState extends State<NumeroDePaiementCommande> {
         backgroundColor: WHITE,
         leading: GestureDetector(
           onTap: () => Navigator.of(context).pop(),
-          child: const HeroIcon(
-            HeroIcons.chevronLeft,
-            size: 25,
-          ),
+          child: const HeroIcon(HeroIcons.chevronLeft, size: 25),
         ),
         title: customText(
           'Numero Mobile Money',
-          style:
-              TextStyle(fontSize: 17, color: DARK, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 17,
+            color: DARK,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         actions: [
-          MyCartWidget(
-            size: 24,
-            color: DARK,
-          ),
-          espacementWidget(
-            width: 10,
-          ),
+          MyCartWidget(size: 24, color: DARK),
+          espacementWidget(width: 10),
         ],
       ),
       bottomNavigationBar: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            color: WHITE,
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+          color: WHITE,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
         height: 80,
         child: GestureDetector(
           onTap: () => {},
@@ -59,13 +58,18 @@ class _NumeroDePaiementCommandeState extends State<NumeroDePaiementCommande> {
             padding: const EdgeInsets.all(8.0),
             margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
             decoration: BoxDecoration(
-                border:
-                    Border.all(width: 1, color: Colors.black.withOpacity(.08)),
-                color: BLUE,
-                borderRadius: BorderRadius.circular(12)),
+              border: Border.all(
+                width: 1,
+                color: Colors.black.withOpacity(.08),
+              ),
+              color: PRIMARY,
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Center(
-              child: customText('PAYER MAINTENANT',
-                  style: TextStyle(color: WHITE, fontSize: 12)),
+              child: customText(
+                'PAYER MAINTENANT',
+                style: TextStyle(color: WHITE, fontSize: 12),
+              ),
             ),
           ),
         ),
@@ -77,9 +81,14 @@ class _NumeroDePaiementCommandeState extends State<NumeroDePaiementCommande> {
             resumeCommande(),
             espacementWidget(height: 10),
             SizedBox(
-              child: customText('Entrez votre Numero Mobile Money',
-                  style: TextStyle(
-                      color: DARK, fontSize: 13, fontWeight: FontWeight.bold)),
+              child: customText(
+                'Entrez votre Numero Mobile Money',
+                style: TextStyle(
+                  color: DARK,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             espacementWidget(height: 10),
             inputNumberPhone(context),
@@ -92,88 +101,126 @@ class _NumeroDePaiementCommandeState extends State<NumeroDePaiementCommande> {
 
   Container resumeCommande() {
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-        decoration: BoxDecoration(
-            color: WHITE, borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                HeroIcon(
-                  HeroIcons.eye,
-                  size: 14,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+      decoration: BoxDecoration(
+        color: WHITE,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              HeroIcon(HeroIcons.eye, size: 14, color: DARK),
+              espacementWidget(width: 7),
+              customText(
+                "Apercu de la commande",
+                style: TextStyle(
                   color: DARK,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
                 ),
-                espacementWidget(width: 7),
-                customText("Apercu de la commande",
-                    style: TextStyle(
+              ),
+            ],
+          ),
+          espacementWidget(height: 8),
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: customText(
+                      'Sous-total',
+                      style: TextStyle(color: LIGHT, fontSize: 13),
+                    ),
+                  ),
+                  Container(
+                    child: customText(
+                      formatMoney('4000'),
+                      style: TextStyle(color: LIGHT, fontSize: 11),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: customText(
+                      "Frais d'expedition",
+                      style: TextStyle(color: LIGHT, fontSize: 13),
+                    ),
+                  ),
+                  Container(
+                    child: customText(
+                      formatMoney('1000'),
+                      style: TextStyle(color: LIGHT, fontSize: 11),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: customText(
+                      "Assurance d'expedition",
+                      style: TextStyle(color: LIGHT, fontSize: 13),
+                    ),
+                  ),
+                  Container(
+                    child: customText(
+                      formatMoney('1000'),
+                      style: TextStyle(color: LIGHT, fontSize: 11),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: customText(
+                      "Taxes",
+                      style: TextStyle(color: LIGHT, fontSize: 13),
+                    ),
+                  ),
+                  Container(
+                    child: customText(
+                      formatMoney('40'),
+                      style: TextStyle(color: LIGHT, fontSize: 11),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: customText(
+                      "Total",
+                      style: TextStyle(color: LIGHT, fontSize: 13),
+                    ),
+                  ),
+                  Container(
+                    child: customText(
+                      formatMoney('3540'),
+                      style: TextStyle(
                         color: DARK,
+                        fontWeight: FontWeight.bold,
                         fontSize: 13,
-                        fontWeight: FontWeight.bold)),
-              ],
-            ),
-            espacementWidget(height: 8),
-            Column(
-              children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: customText('Sous-total',
-                              style: TextStyle(color: LIGHT, fontSize: 13))),
-                      Container(
-                          child: customText(formatMoney('4000'),
-                              style: TextStyle(color: LIGHT, fontSize: 11))),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: customText("Frais d'expedition",
-                              style: TextStyle(color: LIGHT, fontSize: 13))),
-                      Container(
-                          child: customText(formatMoney('1000'),
-                              style: TextStyle(color: LIGHT, fontSize: 11))),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: customText("Assurance d'expedition",
-                              style: TextStyle(color: LIGHT, fontSize: 13))),
-                      Container(
-                          child: customText(formatMoney('1000'),
-                              style: TextStyle(color: LIGHT, fontSize: 11))),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: customText("Taxes",
-                              style: TextStyle(color: LIGHT, fontSize: 13))),
-                      Container(
-                          child: customText(formatMoney('40'),
-                              style: TextStyle(color: LIGHT, fontSize: 11))),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: customText("Total",
-                              style: TextStyle(color: LIGHT, fontSize: 13))),
-                      Container(
-                          child: customText(formatMoney('3540'),
-                              style: TextStyle(
-                                  color: DARK,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13))),
-                    ]),
-              ],
-            ),
-          ],
-        ));
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Container inputNumberPhone(BuildContext context) {
@@ -182,8 +229,10 @@ class _NumeroDePaiementCommandeState extends State<NumeroDePaiementCommande> {
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration:
-          BoxDecoration(color: WHITE, borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(
+        color: WHITE,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -192,10 +241,7 @@ class _NumeroDePaiementCommandeState extends State<NumeroDePaiementCommande> {
             child: SizedBox(
               width: 20,
               height: 15,
-              child: Image.asset(
-                congo_rc,
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset(congo_rc, fit: BoxFit.cover),
             ),
           ),
           espacementWidget(width: 3),
@@ -203,10 +249,7 @@ class _NumeroDePaiementCommandeState extends State<NumeroDePaiementCommande> {
           espacementWidget(width: 5),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
-            child: VerticalDivider(
-              width: 1,
-              color: Colors.black.withAlpha(30),
-            ),
+            child: VerticalDivider(width: 1, color: Colors.black.withAlpha(30)),
           ),
           espacementWidget(width: 3),
           Expanded(
@@ -215,13 +258,16 @@ class _NumeroDePaiementCommandeState extends State<NumeroDePaiementCommande> {
               minLines: 1,
               controller: myTextController,
               style: TextStyle(
-                  fontSize: 14, color: DARK, fontWeight: FontWeight.w400),
+                fontSize: 14,
+                color: DARK,
+                fontWeight: FontWeight.w400,
+              ),
               decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  border:
-                      const UnderlineInputBorder(borderSide: BorderSide.none),
-                  hintText: '00 000 00 00',
-                  hintStyle: TextStyle(fontSize: 11, color: LIGHT)),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                border: const UnderlineInputBorder(borderSide: BorderSide.none),
+                hintText: '00 000 00 00',
+                hintStyle: TextStyle(fontSize: 11, color: LIGHT),
+              ),
             ),
           ),
         ],

@@ -99,7 +99,7 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
       backgroundColor: GREY,
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
-        backgroundColor: BLUE,
+        backgroundColor: PRIMARY,
         triggerMode: RefreshIndicatorTriggerMode.onEdge,
         color: WHITE,
         child: Column(

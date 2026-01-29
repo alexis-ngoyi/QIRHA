@@ -215,7 +215,7 @@ class _DetailProduitState extends State<DetailProduit> {
                     Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        color: BLUE,
+                        color: PRIMARY,
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: HeroIcon(
@@ -254,7 +254,7 @@ class _DetailProduitState extends State<DetailProduit> {
                                 HeroIcon(
                                   HeroIcons.chevronRight,
                                   size: 15,
-                                  color: BLUE,
+                                  color: PRIMARY,
                                 ),
                               ],
                             ),
@@ -283,7 +283,7 @@ class _DetailProduitState extends State<DetailProduit> {
                                 HeroIcon(
                                   HeroIcons.chevronRight,
                                   size: 15,
-                                  color: BLUE,
+                                  color: PRIMARY,
                                 ),
                               ],
                             ),
@@ -317,7 +317,7 @@ class _DetailProduitState extends State<DetailProduit> {
                         padding: 8,
                         size: 25,
                         isLoading: isLoadingHeartFavoris,
-                        activeColor: BLUE,
+                        activeColor: PRIMARY,
                         activeIcon: Icons.favorite,
                         isActive: isActiveHeartFavoris,
                         color: LIGHT,
@@ -343,7 +343,7 @@ class _DetailProduitState extends State<DetailProduit> {
                       addToCart();
                     },
                     label: 'AJOUTER AU PANIER',
-                    bgColor: BLUE,
+                    bgColor: PRIMARY,
                     labelColor: WHITE,
                   ),
                 ],
@@ -388,7 +388,7 @@ class _DetailProduitState extends State<DetailProduit> {
                         CustomPageRoute(const BazardHomePage(), context),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 3),
-                      color: BLUE,
+                      color: PRIMARY,
                       width: MediaQuery.of(context).size.width,
                       height: 33,
                       child: Row(
@@ -475,7 +475,7 @@ class _DetailProduitState extends State<DetailProduit> {
                           HeroIcon(
                             HeroIcons.bolt,
                             size: 17,
-                            color: BLUE,
+                            color: PRIMARY,
                             style: HeroIconStyle.solid,
                           ),
                           Padding(
@@ -485,7 +485,7 @@ class _DetailProduitState extends State<DetailProduit> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
-                                color: BLUE,
+                                color: PRIMARY,
                               ),
                             ),
                           ),
@@ -870,7 +870,7 @@ class _DetailProduitState extends State<DetailProduit> {
                           (percent / 100),
                       height: 9,
                       decoration: BoxDecoration(
-                        color: BLUE,
+                        color: PRIMARY,
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),

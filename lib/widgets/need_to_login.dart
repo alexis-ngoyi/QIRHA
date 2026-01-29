@@ -17,13 +17,12 @@ class _NeedToLoginState extends State<NeedToLogin> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        requestLogin(context),
-      ],
-    ));
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [requestLogin(context)],
+      ),
+    );
   }
 }
 
@@ -45,16 +44,22 @@ Center requestLogin(BuildContext context) {
             ),
           ),
           espacementWidget(height: 30),
-          customCenterText('Aucune session detectée',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 16, color: DARK, fontWeight: FontWeight.bold)),
+          customCenterText(
+            'Aucune session detectée',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: DARK,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           espacementWidget(height: 20),
           customCenterText(
-              'Connectez-vous pour profiter de toutes les fonctionnalités de Qirha',
-              maxLines: 4,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: DARK, fontSize: 12)),
+            'Connectez-vous pour profiter de toutes les fonctionnalités de Qirha',
+            maxLines: 4,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: DARK, fontSize: 12),
+          ),
           espacementWidget(height: 10),
           Padding(
             padding: const EdgeInsets.all(15),
@@ -66,10 +71,11 @@ Center requestLogin(BuildContext context) {
                   child: Expanded(
                     flex: 2,
                     child: MyButtonWidget(
-                        onPressed: () => triggerAuthentification(context),
-                        label: "JE M'INSCRIS",
-                        bgColor: WHITE,
-                        labelColor: DARK),
+                      onPressed: () => triggerAuthentification(context),
+                      label: "JE M'INSCRIS",
+                      bgColor: WHITE,
+                      labelColor: DARK,
+                    ),
                   ),
                 ),
                 espacementWidget(width: 10),
@@ -78,10 +84,11 @@ Center requestLogin(BuildContext context) {
                   child: Expanded(
                     flex: 3,
                     child: MyButtonWidget(
-                        onPressed: () => triggerAuthentification(context),
-                        label: 'JE ME CONNECTE',
-                        bgColor: BLUE,
-                        labelColor: WHITE),
+                      onPressed: () => triggerAuthentification(context),
+                      label: 'JE ME CONNECTE',
+                      bgColor: PRIMARY,
+                      labelColor: WHITE,
+                    ),
                   ),
                 ),
               ],
@@ -107,14 +114,17 @@ triggerAuthentification(BuildContext context) {
           return Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-                border: Border(top: BorderSide(width: 5, color: WHITE)),
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(13)),
+              border: Border(top: BorderSide(width: 5, color: WHITE)),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(13),
+            ),
             child: SingleChildScrollView(
               controller: scrollController,
               physics: const NeverScrollableScrollPhysics(),
-              child:
-                  const SizedBox(height: 900, child: AuthentificationScreen()),
+              child: const SizedBox(
+                height: 900,
+                child: AuthentificationScreen(),
+              ),
             ),
           );
         },

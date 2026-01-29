@@ -20,8 +20,9 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
   void _isEditingWord() {
     // check if editing
     setState(() {
-      _isTypingKeyWord =
-          _isTypingKeyWordController.text.toString().isNotEmpty ? true : false;
+      _isTypingKeyWord = _isTypingKeyWordController.text.toString().isNotEmpty
+          ? true
+          : false;
     });
   }
 
@@ -43,49 +44,51 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: GREY,
-        body: IconTheme(
-          data: const IconThemeData(color: Colors.black),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SpacerHeight(height: 40),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: const HeroIcon(
-                            HeroIcons.chevronLeft,
-                            size: 25,
-                          )),
-                      espacementWidget(width: 15),
-                      _searchBarInput(),
-                      espacementWidget(width: 10),
-                    ],
+      backgroundColor: GREY,
+      body: IconTheme(
+        data: const IconThemeData(color: Colors.black),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SpacerHeight(height: 40),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const HeroIcon(HeroIcons.chevronLeft, size: 25),
                   ),
+                  espacementWidget(width: 15),
+                  _searchBarInput(),
+                  espacementWidget(width: 10),
+                ],
+              ),
+            ),
+            espacementWidget(height: 15),
+            Expanded(
+              child: Container(
+                color: GREY,
+                child: Column(
+                  children: [
+                    espacementWidget(height: 10),
+                    !_isTypingKeyWord
+                        ? Expanded(
+                            child: SingleChildScrollView(
+                              child: _placeholderSearchHistory(),
+                            ),
+                          )
+                        : _searchResultKeyPreview(),
+                  ],
                 ),
-                espacementWidget(height: 15),
-                Expanded(
-                  child: Container(
-                    color: GREY,
-                    child: Column(
-                      children: [
-                        espacementWidget(height: 10),
-                        !_isTypingKeyWord
-                            ? Expanded(
-                                child: SingleChildScrollView(
-                                    child: _placeholderSearchHistory()))
-                            : _searchResultKeyPreview(),
-                      ],
-                    ),
-                  ),
-                )
-              ]),
-        ));
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Expanded _searchResultKeyPreview() {
@@ -99,27 +102,34 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
               padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
               child: customText(
                 'Categorie',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
             _ListTileSearchItem(
-                text: 'Pommeau de douche > Tetes de douche', press: () => {}),
-            _ListTileSearchItem(
-                text: 'Pommeau de douche > Pommes de douche', press: () => {}),
-            _ListTileSearchItem(
-                text: 'Pommeau de douche > Systeme de douche', press: () => {}),
-            Container(
-              color: GREY,
-              height: 10,
+              text: 'Pommeau de douche > Tetes de douche',
+              press: () => {},
             ),
+            _ListTileSearchItem(
+              text: 'Pommeau de douche > Pommes de douche',
+              press: () => {},
+            ),
+            _ListTileSearchItem(
+              text: 'Pommeau de douche > Systeme de douche',
+              press: () => {},
+            ),
+            Container(color: GREY, height: 10),
             espacementWidget(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
               child: customText(
                 'Similaire',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
             _ListTileSearchItem(text: 'Pompier', press: () => {}),
@@ -146,15 +156,9 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
         children: [
           ListTile(
             title: customText(text, style: const TextStyle(fontSize: 13.5)),
-            trailing: const HeroIcon(
-              HeroIcons.arrowUpLeft,
-              size: 15,
-            ),
+            trailing: const HeroIcon(HeroIcons.arrowUpLeft, size: 15),
           ),
-          const Divider(
-            height: 1,
-            thickness: .7,
-          ),
+          const Divider(height: 1, thickness: .7),
         ],
       ),
     );
@@ -172,15 +176,15 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
             children: [
               customText(
                 'Derniere recherche',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
               GestureDetector(
-                  onTap: () {},
-                  child: const HeroIcon(
-                    HeroIcons.trash,
-                    size: 17,
-                  ))
+                onTap: () {},
+                child: const HeroIcon(HeroIcons.trash, size: 17),
+              ),
             ],
           ),
         ),
@@ -203,8 +207,10 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
             children: [
               customText(
                 'Ce que les autres cherchent',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ],
           ),
@@ -237,12 +243,11 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 3.5),
         padding: const EdgeInsets.all(8),
-        decoration:
-            BoxDecoration(color: WHITE, borderRadius: BorderRadius.circular(5)),
-        child: customText(
-          text,
-          style: const TextStyle(fontSize: 13),
+        decoration: BoxDecoration(
+          color: WHITE,
+          borderRadius: BorderRadius.circular(5),
         ),
+        child: customText(text, style: const TextStyle(fontSize: 13)),
       ),
     );
   }
@@ -252,84 +257,80 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Container(
-            height: 43,
-            decoration: BoxDecoration(
-              color: WHITE,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: TextField(
-                      onChanged: (val) {
-                        _isEditingWord();
-                      },
-                      controller: _isTypingKeyWordController,
-                      style: TextStyle(
-                          color: DARK,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16),
-                      decoration: InputDecoration(
-                          filled: true,
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(
-                              fontSize: 13,
-                              color: DARK,
-                              fontWeight: FontWeight.normal),
-                          fillColor: Colors.transparent,
-                          hintText: 'Pantalon pour homme'),
+          height: 43,
+          decoration: BoxDecoration(color: WHITE),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: TextField(
+                    onChanged: (val) {
+                      _isEditingWord();
+                    },
+                    controller: _isTypingKeyWordController,
+                    style: TextStyle(
+                      color: DARK,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        fontSize: 13,
+                        color: DARK,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      fillColor: Colors.transparent,
+                      hintText: 'Pantalon pour homme',
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    _isTypingKeyWord
-                        ? GestureDetector(
-                            onTap: _clearSearchInput,
-                            child: const SizedBox(
-                              width: 50,
-                              height: 45,
-                              child: Center(
-                                child: HeroIcon(
-                                  HeroIcons.xCircle,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: () => checkPermissionAndOpenCanera(context),
-                            child: const SizedBox(
-                              width: 50,
-                              height: 45,
-                              child: Center(
-                                child: HeroIcon(
-                                  HeroIcons.camera,
-                                  size: 20,
-                                ),
-                              ),
+              ),
+              Row(
+                children: [
+                  _isTypingKeyWord
+                      ? GestureDetector(
+                          onTap: _clearSearchInput,
+                          child: const SizedBox(
+                            width: 50,
+                            height: 45,
+                            child: Center(
+                              child: HeroIcon(HeroIcons.xCircle, size: 20),
                             ),
                           ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        width: 50,
-                        height: 45,
-                        decoration: BoxDecoration(color: BLUE),
-                        child: HeroIcon(
-                          HeroIcons.magnifyingGlass,
-                          size: 20,
-                          color: WHITE,
+                        )
+                      : GestureDetector(
+                          onTap: () => checkPermissionAndOpenCanera(context),
+                          child: const SizedBox(
+                            width: 50,
+                            height: 45,
+                            child: Center(
+                              child: HeroIcon(HeroIcons.camera, size: 20),
+                            ),
+                          ),
                         ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 50,
+                      height: 45,
+                      decoration: BoxDecoration(color: PRIMARY),
+                      child: HeroIcon(
+                        HeroIcons.magnifyingGlass,
+                        size: 20,
+                        color: WHITE,
                       ),
                     ),
-                  ],
-                )
-              ],
-            )),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

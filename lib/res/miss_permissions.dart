@@ -25,7 +25,7 @@ class _MissingPermissionScreenState extends State<MissingPermissionScreen> {
             customText(
               'Autorisation',
               style: TextStyle(
-                color: BLUE,
+                color: PRIMARY,
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
               ),
@@ -49,7 +49,7 @@ class _MissingPermissionScreenState extends State<MissingPermissionScreen> {
               onTap: () => reloadPermissions(context),
               child: Container(
                 decoration: BoxDecoration(
-                  color: BLUE,
+                  color: PRIMARY,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 padding: const EdgeInsets.symmetric(
@@ -67,7 +67,7 @@ class _MissingPermissionScreenState extends State<MissingPermissionScreen> {
               ),
             ),
           ],
-        ).asGlass(tintColor: BLUE, blurX: 2.0, blurY: 2.0),
+        ).asGlass(tintColor: PRIMARY, blurX: 2.0, blurY: 2.0),
       ),
     );
   }

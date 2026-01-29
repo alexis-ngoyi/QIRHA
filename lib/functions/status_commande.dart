@@ -36,7 +36,7 @@ Color statusCommandeColor(String status) {
       return DANGER;
 
     case "3":
-      return BLUE;
+      return PRIMARY;
 
     case "4":
       return GREEN;
@@ -45,7 +45,7 @@ Color statusCommandeColor(String status) {
       return DANGER;
 
     case "6":
-      return BLUE;
+      return PRIMARY;
 
     default:
       return DARK;

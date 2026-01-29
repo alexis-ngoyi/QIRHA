@@ -69,44 +69,44 @@ class _CustomTimerCountDownState extends State<CustomTimerCountDown> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 1),
           decoration: BoxDecoration(
-              color: WHITE, borderRadius: BorderRadius.circular(5)),
+            color: WHITE,
+            borderRadius: BorderRadius.circular(5),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(2.0),
             child: customText(
               hours,
-              style: TextStyle(fontSize: 8, color: BLUE),
+              style: TextStyle(fontSize: 8, color: PRIMARY),
             ),
           ),
         ),
-        customText(
-          ':',
-          style: TextStyle(fontSize: 10, color: WHITE),
-        ),
+        customText(':', style: TextStyle(fontSize: 10, color: WHITE)),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 1),
           decoration: BoxDecoration(
-              color: WHITE, borderRadius: BorderRadius.circular(5)),
+            color: WHITE,
+            borderRadius: BorderRadius.circular(5),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(2.0),
             child: customText(
               minutes,
-              style: TextStyle(fontSize: 8, color: BLUE),
+              style: TextStyle(fontSize: 8, color: PRIMARY),
             ),
           ),
         ),
-        customText(
-          ':',
-          style: TextStyle(fontSize: 10, color: WHITE),
-        ),
+        customText(':', style: TextStyle(fontSize: 10, color: WHITE)),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 1),
           decoration: BoxDecoration(
-              color: WHITE, borderRadius: BorderRadius.circular(5)),
+            color: WHITE,
+            borderRadius: BorderRadius.circular(5),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(2.0),
             child: customText(
               remainingSeconds,
-              style: TextStyle(fontSize: 8, color: BLUE),
+              style: TextStyle(fontSize: 8, color: PRIMARY),
             ),
           ),
         ),

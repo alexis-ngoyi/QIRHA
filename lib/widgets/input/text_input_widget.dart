@@ -4,14 +4,15 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
 class TextInputWidget extends StatefulWidget {
-  const TextInputWidget(
-      {super.key,
-      required this.controller,
-      required this.formKey,
-      required this.labelText,
-      this.isPassword = false,
-      required this.keyboardType,
-      required this.maxLines});
+  const TextInputWidget({
+    super.key,
+    required this.controller,
+    required this.formKey,
+    required this.labelText,
+    this.isPassword = false,
+    required this.keyboardType,
+    required this.maxLines,
+  });
   final TextEditingController controller;
   final GlobalKey<FormState> formKey;
   final String labelText;
@@ -39,20 +40,19 @@ class _TextInputWidgetState extends State<TextInputWidget> {
         //           fontSize: 13, color: DARK, fontWeight: FontWeight.bold)),
         // ),
         Container(
-          padding:
-              const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 5),
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+            top: 4,
+            bottom: 5,
+          ),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: WHITE,
-              border: raiseError == false
-                  ? Border.all(
-                      width: 1,
-                      color: GREY,
-                    )
-                  : Border.all(
-                      width: 1,
-                      color: DANGER,
-                    )),
+            borderRadius: BorderRadius.circular(8),
+            color: WHITE,
+            border: raiseError == false
+                ? Border.all(width: 1, color: GREY)
+                : Border.all(width: 1, color: DANGER),
+          ),
           child: TextFormField(
             autocorrect: true,
             maxLines: widget.maxLines,
@@ -61,12 +61,13 @@ class _TextInputWidgetState extends State<TextInputWidget> {
             controller: widget.controller,
             obscureText: widget.isPassword,
             decoration: InputDecoration(
-                hintText: widget.labelText,
-                border: InputBorder.none,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                errorStyle: const TextStyle(fontSize: 11),
-                labelText: null,
-                labelStyle: const TextStyle(fontSize: 18)),
+              hintText: widget.labelText,
+              border: InputBorder.none,
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              errorStyle: const TextStyle(fontSize: 11),
+              labelText: null,
+              labelStyle: const TextStyle(fontSize: 18),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 setState(() {
@@ -87,13 +88,14 @@ class _TextInputWidgetState extends State<TextInputWidget> {
 }
 
 class InputDropdownWidget extends StatefulWidget {
-  const InputDropdownWidget(
-      {super.key,
-      required this.getSelectedItem,
-      required this.labelText,
-      required this.placeholder,
-      required this.typeQuestion,
-      required this.raiseError});
+  const InputDropdownWidget({
+    super.key,
+    required this.getSelectedItem,
+    required this.labelText,
+    required this.placeholder,
+    required this.typeQuestion,
+    required this.raiseError,
+  });
   final Function(String selectedItem) getSelectedItem;
   final String labelText;
   final String placeholder;
@@ -125,9 +127,14 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-          child: customText(widget.labelText,
-              style: TextStyle(
-                  fontSize: 13, color: DARK, fontWeight: FontWeight.bold)),
+          child: customText(
+            widget.labelText,
+            style: TextStyle(
+              fontSize: 13,
+              color: DARK,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         GestureDetector(
           onTap: () {
@@ -140,72 +147,80 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
                   minChildSize: .3,
                   maxChildSize: .3,
                   expand: false,
-                  builder: (BuildContext context,
-                      ScrollController scrollController) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: ListView.builder(
-                        controller: scrollController,
-                        itemCount: widget.typeQuestion.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            onTap: () {
-                              setState(() {
-                                selectedItem = widget.typeQuestion[index];
-                              });
-                              widget.getSelectedItem
-                                  .call(widget.typeQuestion[index]);
-                              Navigator.of(context).pop();
+                  builder:
+                      (
+                        BuildContext context,
+                        ScrollController scrollController,
+                      ) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListView.builder(
+                            controller: scrollController,
+                            itemCount: widget.typeQuestion.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                onTap: () {
+                                  setState(() {
+                                    selectedItem = widget.typeQuestion[index];
+                                  });
+                                  widget.getSelectedItem.call(
+                                    widget.typeQuestion[index],
+                                  );
+                                  Navigator.of(context).pop();
+                                },
+                                trailing: HeroIcon(
+                                  HeroIcons.arrowUpOnSquare,
+                                  color: PRIMARY,
+                                  size: 17,
+                                ),
+                                title: customText(
+                                  widget.typeQuestion[index],
+                                  style: TextStyle(fontSize: 15, color: DARK),
+                                ),
+                                subtitle: customText(
+                                  widget.typeQuestion[index],
+                                  style: TextStyle(fontSize: 12, color: LIGHT),
+                                ),
+                              );
                             },
-                            trailing: HeroIcon(
-                              HeroIcons.arrowUpOnSquare,
-                              color: BLUE,
-                              size: 17,
-                            ),
-                            title: customText(widget.typeQuestion[index],
-                                style: TextStyle(fontSize: 15, color: DARK)),
-                            subtitle: customText(widget.typeQuestion[index],
-                                style: TextStyle(fontSize: 12, color: LIGHT)),
-                          );
-                        },
-                      ),
-                    );
-                  },
+                          ),
+                        );
+                      },
                 );
               },
             );
           },
           child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 55,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  color: WHITE,
-                  borderRadius: BorderRadius.circular(4),
-                  border: raiseError == false
-                      ? null
-                      : Border.all(
-                          width: 1,
-                          color: DANGER,
-                        )),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  selectedItem.isNotEmpty
-                      ? customText(selectedItem,
-                          style: const TextStyle(fontSize: 13))
-                      : customText(widget.placeholder,
-                          style: TextStyle(fontSize: 12, color: LIGHT)),
-                  HeroIcon(
-                    HeroIcons.chevronRight,
-                    color: LIGHT,
-                    size: 17,
-                  )
-                ],
-              )),
+            width: MediaQuery.of(context).size.width,
+            height: 55,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: WHITE,
+              borderRadius: BorderRadius.circular(4),
+              border: raiseError == false
+                  ? null
+                  : Border.all(width: 1, color: DANGER),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                selectedItem.isNotEmpty
+                    ? customText(
+                        selectedItem,
+                        style: const TextStyle(fontSize: 13),
+                      )
+                    : customText(
+                        widget.placeholder,
+                        style: TextStyle(fontSize: 12, color: LIGHT),
+                      ),
+                HeroIcon(HeroIcons.chevronRight, color: LIGHT, size: 17),
+              ],
+            ),
+          ),
         ),
       ],
     );

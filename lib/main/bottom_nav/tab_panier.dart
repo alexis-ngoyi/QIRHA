@@ -42,26 +42,30 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
 
     double tmp = 0;
 
-    var articles =
-        await ApiServices().getPanierUtilisateur(utilisateur_id.toString());
+    var articles = await ApiServices().getPanierUtilisateur(
+      utilisateur_id.toString(),
+    );
 
     articles.forEach((article) {
       setState(() {
-        cartProduit.add(ArticlesCommandeModel(
-          code_taille: article['code_taille'],
-          nom_couleur: article['nom_couleur'],
-          produit_id: article['produit_id'].toString(),
-          couleur_id: article['couleur_id'].toString(),
-          image_id: article['image_id'].toString(),
-          taille_id: article['taille_id'].toString(),
-          nom_produit: article['nom_produit'],
-          photo_cover: article['photo_cover'],
-          prix_unitaire: article['prix'],
-          quantite: article['quantite'].toString(),
-          quantite_en_stock: article['quantite_en_stock'].toString(),
-        ));
+        cartProduit.add(
+          ArticlesCommandeModel(
+            code_taille: article['code_taille'],
+            nom_couleur: article['nom_couleur'],
+            produit_id: article['produit_id'].toString(),
+            couleur_id: article['couleur_id'].toString(),
+            image_id: article['image_id'].toString(),
+            taille_id: article['taille_id'].toString(),
+            nom_produit: article['nom_produit'],
+            photo_cover: article['photo_cover'],
+            prix_unitaire: article['prix'],
+            quantite: article['quantite'].toString(),
+            quantite_en_stock: article['quantite_en_stock'].toString(),
+          ),
+        );
 
-        tmp += double.parse(article['prix'].toString()) *
+        tmp +=
+            double.parse(article['prix'].toString()) *
             int.parse(article['quantite'].toString());
       });
     });
@@ -78,7 +82,8 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
 
     // calculate new prix
     for (var index = 0; index < cartProduit.length; index++) {
-      tmp += double.parse(cartProduit[index].prix_unitaire.toString()) *
+      tmp +=
+          double.parse(cartProduit[index].prix_unitaire.toString()) *
           double.parse(cartProduit[index].quantite.toString());
     }
 
@@ -119,15 +124,18 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
     var utilisateur_id = prefs.getString('utilisateur_id');
 
     AddPanierModel panierItem = AddPanierModel(
-        couleur_id: article.couleur_id,
-        quantite: article.quantite,
-        image_id: article.image_id,
-        produit_id: article.produit_id,
-        taille_id: article.taille_id,
-        utilisateur_id: utilisateur_id);
+      couleur_id: article.couleur_id,
+      quantite: article.quantite,
+      image_id: article.image_id,
+      produit_id: article.produit_id,
+      taille_id: article.taille_id,
+      utilisateur_id: utilisateur_id,
+    );
 
-    var reponse =
-        await ApiServices().deletePanierItem(utilisateur_id, panierItem);
+    var reponse = await ApiServices().deletePanierItem(
+      utilisateur_id,
+      panierItem,
+    );
 
     print("DELETE FROM PANIER REPONSE : $reponse");
 
@@ -164,108 +172,115 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: onRefreshPanierContent,
-      backgroundColor: BLUE,
+      backgroundColor: PRIMARY,
       triggerMode: RefreshIndicatorTriggerMode.onEdge,
       color: WHITE,
       child: Scaffold(
-          backgroundColor: GREY,
-          body: needToLogin == false
-              ? Stack(
-                  children: [
-                    Column(
-                      children: [
-                        espacementWidget(height: 40),
-                        panierAppBar(),
-                        if (isLoading == true)
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 400,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
+        backgroundColor: GREY,
+        body: needToLogin == false
+            ? Stack(
+                children: [
+                  Column(
+                    children: [
+                      espacementWidget(height: 40),
+                      panierAppBar(),
+                      if (isLoading == true)
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 400,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
                           ),
-                        cartProduit.isEmpty && isLoading == false
-                            ? emptyCartWithSuggestion(context)
-                            : notEmptyCart(),
-                      ],
-                    ),
-                    if (cartProduit.isNotEmpty && isLoading == false)
-                      Positioned(
-                          bottom: 0,
-                          child: Container(
-                            color: WHITE,
-                            height: 110,
-                            padding: const EdgeInsets.all(20),
-                            width: MediaQuery.of(context).size.width,
-                            child: SingleChildScrollView(
-                              child: Column(
+                        ),
+                      cartProduit.isEmpty && isLoading == false
+                          ? emptyCartWithSuggestion(context)
+                          : notEmptyCart(),
+                    ],
+                  ),
+                  if (cartProduit.isNotEmpty && isLoading == false)
+                    Positioned(
+                      bottom: 0,
+                      child: Container(
+                        color: WHITE,
+                        height: 110,
+                        padding: const EdgeInsets.all(20),
+                        width: MediaQuery.of(context).size.width,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      customText('TOTAL :',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                          )),
-                                      customText(
-                                          formatMoney(
-                                              prixTotalPanier.toString()),
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              overflow: TextOverflow.ellipsis,
-                                              fontWeight: FontWeight.bold)),
-                                    ],
+                                  customText(
+                                    'TOTAL :',
+                                    style: const TextStyle(fontSize: 14),
                                   ),
-                                  espacementWidget(height: 10),
-                                  SizedBox(
-                                    height: 40,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Expanded(
-                                      flex: 1,
-                                      child: MyButtonWidget(
-                                          onPressed: () => CustomPageRoute(
-                                              ConfirmationCommandeProduit(
-                                                  panier: cartProduit,
-                                                  sousTotal: prixTotalPanier),
-                                              context),
-                                          label: 'VALIDER LE PANIER',
-                                          bgColor: BLUE,
-                                          labelColor: WHITE),
+                                  customText(
+                                    formatMoney(prixTotalPanier.toString()),
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ))
-                  ],
-                )
-              : (needToLogin == true
+                              espacementWidget(height: 10),
+                              SizedBox(
+                                height: 40,
+                                width: MediaQuery.of(context).size.width,
+                                child: Expanded(
+                                  flex: 1,
+                                  child: MyButtonWidget(
+                                    onPressed: () => CustomPageRoute(
+                                      ConfirmationCommandeProduit(
+                                        panier: cartProduit,
+                                        sousTotal: prixTotalPanier,
+                                      ),
+                                      context,
+                                    ),
+                                    label: 'VALIDER LE PANIER',
+                                    bgColor: PRIMARY,
+                                    labelColor: WHITE,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              )
+            : (needToLogin == true
                   ? const NeedToLogin()
-                  : const Center(
-                      child: CircularProgressIndicator(),
-                    ))),
+                  : const Center(child: CircularProgressIndicator())),
+      ),
     );
   }
 
   Column moyenDePayment(BuildContext context) {
     return Column(
       children: [
-        customText('Payez avec avec les moyens de paiement locaux suivants :',
-            softWrap: true,
-            maxLines: 2,
-            style: const TextStyle(
-              fontSize: 11,
-            )),
+        customText(
+          'Payez avec avec les moyens de paiement locaux suivants :',
+          softWrap: true,
+          maxLines: 2,
+          style: const TextStyle(fontSize: 11),
+        ),
         espacementWidget(height: 5),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
               onTap: () => CustomPageRoute(
-                  ConfirmationCommandeProduit(
-                      panier: cartProduit, sousTotal: prixTotalPanier),
-                  context),
+                ConfirmationCommandeProduit(
+                  panier: cartProduit,
+                  sousTotal: prixTotalPanier,
+                ),
+                context,
+              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
@@ -279,9 +294,12 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
             espacementWidget(width: 10),
             GestureDetector(
               onTap: () => CustomPageRoute(
-                  ConfirmationCommandeProduit(
-                      panier: cartProduit, sousTotal: prixTotalPanier),
-                  context),
+                ConfirmationCommandeProduit(
+                  panier: cartProduit,
+                  sousTotal: prixTotalPanier,
+                ),
+                context,
+              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
@@ -300,151 +318,158 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
 
   notEmptyCart() {
     return Expanded(
-        child: SingleChildScrollView(
-      child: Column(
-        children: [
-          espacementWidget(height: 5),
-          for (var index = 0; index < cartProduit.length; index++)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-              child: cartTileItem(article: cartProduit[index]),
-            ),
-          espacementWidget(height: 20),
-          const SuggestionProduitWidget()
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            espacementWidget(height: 5),
+            for (var index = 0; index < cartProduit.length; index++)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 4,
+                ),
+                child: cartTileItem(article: cartProduit[index]),
+              ),
+            espacementWidget(height: 20),
+            const SuggestionProduitWidget(),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   Container cartTileItem({required ArticlesCommandeModel article}) {
     return Container(
       color: WHITE,
-      child: Row(children: [
-        espacementWidget(width: 8),
-        GestureDetector(
-          onTap: () {
-            delelePanierItem(article);
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                color: WHITE, borderRadius: BorderRadius.circular(50)),
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: HeroIcon(
-                HeroIcons.trash,
-                color: DANGER,
-                size: 14,
+      child: Row(
+        children: [
+          espacementWidget(width: 8),
+          GestureDetector(
+            onTap: () {
+              delelePanierItem(article);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: WHITE,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: HeroIcon(HeroIcons.trash, color: DANGER, size: 14),
               ),
             ),
           ),
-        ),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                roundedImageContainer(
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  roundedImageContainer(
                     image: article.photo_cover.toString(),
                     width: 50,
-                    height: 60),
-                espacementWidget(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        child: customText(article.nom_produit.toString(),
+                    height: 60,
+                  ),
+                  espacementWidget(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          child: customText(
+                            article.nom_produit.toString(),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: DARK,
-                            )),
-                      ),
-                      espacementWidget(height: 2),
-                      Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
+                            style: TextStyle(fontSize: 12, color: DARK),
+                          ),
+                        ),
+                        espacementWidget(height: 2),
+                        Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
                             color: Colors.black12.withOpacity(.013),
-                            borderRadius: BorderRadius.circular(3)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            customText(
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              customText(
                                 'Couleur : ${article.nom_couleur} / Taille : ${article.code_taille}',
                                 style: const TextStyle(
                                   fontSize: 10,
                                   overflow: TextOverflow.ellipsis,
-                                )),
-                            espacementWidget(width: 2),
-                            const HeroIcon(
-                              HeroIcons.chevronDown,
-                              size: 12,
-                            ),
-                          ],
+                                ),
+                              ),
+                              espacementWidget(width: 2),
+                              const HeroIcon(HeroIcons.chevronDown, size: 12),
+                            ],
+                          ),
                         ),
-                      ),
-                      espacementWidget(height: 2),
-                      SizedBox(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            customText(
+                        espacementWidget(height: 2),
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              customText(
                                 formatMoney(article.prix_unitaire.toString()),
                                 style: const TextStyle(
-                                    fontSize: 12,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontWeight: FontWeight.bold)),
-                            espacementWidget(width: 60),
-                            CustomizableCounter(
-                              padding: 4,
-                              count: double.parse(article.quantite as String),
-                              step: 1,
-                              minCount: 1,
-                              maxCount: double.parse(
-                                  article.quantite_en_stock as String),
-                              incrementIcon: const Icon(
-                                Icons.add,
-                                color: Colors.white,
+                                  fontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              decrementIcon: const Icon(
-                                Icons.remove,
-                                color: Colors.white,
+                              espacementWidget(width: 60),
+                              CustomizableCounter(
+                                padding: 4,
+                                count: double.parse(article.quantite as String),
+                                step: 1,
+                                minCount: 1,
+                                maxCount: double.parse(
+                                  article.quantite_en_stock as String,
+                                ),
+                                incrementIcon: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                decrementIcon: const Icon(
+                                  Icons.remove,
+                                  color: Colors.white,
+                                ),
+                                onCountChange: (count) {
+                                  setState(() {
+                                    article.quantite = count.toString();
+                                  });
+                                  updatePrixTotalPanier();
+                                },
+                                onIncrement: (count) {
+                                  setState(() {
+                                    article.quantite = count.toString();
+                                  });
+                                  updatePrixTotalPanier();
+                                },
+                                onDecrement: (count) {
+                                  setState(() {
+                                    article.quantite = count.toString();
+                                  });
+                                  updatePrixTotalPanier();
+                                },
                               ),
-                              onCountChange: (count) {
-                                setState(() {
-                                  article.quantite = count.toString();
-                                });
-                                updatePrixTotalPanier();
-                              },
-                              onIncrement: (count) {
-                                setState(() {
-                                  article.quantite = count.toString();
-                                });
-                                updatePrixTotalPanier();
-                              },
-                              onDecrement: (count) {
-                                setState(() {
-                                  article.quantite = count.toString();
-                                });
-                                updatePrixTotalPanier();
-                              },
-                            )
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      customText(
+                        customText(
                           "Total restant : ${article.quantite_en_stock} articles",
-                          style: TextStyle(fontSize: 9, color: BLUE)),
-                    ],
+                          style: TextStyle(fontSize: 9, color: PRIMARY),
+                        ),
+                      ],
+                    ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           ),
-        )
-      ]),
+        ],
+      ),
     );
   }
 
@@ -460,24 +485,20 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: 50,
-                    height: 1,
-                    color: BLUE,
+                  Container(width: 50, height: 1, color: PRIMARY),
+                  customText(
+                    'Vous pourriez le remplir avec',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  customText('Vous pourriez le remplir avec',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
-                  Container(
-                    width: 50,
-                    height: 1,
-                    color: BLUE,
-                  ),
+                  Container(width: 50, height: 1, color: PRIMARY),
                 ],
               ),
             ),
             espacementWidget(height: 20),
-            SuggestionProduitWidget()
+            SuggestionProduitWidget(),
           ],
         ),
       ),
@@ -488,16 +509,15 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
     return Center(
       child: Column(
         children: [
-          const Image(
-            image: AssetImage(empty_cart),
-            height: 230,
-            width: 230,
+          const Image(image: AssetImage(empty_cart), height: 230, width: 230),
+          customText(
+            'Votre panier est vide',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          customText('Votre panier est vide',
-              style:
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          customText('Connectez-vous pour consulter votre panier',
-              style: const TextStyle(fontSize: 12)),
+          customText(
+            'Connectez-vous pour consulter votre panier',
+            style: const TextStyle(fontSize: 12),
+          ),
           espacementWidget(height: 10),
           Padding(
             padding: const EdgeInsets.all(15),
@@ -508,23 +528,29 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 5),
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                      color: WHITE, border: Border.all(width: 1, color: WHITE)),
+                    color: WHITE,
+                    border: Border.all(width: 1, color: WHITE),
+                  ),
                   child: customText(
                     'Achetez Maintenant',
                     style: TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold, color: DARK),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: DARK,
+                    ),
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 5),
-                  color: BLUE,
+                  color: PRIMARY,
                   padding: const EdgeInsets.all(6),
                   child: customText(
                     'Me connecter',
                     style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: WHITE),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: WHITE,
+                    ),
                   ),
                 ),
               ],
@@ -557,22 +583,29 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                 ),
                 espacementWidget(width: 10),
                 customText(
-                    cartProduit.isEmpty
-                        ? 'Panier'
-                        : 'Panier (${cartProduit.length})',
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold)),
+                  cartProduit.isEmpty
+                      ? 'Panier'
+                      : 'Panier (${cartProduit.length})',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 espacementWidget(width: 10),
                 Container(
                   padding: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
-                      color: BLUE, borderRadius: BorderRadius.circular(40)),
+                    color: PRIMARY,
+                    borderRadius: BorderRadius.circular(40),
+                  ),
                   child: Row(
                     children: [
                       HeroIcon(HeroIcons.mapPin, size: 12, color: WHITE),
                       espacementWidget(width: 5),
-                      customText('Livraison partout au congo',
-                          style: TextStyle(fontSize: 9, color: WHITE)),
+                      customText(
+                        'Livraison partout au congo',
+                        style: TextStyle(fontSize: 9, color: WHITE),
+                      ),
                     ],
                   ),
                 ),
@@ -582,10 +615,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
               onTap: () => CustomPageRoute(const SearchBarScreen(), context),
               child: const Padding(
                 padding: EdgeInsets.all(4.0),
-                child: HeroIcon(
-                  HeroIcons.magnifyingGlass,
-                  size: 25,
-                ),
+                child: HeroIcon(HeroIcons.magnifyingGlass, size: 25),
               ),
             ),
           ],

@@ -106,7 +106,7 @@ class _AuthentificationScreenState extends State<AuthentificationScreen> {
                   child: MyButtonWidget(
                     onPressed: () => loginProcess(context),
                     label: 'SE CONNECTER',
-                    bgColor: BLUE,
+                    bgColor: PRIMARY,
                     style: const TextStyle(fontSize: 12),
                     labelColor: WHITE,
                   ),
@@ -155,7 +155,7 @@ class _AuthentificationScreenState extends State<AuthentificationScreen> {
                   child: MyButtonWidget(
                     onPressed: () => loginProcess(context),
                     label: 'CREER MON COMPTE',
-                    bgColor: BLUE,
+                    bgColor: PRIMARY,
                     labelColor: WHITE,
                     style: const TextStyle(fontSize: 12),
                   ),
