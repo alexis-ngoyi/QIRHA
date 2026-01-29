@@ -45,7 +45,6 @@ class _DetailProduitState extends State<DetailProduit> {
   final List<ProduitCaracteristiqueModel> produitCaracteristique = [];
   final List<ProduitCaracteristiqueModel> produitCaracteristiqueArgumentVente =
       [];
-  List<dynamic> produitAllCaracteristiques = [];
 
   // isLogged
   bool isLogged = true;
@@ -56,6 +55,7 @@ class _DetailProduitState extends State<DetailProduit> {
   // isLoadingHeartFavoris
   bool isLoadingHeartFavoris = false;
 
+  var produitAllCaracteristiques = [];
   getProduitAllCaracteristiques() async {
     var caracteristiques = await ApiServices().getProduitAllCaracteristiques(
       produit.produit_id.toString(),
@@ -456,9 +456,64 @@ class _DetailProduitState extends State<DetailProduit> {
                 ],
               ),
 
-              customDivider(),
+              greyBand(context),
 
               // attributs
+              Column(
+                children: [
+                  for (var attribut in produitAllCaracteristiques) ...[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          customText(
+                            attribut["nom_main_attribut"],
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              for (var carac in attribut["caracteristiques"])
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 4.0,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print(
+                                        "Sélectionné : ${carac["contenu_text"]}",
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(width: 1),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: customText(
+                                          carac["contenu_text"],
+                                          style: const TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+
               espacementWidget(height: 10),
 
               delaiTraitement(),

@@ -123,6 +123,7 @@ class ApiServices {
       Response response = await dio.post(
         '/attributs-produit/$produit_id/all-caracteristiques',
       );
+
       return response.data;
     } catch (error) {
       print(
