@@ -63,6 +63,50 @@ class _DetailProduitState extends State<DetailProduit> {
     });
   }
 
+  var prix_par_defaut = 0;
+  var quantite_par_defaut = 0;
+  var prix_promo_par_defaut = 0.0;
+
+  getProduitPrixMinimumParams() async {
+    var prix_params = await ApiServices().getProduitPrixMinimumParams(
+      produit.prix_produit_id.toString(),
+    );
+
+    setState(() {
+      // Récupération sécurisée des valeurs
+      final double prix =
+          double.tryParse(prix_params['prix'].toString()) ?? 0.0;
+      final int quantite =
+          int.tryParse(prix_params['quantite_en_stock'].toString()) ?? 0;
+
+      prix_par_defaut = prix as int;
+
+      // Calcul du prix promo uniquement si le produit est en promo
+      prix_promo_par_defaut = widget.produit.est_en_promo == true
+          ? prix * (widget.produit.taux_reduction!.toDouble())
+          : 0.0;
+
+      quantite_par_defaut = quantite;
+
+      // Réinitialisation des attributs sélectionnés
+      selectedAttributs = [];
+    });
+
+    prix_params['combinaison_attribut_produit_caracteristique_ids'].forEach((
+      item,
+    ) {
+      setState(() {
+        selectedAttributs.add(
+          SelectedAttribut(
+            attributs_produit_caracteristiques_id:
+                item['attributs_produit_caracteristiques_id'],
+            attributs_produit_id: item['attributs_produit_id'],
+          ),
+        );
+      });
+    });
+  }
+
   getProduitCaracteristique() async {
     var caracteristiques = await ApiServices().getProduitCaracteristique(
       produit.produit_id.toString(),
@@ -184,7 +228,7 @@ class _DetailProduitState extends State<DetailProduit> {
   @override
   void initState() {
     super.initState();
-
+    getProduitPrixMinimumParams();
     getProduitCaracteristique();
     getProduitAllCaracteristiques();
     getProduitAvisStats();
@@ -363,7 +407,7 @@ class _DetailProduitState extends State<DetailProduit> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   customText(
-                    '0 restant',
+                    '$quantite_par_defaut restant',
                     style: TextStyle(fontSize: 9, color: WHITE),
                   ),
                   espacementWidget(height: 2),
@@ -588,9 +632,7 @@ class _DetailProduitState extends State<DetailProduit> {
                     ),
                     espacementWidget(width: 5),
                     customText(
-                      formatMoney(
-                        widget.produit.prix_minimum?.toString() ?? '0',
-                      ),
+                      formatMoney(prix_par_defaut.toString()),
                       style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.normal,
@@ -603,9 +645,7 @@ class _DetailProduitState extends State<DetailProduit> {
               : Row(
                   children: [
                     customText(
-                      formatMoney(
-                        widget.produit.prix_minimum?.toString() ?? '0',
-                      ),
+                      formatMoney(prix_par_defaut.toString()),
                       style: TextStyle(
                         color: PRIMARY,
                         fontSize: 15,

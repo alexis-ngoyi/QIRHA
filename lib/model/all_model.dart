@@ -256,6 +256,7 @@ class ProduitModel {
   String? fournisseur_id;
   String? nom_fournisseur;
   String? produit_id;
+  String? prix_produit_id;
 
   ProduitModel({
     this.nom,
@@ -271,6 +272,7 @@ class ProduitModel {
     this.fournisseur_id,
     this.nom_fournisseur,
     this.produit_id,
+    this.prix_produit_id,
   });
 
   // Factory pour convertir le JSON en objet ProduitModel

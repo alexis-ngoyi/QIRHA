@@ -62,6 +62,7 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
             fournisseur_id: produit['fournisseur_id'].toString(),
             nom_fournisseur: produit['nom_fournisseur'],
             produit_id: produit['produit_id'].toString(),
+            prix_produit_id: produit['prix_produit_id'].toString(),
           ),
         );
       });

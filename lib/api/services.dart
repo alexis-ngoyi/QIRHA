@@ -133,6 +133,21 @@ class ApiServices {
     }
   }
 
+  getProduitPrixMinimumParams(String? prix_produit_id) async {
+    try {
+      Response response = await dio.post(
+        '/prix-produit/prix-produit-id/$prix_produit_id',
+      );
+
+      return response.data;
+    } catch (error) {
+      print(
+        "EXCEPTION [getProduitPrixMinimumParams] ('/prix-produit/prix-produit-id/$prix_produit_id) : $error",
+      );
+      return [];
+    }
+  }
+
   getProduitOfCategorie(String? categorie_id) async {
     try {
       Response response = await dio.post('/produits/categorie/$categorie_id');

@@ -89,6 +89,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
             fournisseur_id: produit['fournisseur_id'].toString(),
             nom_fournisseur: produit['nom_fournisseur'],
             produit_id: produit['produit_id'].toString(),
+            prix_produit_id: produit['prix_produit_id'].toString(),
           ),
         );
 
@@ -108,6 +109,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
               fournisseur_id: produit['fournisseur_id'].toString(),
               nom_fournisseur: produit['nom_fournisseur'],
               produit_id: produit['produit_id'].toString(),
+              prix_produit_id: produit['prix_produit_id'].toString(),
             ),
           );
         }
