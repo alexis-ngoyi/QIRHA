@@ -8,7 +8,7 @@ import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/widgets/custom_loading.dart';
-import 'package:qirha/main/bazard/bazard_home.dart';
+import 'package:qirha/main/produits/all_produit_bazard.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -380,7 +380,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
 
   GestureDetector ProduitsEnReduction() {
     return GestureDetector(
-      onTap: () => CustomPageRoute(BazardHomePage(), context),
+      onTap: () => CustomPageRoute(AllProduitBazardPage(), context),
       child: Column(
         children: [
           espacementWidget(height: 15),

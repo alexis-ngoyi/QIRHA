@@ -12,13 +12,13 @@ import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
-class BazardHomePage extends StatefulWidget {
-  const BazardHomePage({super.key});
+class AllProduitBazardPage extends StatefulWidget {
+  const AllProduitBazardPage({super.key});
   @override
-  State<BazardHomePage> createState() => _BazardHomePageState();
+  State<AllProduitBazardPage> createState() => _AllProduitBazardPageState();
 }
 
-class _BazardHomePageState extends State<BazardHomePage> {
+class _AllProduitBazardPageState extends State<AllProduitBazardPage> {
   bool isLoading = false;
   List<Tab> tabs = <Tab>[const Tab(text: 'Tout')];
   List<Widget> tabViews = <Widget>[const BazardToutProduit()];

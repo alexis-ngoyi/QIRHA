@@ -19,7 +19,7 @@ import 'package:qirha/widgets/need_to_login.dart';
 import 'package:qirha/widgets/rate_stars.dart';
 import 'package:qirha/widgets/reactive_icon_widget.dart';
 import 'package:qirha/widgets/text_collapse_widget.dart';
-import 'package:qirha/main/bazard/bazard_home.dart';
+import 'package:qirha/main/produits/all_produit_bazard.dart';
 import 'package:qirha/main/produits/send_message_produit.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
@@ -308,7 +308,7 @@ class _DetailProduitState extends State<DetailProduit> {
                   bottom: 0,
                   child: GestureDetector(
                     onTap: () =>
-                        CustomPageRoute(const BazardHomePage(), context),
+                        CustomPageRoute(const AllProduitBazardPage(), context),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 3),
                       color: PRIMARY,
@@ -521,7 +521,8 @@ class _DetailProduitState extends State<DetailProduit> {
 
               if (reduction)
                 GestureDetector(
-                  onTap: () => CustomPageRoute(const BazardHomePage(), context),
+                  onTap: () =>
+                      CustomPageRoute(const AllProduitBazardPage(), context),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 12,
