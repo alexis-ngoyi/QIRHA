@@ -20,7 +20,7 @@ import 'package:qirha/main/bottom_nav/tab_categorie.dart';
 import 'package:qirha/main/bottom_nav/tab_mes_commandes.dart';
 import 'package:qirha/main/bottom_nav/tab_mon_compte.dart';
 import 'package:qirha/main/bottom_nav/tab_panier.dart';
-import 'package:qirha/main/search.dart';
+import 'package:qirha/main/recherche/search.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/miss_permissions.dart';
 import 'package:qirha/res/utils.dart';

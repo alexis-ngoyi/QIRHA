@@ -8,7 +8,7 @@ import 'package:qirha/api/services.dart';
 import 'package:qirha/widgets/filter_widget.dart';
 import 'package:qirha/widgets/cart_widget.dart';
 
-import 'package:qirha/main/search.dart';
+import 'package:qirha/main/recherche/search.dart';
 
 // Model
 import 'package:qirha/model/all_model.dart';

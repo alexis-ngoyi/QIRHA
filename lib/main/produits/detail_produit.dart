@@ -20,7 +20,7 @@ import 'package:qirha/widgets/rate_stars.dart';
 import 'package:qirha/widgets/reactive_icon_widget.dart';
 import 'package:qirha/widgets/text_collapse_widget.dart';
 import 'package:qirha/main/bazard/bazard_home.dart';
-import 'package:qirha/main/categorie/send_message_produit.dart';
+import 'package:qirha/main/produits/send_message_produit.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 

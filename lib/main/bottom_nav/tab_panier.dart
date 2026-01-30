@@ -12,7 +12,7 @@ import 'package:qirha/widgets/need_to_login.dart';
 import 'package:qirha/widgets/suggestion_produit.dart';
 import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/main/commandes/confirmation_commande.dart';
-import 'package:qirha/main/search.dart';
+import 'package:qirha/main/recherche/search.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/widgets/custom_counter_cart.dart';

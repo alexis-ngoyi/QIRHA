@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:qirha/api/services.dart';
 
-import 'package:qirha/main/categorie/sous_categorie.dart';
+import 'package:qirha/main/produits/sous_categorie.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';

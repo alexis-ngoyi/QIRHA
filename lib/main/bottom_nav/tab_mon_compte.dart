@@ -7,10 +7,10 @@ import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/widgets/need_to_login.dart';
 import 'package:qirha/widgets/suggestion_produit.dart';
-import 'package:qirha/main/bottom_nav/compte/favoris.dart';
-import 'package:qirha/main/bottom_nav/compte/historique.dart';
-import 'package:qirha/main/bottom_nav/compte/parametres/parametres.dart';
-import 'package:qirha/main/bottom_nav/compte/souscriptions.dart';
+import 'package:qirha/main/compte/favoris.dart';
+import 'package:qirha/main/compte/historique.dart';
+import 'package:qirha/main/parametres/parametres.dart';
+import 'package:qirha/main/compte/souscriptions.dart';
 import 'package:qirha/main/bottom_nav/tab_mes_commandes.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
@@ -76,23 +76,27 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     iconLabelledItem(
-                        icon: HeroIcons.heart,
-                        text: 'Favoris',
-                        onTap: () =>
-                            CustomPageRoute(const CompteFavoris(), context)),
+                      icon: HeroIcons.heart,
+                      text: 'Favoris',
+                      onTap: () =>
+                          CustomPageRoute(const CompteFavoris(), context),
+                    ),
                     iconLabelledItem(
-                        icon: HeroIcons.calendar,
-                        text: 'Historique',
-                        onTap: () =>
-                            CustomPageRoute(const CompteHistorique(), context)),
+                      icon: HeroIcons.calendar,
+                      text: 'Historique',
+                      onTap: () =>
+                          CustomPageRoute(const CompteHistorique(), context),
+                    ),
                     iconLabelledItem(
-                        icon: HeroIcons.gift,
-                        text: 'Offrir un cadeau',
-                        onTap: () {}),
+                      icon: HeroIcons.gift,
+                      text: 'Offrir un cadeau',
+                      onTap: () {},
+                    ),
                     iconLabelledItem(
-                        icon: HeroIcons.banknotes,
-                        text: 'Portefeuille',
-                        onTap: () {}),
+                      icon: HeroIcons.banknotes,
+                      text: 'Portefeuille',
+                      onTap: () {},
+                    ),
                   ],
                 ),
               ),
@@ -100,17 +104,16 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
             (needToLogin == true)
                 ? Container(
                     margin: const EdgeInsets.symmetric(vertical: 40),
-                    child: requestLogin(context))
+                    child: requestLogin(context),
+                  )
                 : (needToLogin == false
-                    ? const SizedBox()
-                    : const Center(
-                        child: CircularProgressIndicator(),
-                      )),
+                      ? const SizedBox()
+                      : const Center(child: CircularProgressIndicator())),
             if (needToLogin == false) mesCommandeView(context),
             espacementWidget(height: 10),
             nosServicesView(context),
             espacementWidget(height: 40),
-            const SuggestionProduitWidget()
+            const SuggestionProduitWidget(),
           ],
         ),
       ),
@@ -130,7 +133,10 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
                 customText(
                   'Autres',
                   style: TextStyle(
-                      fontSize: 15, color: DARK, fontWeight: FontWeight.bold),
+                    fontSize: 15,
+                    color: DARK,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 GestureDetector(
                   onTap: () => {},
@@ -147,7 +153,7 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
                       // )
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -160,32 +166,48 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 iconLabelledItem(
-                    icon: HeroIcons.signal,
-                    text: 'Nous recrutons',
-                    onTap: () {}),
+                  icon: HeroIcons.signal,
+                  text: 'Nous recrutons',
+                  onTap: () {},
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.user, text: 'Inscription', onTap: () {}),
+                  icon: HeroIcons.user,
+                  text: 'Inscription',
+                  onTap: () {},
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.phoneArrowUpRight,
-                    text: 'Assistance',
-                    onTap: () {}),
+                  icon: HeroIcons.phoneArrowUpRight,
+                  text: 'Assistance',
+                  onTap: () {},
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.rss,
-                    text: 'Souscription E-mail',
-                    onTap: () => CustomPageRoute(
-                        const CompteSouscriptionsEmail(), context)),
+                  icon: HeroIcons.rss,
+                  text: 'Souscription E-mail',
+                  onTap: () => CustomPageRoute(
+                    const CompteSouscriptionsEmail(),
+                    context,
+                  ),
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.envelope,
-                    text: 'Commentaires',
-                    onTap: () {}),
+                  icon: HeroIcons.envelope,
+                  text: 'Commentaires',
+                  onTap: () {},
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.share, text: 'Partager', onTap: () {}),
+                  icon: HeroIcons.share,
+                  text: 'Partager',
+                  onTap: () {},
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.chatBubbleLeftRight,
-                    text: 'FAQ',
-                    onTap: () {}),
+                  icon: HeroIcons.chatBubbleLeftRight,
+                  text: 'FAQ',
+                  onTap: () {},
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.userPlus, text: 'Parrainner', onTap: () {}),
+                  icon: HeroIcons.userPlus,
+                  text: 'Parrainner',
+                  onTap: () {},
+                ),
               ],
             ),
           ),
@@ -207,15 +229,19 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
                 customText(
                   'Mes commandes',
                   style: TextStyle(
-                      fontSize: 15, color: DARK, fontWeight: FontWeight.bold),
+                    fontSize: 15,
+                    color: DARK,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 GestureDetector(
                   onTap: () => CustomPageRoute(
-                      const TabMesCommandesScreen(
-                        initialIndex: 0,
-                        canReturn: true,
-                      ),
-                      context),
+                    const TabMesCommandesScreen(
+                      initialIndex: 0,
+                      canReturn: true,
+                    ),
+                    context,
+                  ),
                   child: Row(
                     children: [
                       customText(
@@ -223,13 +249,10 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
                         style: TextStyle(fontSize: 12, color: DARK),
                       ),
                       espacementWidget(width: 5),
-                      const HeroIcon(
-                        HeroIcons.chevronRight,
-                        size: 14,
-                      )
+                      const HeroIcon(HeroIcons.chevronRight, size: 14),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -242,51 +265,62 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 iconLabelledItem(
-                    icon: HeroIcons.wallet,
-                    text: 'Non Payee',
-                    onTap: () => CustomPageRoute(
-                        const TabMesCommandesScreen(
-                          initialIndex: 1,
-                          canReturn: true,
-                        ),
-                        context)),
+                  icon: HeroIcons.wallet,
+                  text: 'Non Payee',
+                  onTap: () => CustomPageRoute(
+                    const TabMesCommandesScreen(
+                      initialIndex: 1,
+                      canReturn: true,
+                    ),
+                    context,
+                  ),
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.arrowLeftOnRectangle,
-                    text: 'Preparation',
-                    onTap: () => CustomPageRoute(
-                        const TabMesCommandesScreen(
-                          initialIndex: 2,
-                          canReturn: true,
-                        ),
-                        context)),
+                  icon: HeroIcons.arrowLeftOnRectangle,
+                  text: 'Preparation',
+                  onTap: () => CustomPageRoute(
+                    const TabMesCommandesScreen(
+                      initialIndex: 2,
+                      canReturn: true,
+                    ),
+                    context,
+                  ),
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.truck,
-                    text: 'Expedie',
-                    onTap: () => CustomPageRoute(
-                        const TabMesCommandesScreen(
-                          initialIndex: 3,
-                          canReturn: true,
-                        ),
-                        context)),
+                  icon: HeroIcons.truck,
+                  text: 'Expedie',
+                  onTap: () => CustomPageRoute(
+                    const TabMesCommandesScreen(
+                      initialIndex: 3,
+                      canReturn: true,
+                    ),
+                    context,
+                  ),
+                ),
                 iconLabelledItem(
-                    icon: HeroIcons.envelopeOpen,
-                    text: 'Donner un avis',
-                    onTap: () => CustomPageRoute(
-                        const TabMesCommandesScreen(
-                          initialIndex: 4,
-                          canReturn: true,
-                        ),
-                        context)),
+                  icon: HeroIcons.envelopeOpen,
+                  text: 'Donner un avis',
+                  onTap: () => CustomPageRoute(
+                    const TabMesCommandesScreen(
+                      initialIndex: 4,
+                      canReturn: true,
+                    ),
+                    context,
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  GestureDetector iconLabelledItem(
-      {required HeroIcons icon, required String text, Function()? onTap}) {
+  GestureDetector iconLabelledItem({
+    required HeroIcons icon,
+    required String text,
+    Function()? onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
@@ -296,10 +330,7 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              HeroIcon(
-                icon,
-                size: 24,
-              ),
+              HeroIcon(icon, size: 24),
               espacementWidget(height: 4),
               Center(
                 child: customCenterText(
@@ -309,7 +340,7 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 11, color: DARK),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -325,40 +356,28 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
         needToLogin == false
             ? 'Bonjour, John Doe'
             : 'Bonjour, cher.e visiteur.e',
-        style:
-            TextStyle(fontSize: 17, color: DARK, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          fontSize: 17,
+          color: DARK,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       actions: [
         GestureDetector(
           onTap: () => {},
-          child: const HeroIcon(
-            HeroIcons.share,
-            size: 21,
-          ),
+          child: const HeroIcon(HeroIcons.share, size: 21),
         ),
-        espacementWidget(
-          width: 15,
-        ),
+        espacementWidget(width: 15),
         GestureDetector(
           onTap: () => {},
-          child: const HeroIcon(
-            HeroIcons.bellAlert,
-            size: 21,
-          ),
+          child: const HeroIcon(HeroIcons.bellAlert, size: 21),
         ),
-        espacementWidget(
-          width: 15,
-        ),
+        espacementWidget(width: 15),
         GestureDetector(
           onTap: () => CustomPageRoute(const CompteParametres(), context),
-          child: const HeroIcon(
-            HeroIcons.cog8Tooth,
-            size: 21,
-          ),
+          child: const HeroIcon(HeroIcons.cog8Tooth, size: 21),
         ),
-        espacementWidget(
-          width: 15,
-        ),
+        espacementWidget(width: 15),
       ],
     );
   }

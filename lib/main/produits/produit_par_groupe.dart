@@ -3,30 +3,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:qirha/widgets/filter_widget.dart';
 
 import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:qirha/api/services.dart';
+import 'package:qirha/widgets/filter_widget.dart';
 import 'package:qirha/widgets/cart_widget.dart';
-import 'package:qirha/main/search.dart';
+import 'package:qirha/main/produits/produit_of_categorie_of_groupe.dart';
+import 'package:qirha/main/recherche/search.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
+import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
 
-class ProduitOfCategorieOfGroupe extends StatefulWidget {
-  const ProduitOfCategorieOfGroupe({
+class ProduitParGroupe extends StatefulWidget {
+  const ProduitParGroupe({
     super.key,
-    required this.categorie,
+    required this.groupe,
     required this.typeView,
   });
-  final CategorieModel categorie;
+  final GroupeCategorieModel groupe;
   final String typeView; //[HOT | DEFAULT]
   @override
-  State<ProduitOfCategorieOfGroupe> createState() =>
-      _ProduitOfCategorieOfGroupeState();
+  State<ProduitParGroupe> createState() => _ProduitParGroupeState();
 }
 
-class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
+class _ProduitParGroupeState extends State<ProduitParGroupe>
     with TickerProviderStateMixin {
   final ScrollController _mainScrollController = ScrollController();
   double currentScrollPosition = 0;
@@ -34,13 +35,13 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
   String currentTitle = '';
 
   List<ProduitModel> allProduits = <ProduitModel>[];
-  getProduitOfCategorie() async {
+  getProduitOfGroupe() async {
     setState(() {
       allProduits = [];
     });
 
-    var produits = await ApiServices().getProduitOfCategorie(
-      widget.categorie.categorie_id.toString(),
+    var produits = await ApiServices().getProduitOfGroupe(
+      widget.groupe.id.toString(),
     );
 
     produits.forEach((produit) {
@@ -71,11 +72,11 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
     currentScrollPosition = 0;
     super.initState();
 
-    // Produit of categorie [params]
-    getProduitOfCategorie();
+    // Produit of groupe [params]
+    getProduitOfGroupe();
 
     // Current title [current]
-    currentTitle = widget.categorie.libelle.toString();
+    currentTitle = widget.groupe.groupe.toString();
   }
 
   @override
@@ -131,7 +132,7 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
                     vertical: 13,
                     horizontal: 10,
                   ),
-                  child: appBarProduitOfCategorieOfGroupe(context),
+                  child: appBarProduitParGroupe(context),
                 ),
               ),
               Expanded(
@@ -141,11 +142,13 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      espacementWidget(height: 5),
+                      otherCategorieRow(),
                       StickyHeader(
                         header: Container(
                           width: MediaQuery.of(context).size.width,
                           color: WHITE,
-                          child: Column(children: [MyFilterWidget(top: 120)]),
+                          child: Column(children: [MyFilterWidget()]),
                         ),
                         content: Column(
                           children: [
@@ -192,7 +195,102 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
   ////         WIDGET FUNCTION SIDE                  ///
   //////////////////////////////////////////////////////
 
-  Row appBarProduitOfCategorieOfGroupe(BuildContext context) {
+  // RIGHT FILTER
+
+  Padding otherCategorieRow() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 7),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            espacementWidget(width: 4),
+            for (
+              var index = 0;
+              index < widget.groupe.categorie!.length;
+              index++
+            )
+              groupeCategorieItems(
+                index: 1,
+                img:
+                    widget.groupe.categorie![index].img.toString().isEmpty ||
+                        widget.groupe.categorie![index].img == null
+                    ? categorie_default
+                    : widget.groupe.categorie![index].img.toString(),
+                text: widget.groupe.categorie![index].libelle.toString(),
+                press: () => {
+                  CustomPageRoute(
+                    ProduitOfCategorieOfGroupe(
+                      typeView: 'DEFAULT',
+                      categorie: widget.groupe.categorie![index],
+                    ),
+                    context,
+                  ),
+                },
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector groupeCategorieItems({
+    required String img,
+    required String text,
+    required Function() press,
+    required int index,
+  }) {
+    return GestureDetector(
+      onTap: press,
+      child: Container(
+        width: 70,
+        height: 100,
+        padding: const EdgeInsets.all(5),
+        margin: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: WHITE,
+        ),
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: FadeInImage.assetNetwork(
+                    placeholder: placeholder,
+                    image: img,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4.0,
+                    horizontal: 8,
+                  ),
+                  child: SizedBox(
+                    width: 55,
+                    child: customCenterText(
+                      text,
+                      softWrap: true,
+                      maxLines: 3,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: DARK, fontSize: 11),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row appBarProduitParGroupe(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

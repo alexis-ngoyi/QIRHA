@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:qirha/api/services.dart';
 
-import 'package:qirha/main/categorie/produit_of_categorie_of_groupe.dart';
-import 'package:qirha/main/categorie/produit_par_groupe.dart';
+import 'package:qirha/main/produits/produit_of_categorie_of_groupe.dart';
+import 'package:qirha/main/produits/produit_par_groupe.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';

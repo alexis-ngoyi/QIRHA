@@ -7,7 +7,7 @@ import 'package:qirha/widgets/combo/custom_button.dart';
 import 'package:qirha/widgets/expandable_widget.dart';
 import 'package:qirha/widgets/selectable_container_livraison.dart';
 import 'package:qirha/functions/util_functions.dart';
-import 'package:qirha/main/bottom_nav/compte/parametres/qui_sommes_nous.dart';
+import 'package:qirha/main/parametres/qui_sommes_nous.dart';
 import 'package:qirha/main/commandes/moyen_de_paiement_commandes.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
