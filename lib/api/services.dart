@@ -307,12 +307,12 @@ class ApiServices {
   addPanierItem(String? utilisateur_id, AddPanierModel panierItem) async {
     try {
       Object data = {
-        'taille_id': panierItem.taille_id,
-        'couleur_id': panierItem.couleur_id,
-        'produit_id': panierItem.produit_id,
-        'utilisateur_id': panierItem.utilisateur_id,
-        'quantite': panierItem.quantite,
-        'photo_cover': panierItem.image_id,
+        // 'taille_id': panierItem.taille_id,
+        // 'couleur_id': panierItem.couleur_id,
+        // 'produit_id': panierItem.produit_id,
+        // 'utilisateur_id': panierItem.utilisateur_id,
+        // 'quantite': panierItem.quantite,
+        // 'photo_cover': panierItem.image_id,
       };
       Response response = await dio.post(
         '/panier-utilisateur/$utilisateur_id',
@@ -344,12 +344,12 @@ class ApiServices {
   deletePanierItem(String? utilisateur_id, AddPanierModel panierItem) async {
     try {
       Object data = {
-        'taille_id': panierItem.taille_id,
-        'couleur_id': panierItem.couleur_id,
-        'produit_id': panierItem.produit_id,
-        'utilisateur_id': panierItem.utilisateur_id,
-        'quantite': panierItem.quantite,
-        'image_id': panierItem.image_id,
+        // 'taille_id': panierItem.taille_id,
+        // 'couleur_id': panierItem.couleur_id,
+        // 'produit_id': panierItem.produit_id,
+        // 'utilisateur_id': panierItem.utilisateur_id,
+        // 'quantite': panierItem.quantite,
+        // 'image_id': panierItem.image_id,
       };
       Response response = await dio.post(
         '/delete-one/panier-utilisateur/$utilisateur_id',

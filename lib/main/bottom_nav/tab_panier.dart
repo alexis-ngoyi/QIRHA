@@ -124,12 +124,12 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
     var utilisateur_id = prefs.getString('utilisateur_id');
 
     AddPanierModel panierItem = AddPanierModel(
-      couleur_id: article.couleur_id,
-      quantite: article.quantite,
-      image_id: article.image_id,
-      produit_id: article.produit_id,
-      taille_id: article.taille_id,
-      utilisateur_id: utilisateur_id,
+      // couleur_id: article.couleur_id,
+      // quantite: article.quantite,
+      // image_id: article.image_id,
+      // produit_id: article.produit_id,
+      // taille_id: article.taille_id,
+      // utilisateur_id: utilisateur_id,
     );
 
     var reponse = await ApiServices().deletePanierItem(
@@ -421,10 +421,10 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                               espacementWidget(width: 60),
                               CustomizableCounter(
                                 padding: 4,
-                                count: double.parse(article.quantite as String),
+                                count: int.parse(article.quantite as String),
                                 step: 1,
                                 minCount: 1,
-                                maxCount: double.parse(
+                                maxCount: int.parse(
                                   article.quantite_en_stock as String,
                                 ),
                                 incrementIcon: const Icon(

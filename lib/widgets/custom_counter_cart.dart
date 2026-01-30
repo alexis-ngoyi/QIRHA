@@ -10,37 +10,37 @@ class CustomizableCounter extends StatefulWidget {
   final Widget? incrementIcon;
 
   /// the current value of the counter.
-  final double count;
+  final int count;
 
   /// the maximum value support for counter
-  final double maxCount;
+  final int maxCount;
 
   /// the minimum value support for counter
-  final double minCount;
+  final int minCount;
 
   /// the minimum value support for padding
   final double padding;
 
   /// amount increased or decreased after clicking buttons.
-  final double step;
+  final int step;
 
   /// does shown button text when counter value is zero.
 
   /// called when the counter value change by clicking button.
-  final void Function(double c)? onCountChange;
+  final void Function(int c)? onCountChange;
 
   /// called when the counter value increase by clicking increment button.
-  final void Function(double c)? onIncrement;
+  final void Function(int c)? onIncrement;
 
   /// called when the counter value increase by clicking increment button.
-  final void Function(double c)? onDecrement;
+  final void Function(int c)? onDecrement;
 
   const CustomizableCounter({
     super.key,
     this.decrementIcon,
     this.incrementIcon,
     this.count = 0,
-    this.maxCount = double.maxFinite,
+    this.maxCount = 0,
     this.minCount = 0,
     this.step = 1,
     this.onCountChange,
@@ -54,7 +54,7 @@ class CustomizableCounter extends StatefulWidget {
 }
 
 class _CustomizableCounterState extends State<CustomizableCounter> {
-  double mCount = 0;
+  int mCount = 0;
 
   @override
   void initState() {
@@ -106,7 +106,7 @@ class _CustomizableCounterState extends State<CustomizableCounter> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  _formatDouble(mCount),
+                  mCount.toString(),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 12,
@@ -127,18 +127,4 @@ class _CustomizableCounterState extends State<CustomizableCounter> {
       ],
     );
   }
-}
-
-String _formatDouble(double value) {
-  //this also rounds (so 0.8999999999999999 becomes '0.9000')
-  var verbose = value.toStringAsFixed(4);
-  var trimmed = verbose;
-  //trim all trailing 0's after the decimal point (and the decimal point if applicable)
-  for (var i = verbose.length - 1; i > 0; i--) {
-    if (trimmed[i] != '0' && trimmed[i] != '.' || !trimmed.contains('.')) {
-      break;
-    }
-    trimmed = trimmed.substring(0, i);
-  }
-  return trimmed;
 }

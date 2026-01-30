@@ -86,20 +86,20 @@ class ArticlesCommandeModel {
 }
 
 class AddPanierModel {
-  String? taille_id;
-  String? couleur_id;
+  String? panier_utilisateur_id;
   String? produit_id;
   String? utilisateur_id;
-  String? quantite;
-  String? image_id;
+  int? quantite;
+  String? photo_cover;
+  String? prix_produit_id;
 
   AddPanierModel({
-    required this.taille_id,
-    required this.couleur_id,
-    required this.produit_id,
-    required this.utilisateur_id,
-    required this.quantite,
-    required this.image_id,
+    this.panier_utilisateur_id,
+    this.produit_id,
+    this.utilisateur_id,
+    this.quantite,
+    this.photo_cover,
+    this.prix_produit_id,
   });
 }
 

@@ -12,6 +12,7 @@ import 'package:qirha/res/loading_process.dart';
 import 'package:qirha/widgets/carousel_detail_produit.dart';
 import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/widgets/combo/custom_button.dart';
+import 'package:qirha/widgets/custom_counter_cart.dart';
 import 'package:qirha/widgets/custom_timer_count_down.dart';
 import 'package:qirha/widgets/expandable_widget.dart';
 import 'package:qirha/widgets/need_to_login.dart';
@@ -66,6 +67,8 @@ class _DetailProduitState extends State<DetailProduit> {
   var prix_par_defaut = 0.0;
   var quantite_par_defaut = 0;
   var prix_promo_par_defaut = 0.0;
+  var selected_quantite = 1;
+  var prix_produit_id = 0;
 
   getProduitPrixMinimumParams() async {
     var prix_params = await ApiServices().getProduitPrixMinimumParams(
@@ -89,6 +92,8 @@ class _DetailProduitState extends State<DetailProduit> {
               : 0.0);
 
       quantite_par_defaut = quantite;
+
+      prix_produit_id = int.parse(widget.produit.prix_produit_id.toString());
 
       // Réinitialisation des attributs sélectionnés
       selectedAttributs = [];
@@ -218,22 +223,23 @@ class _DetailProduitState extends State<DetailProduit> {
               : 0.0);
 
       quantite_par_defaut = quantite;
+
+      prix_produit_id = int.parse(prix_params['prix_produit_id'].toString());
     });
   }
 
   // Ajouter au panier
-  addToCart() async {
+  onPressAjouterAuPanier() async {
     LoadingProcess.showLoading(text: 'Insertion dans le panier...');
 
     var utilisateur_id = prefs.getString('utilisateur_id');
 
     AddPanierModel panierItem = AddPanierModel(
-      couleur_id: '',
-      image_id: '',
-      produit_id: produit.produit_id,
-      quantite: '0', // default
-      taille_id: '',
+      quantite: selected_quantite,
+      produit_id: widget.produit.produit_id,
       utilisateur_id: utilisateur_id,
+      photo_cover: '',
+      prix_produit_id: prix_produit_id.toString(),
     );
 
     var reponse = await ApiServices().addPanierItem(utilisateur_id, panierItem);
@@ -298,51 +304,69 @@ class _DetailProduitState extends State<DetailProduit> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         width: MediaQuery.of(context).size.width,
-        height: 60,
+        height: 88,
         color: GREY,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+
           children: [
+            customText(
+              'TOTAL : ' +
+                  formatMoney(
+                    (selected_quantite *
+                            (widget.produit.est_en_promo == true
+                                ? prix_promo_par_defaut
+                                : prix_par_defaut))
+                        .toString(),
+                  ),
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
+            ),
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                espacementWidget(width: 10),
-                MyCartWidget(color: DARK),
-                espacementWidget(width: 20),
-                MyReactiveIconWidget(
-                  padding: 8,
-                  size: 25,
-                  isLoading: isLoadingHeartFavoris,
-                  activeColor: PRIMARY,
-                  activeIcon: Icons.favorite,
-                  isActive: isActiveHeartFavoris,
-                  color: LIGHT,
-                  icon: Icons.favorite_border,
-                  onTap: () {
-                    setState(() {
-                      isLoadingHeartFavoris = true;
-                    });
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    espacementWidget(width: 10),
+                    MyCartWidget(color: DARK),
+                    espacementWidget(width: 20),
+                    MyReactiveIconWidget(
+                      padding: 8,
+                      size: 25,
+                      isLoading: isLoadingHeartFavoris,
+                      activeColor: PRIMARY,
+                      activeIcon: Icons.favorite,
+                      isActive: isActiveHeartFavoris,
+                      color: LIGHT,
+                      icon: Icons.favorite_border,
+                      onTap: () {
+                        setState(() {
+                          isLoadingHeartFavoris = true;
+                        });
 
-                    // Fetch simulating
-                    Future.delayed(const Duration(seconds: 1), () {
-                      setState(() {
-                        isLoadingHeartFavoris = false;
-                        isActiveHeartFavoris = !isActiveHeartFavoris;
-                      });
-                    });
+                        // Fetch simulating
+                        Future.delayed(const Duration(seconds: 1), () {
+                          setState(() {
+                            isLoadingHeartFavoris = false;
+                            isActiveHeartFavoris = !isActiveHeartFavoris;
+                          });
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                MyButtonWidget(
+                  onPressed: () {
+                    onPressAjouterAuPanier();
                   },
+                  label: 'AJOUTER AU PANIER',
+                  bgColor: PRIMARY,
+                  labelColor: WHITE,
                 ),
               ],
-            ),
-            MyButtonWidget(
-              onPressed: () {
-                addToCart();
-              },
-              label: 'AJOUTER AU PANIER',
-              bgColor: PRIMARY,
-              labelColor: WHITE,
             ),
           ],
         ),
@@ -773,6 +797,8 @@ class _DetailProduitState extends State<DetailProduit> {
 
   Column AttriubutProduits() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+
       children: [
         for (var attribut in produitAllCaracteristiques) ...[
           Padding(
@@ -870,6 +896,46 @@ class _DetailProduitState extends State<DetailProduit> {
             ),
           ),
         ],
+
+        const SizedBox(height: 10),
+
+        Container(
+          margin: EdgeInsets.only(left: 10),
+          child: customText(
+            'Quantite : ',
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          margin: EdgeInsets.only(left: 10),
+          child: CustomizableCounter(
+            padding: 10,
+            count: selected_quantite,
+            step: 1,
+            minCount: 1,
+            maxCount: quantite_par_defaut,
+            incrementIcon: const Icon(Icons.add, color: Colors.white),
+            decrementIcon: const Icon(Icons.remove, color: Colors.white),
+            onCountChange: (count) {
+              setState(() {
+                selected_quantite = count;
+              });
+            },
+            onIncrement: (count) {
+              setState(() {
+                selected_quantite = count;
+              });
+            },
+            onDecrement: (count) {
+              setState(() {
+                selected_quantite = count;
+              });
+            },
+          ),
+        ),
+
+        //
       ],
     );
   }

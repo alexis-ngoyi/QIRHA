@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
@@ -154,4 +156,18 @@ void downloadFile(String url) async {
   } catch (e) {
     print("Error during download: $e");
   }
+}
+
+String _formatDouble(double value) {
+  //this also rounds (so 0.8999999999999999 becomes '0.9000')
+  var verbose = value.toStringAsFixed(4);
+  var trimmed = verbose;
+  //trim all trailing 0's after the decimal point (and the decimal point if applicable)
+  for (var i = verbose.length - 1; i > 0; i--) {
+    if (trimmed[i] != '0' && trimmed[i] != '.' || !trimmed.contains('.')) {
+      break;
+    }
+    trimmed = trimmed.substring(0, i);
+  }
+  return trimmed;
 }

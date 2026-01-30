@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:qirha/api/services.dart';
+import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/utils.dart';
 
@@ -26,14 +27,15 @@ class _SuggestionProduitWidgetState extends State<SuggestionProduitWidget> {
             status: produit['status'],
             description: produit['description'],
             est_en_promo: produit['est_en_promo'],
-            taux_reduction: (produit['taux_reduction'] as num?)?.toDouble(),
-            prix_promo: (produit['prix_promo'] as num?)?.toDouble(),
-            prix_minimum: (produit['prix_minimum'] as num?)?.toDouble(),
+            taux_reduction: parseDouble(produit['taux_reduction']),
+            prix_promo: parseDouble(produit['prix_promo']),
+            prix_minimum: parseDouble(produit['prix_minimum']),
             cree_le: produit['cree_le'],
             date_fin: produit['date_fin'],
             fournisseur_id: produit['fournisseur_id'].toString(),
             nom_fournisseur: produit['nom_fournisseur'],
             produit_id: produit['produit_id'].toString(),
+            prix_produit_id: produit['prix_produit_id'].toString(),
           ),
         );
       });

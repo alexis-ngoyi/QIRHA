@@ -4,7 +4,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:qirha/api/services.dart';
 
-import 'package:qirha/widgets/produit_image_viewer.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/images.dart';
@@ -132,8 +131,7 @@ class _CarouselDetailProduitState extends State<CarouselDetailProduit> {
         return Builder(
           builder: (BuildContext context) {
             return GestureDetector(
-              onTap: () =>
-                  CustomPageRoute(const customGalleryViewer(), context),
+              onTap: () => {},
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: FadeInImage.assetNetwork(
