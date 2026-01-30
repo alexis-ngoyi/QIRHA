@@ -63,7 +63,7 @@ class _DetailProduitState extends State<DetailProduit> {
     });
   }
 
-  var prix_par_defaut = 0;
+  var prix_par_defaut = 0.0;
   var quantite_par_defaut = 0;
   var prix_promo_par_defaut = 0.0;
 
@@ -79,12 +79,14 @@ class _DetailProduitState extends State<DetailProduit> {
       final int quantite =
           int.tryParse(prix_params['quantite_en_stock'].toString()) ?? 0;
 
-      prix_par_defaut = prix as int;
+      prix_par_defaut = prix;
 
       // Calcul du prix promo uniquement si le produit est en promo
-      prix_promo_par_defaut = widget.produit.est_en_promo == true
-          ? prix * (widget.produit.taux_reduction!.toDouble())
-          : 0.0;
+      prix_promo_par_defaut =
+          prix_par_defaut -
+          (widget.produit.est_en_promo == true
+              ? prix * (widget.produit.taux_reduction!.toDouble())
+              : 0.0);
 
       quantite_par_defaut = quantite;
 
@@ -194,12 +196,29 @@ class _DetailProduitState extends State<DetailProduit> {
     String? produit_id,
     required List<SelectedAttribut> selected,
   }) async {
-    var prix = await ApiServices().getProduitPrixParCombinaison(
+    var prix_params = await ApiServices().getProduitPrixParCombinaison(
       produit_id: widget.produit.produit_id,
       selected: selectedAttributs,
     );
 
-    print(prix);
+    setState(() {
+      // Récupération sécurisée des valeurs
+      final double prix =
+          double.tryParse(prix_params['prix'].toString()) ?? 0.0;
+      final int quantite =
+          int.tryParse(prix_params['quantite_en_stock'].toString()) ?? 0;
+
+      prix_par_defaut = prix;
+
+      // Calcul du prix promo uniquement si le produit est en promo
+      prix_promo_par_defaut =
+          prix_par_defaut -
+          (widget.produit.est_en_promo == true
+              ? prix * (widget.produit.taux_reduction!.toDouble())
+              : 0.0);
+
+      quantite_par_defaut = quantite;
+    });
   }
 
   // Ajouter au panier
@@ -623,7 +642,7 @@ class _DetailProduitState extends State<DetailProduit> {
               ? Row(
                   children: [
                     customText(
-                      formatMoney(widget.produit.prix_promo?.toString() ?? '0'),
+                      formatMoney(prix_promo_par_defaut.toString()),
                       style: TextStyle(
                         color: PRIMARY,
                         fontSize: 15,
