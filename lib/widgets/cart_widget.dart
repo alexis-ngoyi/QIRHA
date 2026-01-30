@@ -25,7 +25,8 @@ class _MyCartWidgetState extends State<MyCartWidget> {
   bool isLogged = false;
 
   loadCart() async {
-    var utilisateur_id = prefs.getString('utilisateur_id');
+    var utilisateur_id = 1;
+    // prefs.getString('utilisateur_id');
 
     // Define the interval duration in milliseconds
     const intervalDuration = Duration(seconds: 1);
@@ -81,17 +82,15 @@ class _MyCartWidgetState extends State<MyCartWidget> {
               right: 0,
               child: cart < 10
                   ? Container(
-                      height: 13,
-                      width: 13,
                       padding: const EdgeInsets.all(3),
                       decoration: BoxDecoration(
                         color: PRIMARY,
-                        borderRadius: BorderRadius.circular(100),
+                        borderRadius: BorderRadius.circular(1000),
                       ),
                       child: Center(
                         child: customText(
                           '$cart',
-                          style: TextStyle(fontSize: 6, color: WHITE),
+                          style: TextStyle(fontSize: 8, color: WHITE),
                         ),
                       ),
                     )
