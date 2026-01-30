@@ -326,3 +326,27 @@ class TypeProduit {
 
   TypeProduit({this.title, this.subtitle});
 }
+
+class SelectedAttribut {
+  final int attributs_produit_caracteristiques_id;
+  final int attributs_produit_id;
+
+  SelectedAttribut({
+    required this.attributs_produit_caracteristiques_id,
+    required this.attributs_produit_id,
+  });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is SelectedAttribut &&
+        other.attributs_produit_caracteristiques_id ==
+            attributs_produit_caracteristiques_id &&
+        other.attributs_produit_id == attributs_produit_id;
+  }
+
+  @override
+  int get hashCode =>
+      attributs_produit_caracteristiques_id.hashCode ^
+      attributs_produit_id.hashCode;
+}

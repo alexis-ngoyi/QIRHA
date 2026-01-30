@@ -7,7 +7,7 @@ import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/functions/util_functions.dart';
-import 'package:qirha/widgets/custom_loading.dart';
+import 'package:qirha/res/custom_loading.dart';
 import 'package:qirha/main/produits/all_produit_bazard.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';

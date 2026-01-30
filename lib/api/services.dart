@@ -221,6 +221,38 @@ class ApiServices {
     }
   }
 
+  getProduitPrixParCombinaison({
+    String? produit_id,
+    required List<SelectedAttribut> selected,
+  }) async {
+    try {
+      var json = [];
+
+      selected.forEach((item) {
+        json.add({
+          "attributs_produit_caracteristiques_id":
+              item.attributs_produit_caracteristiques_id,
+          "attributs_produit_id": item.attributs_produit_id,
+        });
+      });
+
+      Map<String, dynamic> jsonData = {
+        "produit_id": produit_id,
+        "combinaison_attribut_produit_caracteristique_ids": json,
+      };
+      Response response = await dio.post(
+        '/prix-produit/by-combinaison',
+        data: jsonData,
+      );
+      return response.data;
+    } catch (error) {
+      print(
+        "EXCEPTION [getProduitPrixParAttributSelectionne] (//prix-produit/by-combinaison) : $error",
+      );
+      return [];
+    }
+  }
+
   getCommandes(String? utilisateur_id) async {
     try {
       Response response = await dio.post('/commandes/user/$utilisateur_id');

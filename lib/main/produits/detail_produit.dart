@@ -2,17 +2,16 @@
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/model/all_model.dart';
+import 'package:qirha/res/loading_process.dart';
 
 import 'package:qirha/widgets/carousel_detail_produit.dart';
 import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/widgets/combo/custom_button.dart';
-import 'package:qirha/widgets/custom_loading.dart';
 import 'package:qirha/widgets/custom_timer_count_down.dart';
 import 'package:qirha/widgets/expandable_widget.dart';
 import 'package:qirha/widgets/need_to_login.dart';
@@ -52,6 +51,7 @@ class _DetailProduitState extends State<DetailProduit> {
   bool isLoadingHeartFavoris = false;
 
   var produitAllCaracteristiques = [];
+
   getProduitAllCaracteristiques() async {
     var caracteristiques = await ApiServices().getProduitAllCaracteristiques(
       produit.produit_id.toString(),
@@ -68,24 +68,24 @@ class _DetailProduitState extends State<DetailProduit> {
       produit.produit_id.toString(),
     );
 
-    caracteristiques.forEach((g) {
+    caracteristiques.forEach((item) {
       setState(() {
         produitCaracteristique.add(
           ProduitCaracteristiqueModel(
-            caracteristique: g['main_caracteristique']['contenu'],
-            caracteristique_id: g['caracteristique_id'].toString(),
-            contenu: g['contenu'],
-            est_un_argument_de_vente: g['est_un_argument_de_vente'],
+            caracteristique: item['main_caracteristique']['contenu'],
+            caracteristique_id: item['caracteristique_id'].toString(),
+            contenu: item['contenu'],
+            est_un_argument_de_vente: item['est_un_argument_de_vente'],
           ),
         );
 
-        if (g['est_un_argument_de_vente'] == "1") {
+        if (item['est_un_argument_de_vente'] == "1") {
           produitCaracteristiqueArgumentVente.add(
             ProduitCaracteristiqueModel(
-              caracteristique: g['main_caracteristique']['contenu'],
-              caracteristique_id: g['caracteristique_id'].toString(),
-              contenu: g['contenu'],
-              est_un_argument_de_vente: g['est_un_argument_de_vente'],
+              caracteristique: item['main_caracteristique']['contenu'],
+              caracteristique_id: item['caracteristique_id'].toString(),
+              contenu: item['contenu'],
+              est_un_argument_de_vente: item['est_un_argument_de_vente'],
             ),
           );
         }
@@ -120,10 +120,10 @@ class _DetailProduitState extends State<DetailProduit> {
       produit.produit_id.toString(),
     );
 
-    avis.forEach((a) {
+    avis.forEach((item) {
       List<ImageModel> images_list = [];
 
-      a['image'].forEach((i) {
+      item['image'].forEach((i) {
         images_list.add(ImageModel(url: i['url']));
       });
 
@@ -131,37 +131,36 @@ class _DetailProduitState extends State<DetailProduit> {
         produitAvis.add(
           ProduitAvisModel(
             images: images_list,
-            commentaire: a['commentaire'],
-            est_verifie: a['utilisateur']['est_verifie'],
-            nom_couleur: a['couleur']['nom_couleur'],
-            code_taille: a['taille']['code_taille'],
-            nom_utilisateur: a['utilisateur']['nom_utilisateur'],
-            note: a['note'],
-            produit_avis_id: a['produit_avis_id'],
-            utilisateur_id: a['utilisateur']['utilisateur_id'],
+            commentaire: item['commentaire'],
+            est_verifie: item['utilisateur']['est_verifie'],
+            nom_couleur: item['couleur']['nom_couleur'],
+            code_taille: item['taille']['code_taille'],
+            nom_utilisateur: item['utilisateur']['nom_utilisateur'],
+            note: item['note'],
+            produit_avis_id: item['produit_avis_id'],
+            utilisateur_id: item['utilisateur']['utilisateur_id'],
           ),
         );
       });
     });
   }
 
+  List<SelectedAttribut> selectedAttributs = [];
+  getProduitPrixParCombinaison({
+    String? produit_id,
+    required List<SelectedAttribut> selected,
+  }) async {
+    var prix = await ApiServices().getProduitPrixParCombinaison(
+      produit_id: widget.produit.produit_id,
+      selected: selectedAttributs,
+    );
+
+    print(prix);
+  }
+
+  // Ajouter au panier
   addToCart() async {
-    var maskWidget = Opacity(
-      opacity: 1,
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: WHITE,
-      ),
-    );
-    SmartDialog.showLoading(
-      maskWidget: maskWidget,
-      clickMaskDismiss: true,
-      backDismiss: true,
-      animationType: SmartAnimationType.scale,
-      builder: (_) =>
-          const CustomLoading(type: 2, text: 'Insertion dans le panier...'),
-    );
+    LoadingProcess.showLoading(text: 'Insertion dans le panier...');
 
     var utilisateur_id = prefs.getString('utilisateur_id');
 
@@ -179,7 +178,7 @@ class _DetailProduitState extends State<DetailProduit> {
     print("ADD TO PANIER REPONSE : $reponse");
 
     // close loader
-    SmartDialog.dismiss();
+    LoadingProcess.dismissLoading();
   }
 
   @override
@@ -198,93 +197,97 @@ class _DetailProduitState extends State<DetailProduit> {
       backgroundColor: WHITE,
       body: Stack(
         children: [
-          MainDetailProduitContent(context),
-          Positioned(
-            top: 40,
-            left: 10,
-            right: null,
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: PRIMARY,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: HeroIcon(
-                      HeroIcons.chevronLeft,
-                      color: WHITE,
-                      size: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              width: MediaQuery.of(context).size.width,
-              height: 60,
-              color: GREY,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      espacementWidget(width: 10),
-                      MyCartWidget(color: DARK),
-                      espacementWidget(width: 20),
-                      MyReactiveIconWidget(
-                        padding: 8,
-                        size: 25,
-                        isLoading: isLoadingHeartFavoris,
-                        activeColor: PRIMARY,
-                        activeIcon: Icons.favorite,
-                        isActive: isActiveHeartFavoris,
-                        color: LIGHT,
-                        icon: Icons.favorite_border,
-                        onTap: () {
-                          setState(() {
-                            isLoadingHeartFavoris = true;
-                          });
-
-                          // Fetch simulating
-                          Future.delayed(const Duration(seconds: 1), () {
-                            setState(() {
-                              isLoadingHeartFavoris = false;
-                              isActiveHeartFavoris = !isActiveHeartFavoris;
-                            });
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  MyButtonWidget(
-                    onPressed: () {
-                      addToCart();
-                    },
-                    label: 'AJOUTER AU PANIER',
-                    bgColor: PRIMARY,
-                    labelColor: WHITE,
-                  ),
-                ],
-              ),
-            ),
-          ),
+          VuePrincipalDuProduit(context),
+          BackPreviousScreen(context),
+          AjouterAuPanier(context),
         ],
       ),
     );
   }
 
-  SingleChildScrollView MainDetailProduitContent(BuildContext context) {
+  Positioned BackPreviousScreen(BuildContext context) {
+    return Positioned(
+      top: 40,
+      left: 10,
+      right: null,
+      child: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: PRIMARY,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: HeroIcon(HeroIcons.chevronLeft, color: WHITE, size: 20),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Positioned AjouterAuPanier(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        width: MediaQuery.of(context).size.width,
+        height: 60,
+        color: GREY,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                espacementWidget(width: 10),
+                MyCartWidget(color: DARK),
+                espacementWidget(width: 20),
+                MyReactiveIconWidget(
+                  padding: 8,
+                  size: 25,
+                  isLoading: isLoadingHeartFavoris,
+                  activeColor: PRIMARY,
+                  activeIcon: Icons.favorite,
+                  isActive: isActiveHeartFavoris,
+                  color: LIGHT,
+                  icon: Icons.favorite_border,
+                  onTap: () {
+                    setState(() {
+                      isLoadingHeartFavoris = true;
+                    });
+
+                    // Fetch simulating
+                    Future.delayed(const Duration(seconds: 1), () {
+                      setState(() {
+                        isLoadingHeartFavoris = false;
+                        isActiveHeartFavoris = !isActiveHeartFavoris;
+                      });
+                    });
+                  },
+                ),
+              ],
+            ),
+            MyButtonWidget(
+              onPressed: () {
+                addToCart();
+              },
+              label: 'AJOUTER AU PANIER',
+              bgColor: PRIMARY,
+              labelColor: WHITE,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SingleChildScrollView VuePrincipalDuProduit(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -303,479 +306,529 @@ class _DetailProduitState extends State<DetailProduit> {
                   });
                 },
               ),
-              if (reduction)
-                Positioned(
-                  bottom: 0,
-                  child: GestureDetector(
-                    onTap: () =>
-                        CustomPageRoute(const AllProduitBazardPage(), context),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 3),
-                      color: PRIMARY,
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            child: Row(
-                              children: [
-                                HeroIcon(
-                                  HeroIcons.bolt,
-                                  size: 17,
-                                  color: WHITE,
-                                  style: HeroIconStyle.solid,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                  ),
-                                  child: customText(
-                                    'Bazard rapide',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                      color: WHITE,
-                                    ),
-                                  ),
-                                ),
-                                espacementWidget(width: 7),
-                                HeroIcon(
-                                  HeroIcons.chevronRight,
-                                  size: 10,
-                                  color: WHITE,
-                                  style: HeroIconStyle.solid,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              customText(
-                                '0 restant',
-                                style: TextStyle(fontSize: 9, color: WHITE),
-                              ),
-                              espacementWidget(height: 2),
-                              const CustomTimerCountDown(),
-                            ],
-                          ),
-                        ],
+              if (reduction) BannerDeReduction(context),
+            ],
+          ),
+          DescriptionDuProduit(context),
+        ],
+      ),
+    );
+  }
+
+  Positioned BannerDeReduction(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      child: GestureDetector(
+        onTap: () => CustomPageRoute(const AllProduitBazardPage(), context),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 3),
+          color: PRIMARY,
+          width: MediaQuery.of(context).size.width,
+          height: 40,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    HeroIcon(
+                      HeroIcons.bolt,
+                      size: 17,
+                      color: WHITE,
+                      style: HeroIconStyle.solid,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: customText(
+                        'Bazard rapide',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: WHITE,
+                        ),
                       ),
                     ),
+                    espacementWidget(width: 7),
+                    HeroIcon(
+                      HeroIcons.chevronRight,
+                      size: 10,
+                      color: WHITE,
+                      style: HeroIconStyle.solid,
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  customText(
+                    '0 restant',
+                    style: TextStyle(fontSize: 9, color: WHITE),
                   ),
+                  espacementWidget(height: 2),
+                  const CustomTimerCountDown(),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Column DescriptionDuProduit(BuildContext context) {
+    return Column(
+      children: [
+        PrixEtNomProduit(),
+
+        //  description produit
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [CustomTextCollapse(label: "${produit.description}")],
+              ),
+            ),
+          ],
+        ),
+
+        SeparateurLineGrise(context),
+
+        // attributs
+        AttriubutProduits(),
+
+        espacementWidget(height: 10),
+
+        delaiTraitement(),
+
+        delaiLivraison(),
+
+        espacementWidget(height: 10),
+
+        if (reduction) SeparateurLineGrise(context),
+
+        if (reduction)
+          GestureDetector(
+            onTap: () => CustomPageRoute(const AllProduitBazardPage(), context),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      HeroIcon(
+                        HeroIcons.bolt,
+                        size: 17,
+                        color: PRIMARY,
+                        style: HeroIconStyle.solid,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: customText(
+                          'Bazard rapide',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: PRIMARY,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  HeroIcon(
+                    HeroIcons.chevronRight,
+                    size: 15,
+                    color: DARK,
+                    style: HeroIconStyle.solid,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        SeparateurLineGrise(context),
+        sectionCaracteristique(),
+
+        selectionArgumentVente(),
+        SeparateurLineGrise(context),
+
+        espacementWidget(height: 10),
+        EnteteDesAvis(),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+          child: customText(
+            "L'article correspondait-il a votre taille ?",
+            style: TextStyle(color: LIGHT, fontSize: 12),
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Table(
+            children: [
+              for (var index = 0; index < produitAvisStats.length; index++)
+                statLine(
+                  context,
+                  label: produitAvisStats[index].nom_type_avis.toString(),
+                  percent: produitAvisStats[index].percentage as int,
                 ),
             ],
           ),
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 8.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // titre + prix
-                    widget.produit.est_en_promo == true
-                        ? Row(
+        ),
+        SeparateurLineGrise(context),
+
+        for (var index = 0; index < produitAvis.length; index++)
+          if (index < 3) messageItem(context, produit_avis: produitAvis[index]),
+
+        if (produitAvis.isNotEmpty)
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return DraggableScrollableSheet(
+                    initialChildSize: 400 / MediaQuery.of(context).size.height,
+                    minChildSize: 0.1,
+                    maxChildSize: 1.0,
+                    expand: false,
+                    builder:
+                        (
+                          BuildContext context,
+                          ScrollController scrollController,
+                        ) {
+                          return Stack(
                             children: [
-                              customText(
-                                formatMoney(
-                                  widget.produit.prix_promo?.toString() ?? '0',
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 5,
+                                  right: 5,
+                                  top: 40,
+                                  bottom: 10,
                                 ),
-                                style: TextStyle(
-                                  color: PRIMARY,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ListView.builder(
+                                  controller: scrollController,
+                                  itemCount: produitAvis.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                        return messageItem(
+                                          context,
+                                          produit_avis: produitAvis[index],
+                                        );
+                                      },
                                 ),
                               ),
-                              espacementWidget(width: 5),
-                              customText(
-                                formatMoney(
-                                  widget.produit.prix_minimum?.toString() ??
-                                      '0',
-                                ),
-                                style: const TextStyle(
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.normal,
-                                  decoration: TextDecoration.lineThrough,
-                                  decorationThickness: 1.0,
+                              Container(
+                                color: WHITE,
+                                height: 40,
+                                child: Column(
+                                  children: [
+                                    showModalSmallBar(context),
+                                    espacementWidget(height: 5),
+                                  ],
                                 ),
                               ),
                             ],
-                          )
-                        : Row(
-                            children: [
-                              customText(
-                                formatMoney(
-                                  widget.produit.prix_minimum?.toString() ??
-                                      '0',
-                                ),
-                                style: TextStyle(
-                                  color: PRIMARY,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                            ],
-                          ),
-                    customText(
-                      widget.produit.nom ?? '',
-                      maxLines: 2,
-                      style: const TextStyle(
-                        color: Color.fromARGB(225, 0, 0, 0),
-                        fontSize: 11,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              //  nom produit
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomTextCollapse(label: "${produit.description}"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              greyBand(context),
-
-              // attributs
-              Column(
-                children: [
-                  for (var attribut in produitAllCaracteristiques) ...[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          customText(
-                            attribut["nom_main_attribut"],
-                            style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              for (var carac in attribut["caracteristiques"])
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4.0,
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      print(
-                                        "Sélectionné : ${carac["contenu_text"]}",
-                                      );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(width: 1),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: customText(
-                                          carac["contenu_text"],
-                                          style: const TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-
-              espacementWidget(height: 10),
-
-              delaiTraitement(),
-              delaiLivraison(),
-
-              espacementWidget(height: 10),
-
-              if (reduction) greyBand(context),
-
-              if (reduction)
-                GestureDetector(
-                  onTap: () =>
-                      CustomPageRoute(const AllProduitBazardPage(), context),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 8,
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            HeroIcon(
-                              HeroIcons.bolt,
-                              size: 17,
-                              color: PRIMARY,
-                              style: HeroIconStyle.solid,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 5,
-                              ),
-                              child: customText(
-                                'Bazard rapide',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: PRIMARY,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        HeroIcon(
-                          HeroIcons.chevronRight,
-                          size: 15,
-                          color: DARK,
-                          style: HeroIconStyle.solid,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              greyBand(context),
-              sectionCaracteristique(),
-              selectionArgumentVente(),
-              greyBand(context),
-              espacementWidget(height: 10),
-              avisHearder(),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                          );
+                        },
+                  );
+                },
+              );
+            },
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
                 child: customText(
-                  "L'article correspondait-il a votre taille ?",
+                  'Voir tous les avis',
                   style: TextStyle(color: LIGHT, fontSize: 12),
                 ),
               ),
+            ),
+          ),
+        if (produitAvis.isNotEmpty) espacementWidget(height: 5),
+        SeparateurLineGrise(context),
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Table(
+        QuestionReponse(context),
+
+        SeparateurLineGrise(context),
+
+        espacementWidget(height: 60),
+      ],
+    );
+  }
+
+  Padding PrixEtNomProduit() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // titre + prix
+          widget.produit.est_en_promo == true
+              ? Row(
                   children: [
-                    for (
-                      var index = 0;
-                      index < produitAvisStats.length;
-                      index++
-                    )
-                      statLine(
-                        context,
-                        label: produitAvisStats[index].nom_type_avis.toString(),
-                        percent: produitAvisStats[index].percentage as int,
+                    customText(
+                      formatMoney(widget.produit.prix_promo?.toString() ?? '0'),
+                      style: TextStyle(
+                        color: PRIMARY,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
                       ),
+                    ),
+                    espacementWidget(width: 5),
+                    customText(
+                      formatMoney(
+                        widget.produit.prix_minimum?.toString() ?? '0',
+                      ),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.normal,
+                        decoration: TextDecoration.lineThrough,
+                        decorationThickness: 1.0,
+                      ),
+                    ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    customText(
+                      formatMoney(
+                        widget.produit.prix_minimum?.toString() ?? '0',
+                      ),
+                      style: TextStyle(
+                        color: PRIMARY,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              greyBand(context),
 
-              for (var index = 0; index < produitAvis.length; index++)
-                if (index < 3)
-                  messageItem(context, produit_avis: produitAvis[index]),
+          customText(
+            widget.produit.nom ?? '',
+            maxLines: 2,
+            style: const TextStyle(
+              color: Color.fromARGB(225, 0, 0, 0),
+              fontSize: 11,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-              if (produitAvis.isNotEmpty)
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
+  Container QuestionReponse(BuildContext context) {
+    return Container(
+      color: WHITE,
+      margin: const EdgeInsets.only(bottom: 1),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          customText(
+            "Questions & questions",
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          GestureDetector(
+            onTap: () {
+              isLogged == false
+                  ? showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
                       builder: (BuildContext context) {
                         return DraggableScrollableSheet(
-                          initialChildSize:
-                              400 / MediaQuery.of(context).size.height,
-                          minChildSize: 0.1,
-                          maxChildSize: 1.0,
+                          initialChildSize: .25,
+                          minChildSize: 0.25,
+                          maxChildSize: .25,
                           expand: false,
                           builder:
                               (
                                 BuildContext context,
                                 ScrollController scrollController,
                               ) {
-                                return Stack(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.only(
-                                        left: 5,
-                                        right: 5,
-                                        top: 40,
-                                        bottom: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: ListView.builder(
-                                        controller: scrollController,
-                                        itemCount: produitAvis.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                              return messageItem(
-                                                context,
-                                                produit_avis:
-                                                    produitAvis[index],
-                                              );
-                                            },
-                                      ),
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                    color: Colors.white,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        espacementWidget(height: 10),
+                                        showModalSmallBar(context),
+                                        espacementWidget(height: 10),
+                                        Container(
+                                          color: Colors.white,
+                                          height: 100,
+                                          child: ListView(
+                                            controller: scrollController,
+                                            children: const [NeedToLogin()],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Container(
-                                      color: WHITE,
-                                      height: 40,
-                                      child: Column(
-                                        children: [
-                                          showModalSmallBar(context),
-                                          espacementWidget(height: 5),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 );
                               },
                         );
                       },
-                    );
-                  },
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: customText(
-                        'Voir tous les avis',
-                        style: TextStyle(color: LIGHT, fontSize: 12),
-                      ),
-                    ),
+                    )
+                  : CustomPageRoute(SendMessage(produit: produit), context);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  child: customText(
+                    'Poser une question\nIci et maintenant',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontSize: 12, color: LIGHT),
                   ),
                 ),
-              if (produitAvis.isNotEmpty) espacementWidget(height: 5),
-              greyBand(context),
-
-              Container(
-                color: WHITE,
-                margin: const EdgeInsets.only(bottom: 1),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 12,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    customText(
-                      "Questions & questions",
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        isLogged == false
-                            ? showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (BuildContext context) {
-                                  return DraggableScrollableSheet(
-                                    initialChildSize: .25,
-                                    minChildSize: 0.25,
-                                    maxChildSize: .25,
-                                    expand: false,
-                                    builder:
-                                        (
-                                          BuildContext context,
-                                          ScrollController scrollController,
-                                        ) {
-                                          return ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                            child: Container(
-                                              color: Colors.white,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  espacementWidget(height: 10),
-                                                  showModalSmallBar(context),
-                                                  espacementWidget(height: 10),
-                                                  Container(
-                                                    color: Colors.white,
-                                                    height: 100,
-                                                    child: ListView(
-                                                      controller:
-                                                          scrollController,
-                                                      children: const [
-                                                        NeedToLogin(),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                  );
-                                },
-                              )
-                            : CustomPageRoute(
-                                SendMessage(produit: produit),
-                                context,
-                              );
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            child: customText(
-                              'Poser une question\nIci et maintenant',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.end,
-                              style: TextStyle(fontSize: 12, color: LIGHT),
-                            ),
-                          ),
-                          espacementWidget(width: 5),
-                          const HeroIcon(HeroIcons.chevronRight, size: 14),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              greyBand(context),
-              espacementWidget(height: 60),
-            ],
+                espacementWidget(width: 5),
+                const HeroIcon(HeroIcons.chevronRight, size: 14),
+              ],
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  Column AttriubutProduits() {
+    return Column(
+      children: [
+        for (var attribut in produitAllCaracteristiques) ...[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customText(
+                  attribut["nom_main_attribut"],
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    for (var carac in attribut["caracteristiques"])
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            var selected = SelectedAttribut(
+                              attributs_produit_caracteristiques_id:
+                                  carac['attributs_produit_caracteristiques_id'],
+                              attributs_produit_id:
+                                  carac['attributs_produit_id'],
+                            );
+
+                            bool doublon = selectedAttributs.any(
+                              (attr) =>
+                                  attr.attributs_produit_id ==
+                                  selected.attributs_produit_id,
+                            );
+
+                            if (doublon) {
+                              setState(() {
+                                // supprime l'existant
+                                selectedAttributs.removeWhere(
+                                  (attr) =>
+                                      attr.attributs_produit_id ==
+                                      selected.attributs_produit_id,
+                                );
+                                // ajoute le nouveau
+                                selectedAttributs.add(selected);
+                              });
+                            } else {
+                              setState(() {
+                                selectedAttributs.add(selected);
+                              });
+                            }
+
+                            if (selectedAttributs.length ==
+                                produitAllCaracteristiques.length) {
+                              getProduitPrixParCombinaison(
+                                produit_id: widget.produit.produit_id,
+                                selected: selectedAttributs,
+                              );
+                            }
+                          },
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 1),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: customText(
+                                    carac["contenu_text"],
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // check if it's selected
+                              if (selectedAttributs.any(
+                                (attr) =>
+                                    attr.attributs_produit_caracteristiques_id ==
+                                        carac['attributs_produit_caracteristiques_id'] &&
+                                    attr.attributs_produit_id ==
+                                        carac['attributs_produit_id'],
+                              ))
+                                SelectedContainerBadge(),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Positioned SelectedContainerBadge() {
+    return Positioned(
+      right: 0,
+      top: 0,
+      child: Transform.translate(
+        offset: Offset(4, -2), // x pour horizontal, y pour vertical
+        child: Container(
+          padding: EdgeInsets.all(1),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: GREEN,
+          ),
+          child: HeroIcon(HeroIcons.check, color: WHITE, size: 12),
+        ),
       ),
     );
   }
@@ -961,7 +1014,7 @@ class _DetailProduitState extends State<DetailProduit> {
     );
   }
 
-  Padding avisHearder() {
+  Padding EnteteDesAvis() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
@@ -978,7 +1031,7 @@ class _DetailProduitState extends State<DetailProduit> {
     );
   }
 
-  Container greyBand(BuildContext context) {
+  Container SeparateurLineGrise(BuildContext context) {
     return Container(
       color: GREY,
       width: MediaQuery.of(context).size.width,
