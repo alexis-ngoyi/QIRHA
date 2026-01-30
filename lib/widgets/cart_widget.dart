@@ -54,6 +54,8 @@ class _MyCartWidgetState extends State<MyCartWidget> {
   @override
   void initState() {
     super.initState();
+    main_timer = Timer.periodic(Duration(seconds: 1), (timer) {});
+
     loadCart();
   }
 

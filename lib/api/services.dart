@@ -307,21 +307,23 @@ class ApiServices {
   addPanierItem(String? utilisateur_id, AddPanierModel panierItem) async {
     try {
       Object data = {
-        // 'taille_id': panierItem.taille_id,
-        // 'couleur_id': panierItem.couleur_id,
-        // 'produit_id': panierItem.produit_id,
-        // 'utilisateur_id': panierItem.utilisateur_id,
-        // 'quantite': panierItem.quantite,
-        // 'photo_cover': panierItem.image_id,
+        'produit_id': panierItem.produit_id,
+        'utilisateur_id': panierItem.utilisateur_id,
+        'quantite': panierItem.quantite,
+        'photo_cover': panierItem.photo_cover,
+        'prix_produit_id': panierItem.prix_produit_id,
       };
+
+      print(data);
+
       Response response = await dio.post(
-        '/panier-utilisateur/$utilisateur_id',
+        '/panier-utilisateur/$utilisateur_id/create',
         data: data,
       );
       return response.data;
     } catch (error) {
       print(
-        "EXCEPTION [addPanierItem] (/panier-utilisateur/$utilisateur_id) : $error",
+        "EXCEPTION [addPanierItem] (/panier-utilisateur/$utilisateur_id/create) : $error",
       );
       return [];
     }

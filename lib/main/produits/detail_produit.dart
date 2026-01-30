@@ -33,27 +33,44 @@ class DetailProduit extends StatefulWidget {
 }
 
 class _DetailProduitState extends State<DetailProduit> {
-  late ProduitModel produit = widget.produit;
-
-  late bool reduction =
-      double.parse(widget.produit.taux_reduction.toString()) > 0;
+  late ProduitModel produit;
+  late bool reduction;
 
   final List<ProduitCaracteristiqueModel> produitCaracteristique = [];
   final List<ProduitCaracteristiqueModel> produitCaracteristiqueArgumentVente =
       [];
 
-  // isLogged
   bool isLogged = true;
-
-  // isActiveHeartFavoris
   bool isActiveHeartFavoris = false;
-
-  // isLoadingHeartFavoris
   bool isLoadingHeartFavoris = false;
 
   var produitAllCaracteristiques = [];
 
-  getProduitAllCaracteristiques() async {
+  double prix_par_defaut = 0.0;
+  int quantite_par_defaut = 0;
+  double prix_promo_par_defaut = 0.0;
+  int selected_quantite = 1;
+  String current_prix_produit_id = '0';
+
+  List<SelectedAttribut> selectedAttributs = [];
+  final List<ProduitStatsModel> produitAvisStats = [];
+  final List<ProduitAvisModel> produitAvis = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    produit = widget.produit;
+    reduction = widget.produit.est_en_promo == true;
+
+    getProduitPrixMinimumParams();
+    getProduitCaracteristique();
+    getProduitAllCaracteristiques();
+    getProduitAvisStats();
+    getProduitAvis();
+  }
+
+  Future<void> getProduitAllCaracteristiques() async {
     var caracteristiques = await ApiServices().getProduitAllCaracteristiques(
       produit.produit_id.toString(),
     );
@@ -64,44 +81,30 @@ class _DetailProduitState extends State<DetailProduit> {
     });
   }
 
-  var prix_par_defaut = 0.0;
-  var quantite_par_defaut = 0;
-  var prix_promo_par_defaut = 0.0;
-  var selected_quantite = 1;
-  var prix_produit_id = 0;
-
-  getProduitPrixMinimumParams() async {
+  Future<void> getProduitPrixMinimumParams() async {
     var prix_params = await ApiServices().getProduitPrixMinimumParams(
       produit.prix_produit_id.toString(),
     );
 
+    final double prix = double.tryParse(prix_params['prix'].toString()) ?? 0.0;
+    final int quantite =
+        int.tryParse(prix_params['quantite_en_stock'].toString()) ?? 0;
+
     setState(() {
-      // Récupération sécurisée des valeurs
-      final double prix =
-          double.tryParse(prix_params['prix'].toString()) ?? 0.0;
-      final int quantite =
-          int.tryParse(prix_params['quantite_en_stock'].toString()) ?? 0;
-
       prix_par_defaut = prix;
-
-      // Calcul du prix promo uniquement si le produit est en promo
       prix_promo_par_defaut =
           prix_par_defaut -
           (widget.produit.est_en_promo == true
-              ? prix * (widget.produit.taux_reduction!.toDouble())
+              ? prix * ((widget.produit.taux_reduction ?? 0) / 100)
               : 0.0);
 
       quantite_par_defaut = quantite;
-
-      prix_produit_id = int.parse(widget.produit.prix_produit_id.toString());
-
-      // Réinitialisation des attributs sélectionnés
+      current_prix_produit_id = prix_params['prix_produit_id'].toString();
       selectedAttributs = [];
     });
 
-    prix_params['combinaison_attribut_produit_caracteristique_ids'].forEach((
-      item,
-    ) {
+    for (var item
+        in prix_params['combinaison_attribut_produit_caracteristique_ids']) {
       setState(() {
         selectedAttributs.add(
           SelectedAttribut(
@@ -111,93 +114,87 @@ class _DetailProduitState extends State<DetailProduit> {
           ),
         );
       });
-    });
+    }
   }
 
-  getProduitCaracteristique() async {
+  Future<void> getProduitCaracteristique() async {
     var caracteristiques = await ApiServices().getProduitCaracteristique(
       produit.produit_id.toString(),
     );
 
-    caracteristiques.forEach((item) {
-      setState(() {
-        produitCaracteristique.add(
-          ProduitCaracteristiqueModel(
-            caracteristique: item['main_caracteristique']['contenu'],
-            caracteristique_id: item['caracteristique_id'].toString(),
-            contenu: item['contenu'],
-            est_un_argument_de_vente: item['est_un_argument_de_vente'],
-          ),
-        );
+    final List<ProduitCaracteristiqueModel> all = [];
+    final List<ProduitCaracteristiqueModel> arguments = [];
 
-        if (item['est_un_argument_de_vente'] == "1") {
-          produitCaracteristiqueArgumentVente.add(
-            ProduitCaracteristiqueModel(
-              caracteristique: item['main_caracteristique']['contenu'],
-              caracteristique_id: item['caracteristique_id'].toString(),
-              contenu: item['contenu'],
-              est_un_argument_de_vente: item['est_un_argument_de_vente'],
-            ),
-          );
-        }
-      });
+    for (var item in caracteristiques) {
+      final model = ProduitCaracteristiqueModel(
+        caracteristique: item['main_caracteristique']['contenu'],
+        caracteristique_id: item['caracteristique_id'].toString(),
+        contenu: item['contenu'],
+        est_un_argument_de_vente: item['est_un_argument_de_vente'],
+      );
+
+      all.add(model);
+      if (item['est_un_argument_de_vente'] == "1") {
+        arguments.add(model);
+      }
+    }
+
+    setState(() {
+      produitCaracteristique.addAll(all);
+      produitCaracteristiqueArgumentVente.addAll(arguments);
     });
   }
 
-  final List<ProduitStatsModel> produitAvisStats = [];
-
-  getProduitAvisStats() async {
+  Future<void> getProduitAvisStats() async {
     var stats = await ApiServices().getProduitAvisStats(
       produit.produit_id.toString(),
     );
 
-    stats.forEach((stat) {
-      setState(() {
-        produitAvisStats.add(
-          ProduitStatsModel(
-            totaux_avis: stat['totaux_avis'],
-            nom_type_avis: stat['nom_type_avis'],
-            percentage: stat['percentage'],
-            effectif_par_element: stat['effectif_par_element'],
-          ),
-        );
-      });
+    final List<ProduitStatsModel> newStats = stats.map<ProduitStatsModel>((
+      stat,
+    ) {
+      return ProduitStatsModel(
+        totaux_avis: stat['totaux_avis'],
+        nom_type_avis: stat['nom_type_avis'],
+        percentage: stat['percentage'],
+        effectif_par_element: stat['effectif_par_element'],
+      );
+    }).toList();
+
+    setState(() {
+      produitAvisStats.addAll(newStats);
     });
   }
 
-  final List<ProduitAvisModel> produitAvis = [];
-  getProduitAvis() async {
+  Future<void> getProduitAvis() async {
     var avis = await ApiServices().getProduitAvis(
       produit.produit_id.toString(),
     );
 
-    avis.forEach((item) {
-      List<ImageModel> images_list = [];
+    final List<ProduitAvisModel> newAvis = avis.map<ProduitAvisModel>((item) {
+      List<ImageModel> images_list = (item['image'] as List)
+          .map<ImageModel>((i) => ImageModel(url: i['url']))
+          .toList();
 
-      item['image'].forEach((i) {
-        images_list.add(ImageModel(url: i['url']));
-      });
+      return ProduitAvisModel(
+        images: images_list,
+        commentaire: item['commentaire'],
+        est_verifie: item['utilisateur']['est_verifie'],
+        nom_couleur: item['couleur']['nom_couleur'],
+        code_taille: item['taille']['code_taille'],
+        nom_utilisateur: item['utilisateur']['nom_utilisateur'],
+        note: item['note'],
+        produit_avis_id: item['produit_avis_id'],
+        utilisateur_id: item['utilisateur']['utilisateur_id'],
+      );
+    }).toList();
 
-      setState(() {
-        produitAvis.add(
-          ProduitAvisModel(
-            images: images_list,
-            commentaire: item['commentaire'],
-            est_verifie: item['utilisateur']['est_verifie'],
-            nom_couleur: item['couleur']['nom_couleur'],
-            code_taille: item['taille']['code_taille'],
-            nom_utilisateur: item['utilisateur']['nom_utilisateur'],
-            note: item['note'],
-            produit_avis_id: item['produit_avis_id'],
-            utilisateur_id: item['utilisateur']['utilisateur_id'],
-          ),
-        );
-      });
+    setState(() {
+      produitAvis.addAll(newAvis);
     });
   }
 
-  List<SelectedAttribut> selectedAttributs = [];
-  getProduitPrixParCombinaison({
+  Future<void> getProduitPrixParCombinaison({
     String? produit_id,
     required List<SelectedAttribut> selected,
   }) async {
@@ -206,58 +203,41 @@ class _DetailProduitState extends State<DetailProduit> {
       selected: selectedAttributs,
     );
 
+    final double prix = double.tryParse(prix_params['prix'].toString()) ?? 0.0;
+    final int quantite =
+        int.tryParse(prix_params['quantite_en_stock'].toString()) ?? 0;
+
     setState(() {
-      // Récupération sécurisée des valeurs
-      final double prix =
-          double.tryParse(prix_params['prix'].toString()) ?? 0.0;
-      final int quantite =
-          int.tryParse(prix_params['quantite_en_stock'].toString()) ?? 0;
-
       prix_par_defaut = prix;
-
-      // Calcul du prix promo uniquement si le produit est en promo
       prix_promo_par_defaut =
           prix_par_defaut -
           (widget.produit.est_en_promo == true
-              ? prix * (widget.produit.taux_reduction!.toDouble())
+              ? prix * ((widget.produit.taux_reduction ?? 0) / 100)
               : 0.0);
 
       quantite_par_defaut = quantite;
-
-      prix_produit_id = int.parse(prix_params['prix_produit_id'].toString());
+      current_prix_produit_id = prix_params['prix_produit_id'].toString();
     });
   }
 
-  // Ajouter au panier
-  onPressAjouterAuPanier() async {
+  Future<void> onPressAjouterAuPanier() async {
     LoadingProcess.showLoading(text: 'Insertion dans le panier...');
 
-    var utilisateur_id = prefs.getString('utilisateur_id');
+    var utilisateur_id = '1'; // prefs.getString('utilisateur_id');
 
     AddPanierModel panierItem = AddPanierModel(
       quantite: selected_quantite,
       produit_id: widget.produit.produit_id,
       utilisateur_id: utilisateur_id,
       photo_cover: '',
-      prix_produit_id: prix_produit_id.toString(),
+      prix_produit_id: current_prix_produit_id,
     );
 
     var reponse = await ApiServices().addPanierItem(utilisateur_id, panierItem);
 
     print("ADD TO PANIER REPONSE : $reponse");
 
-    // close loader
     LoadingProcess.dismissLoading();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getProduitPrixMinimumParams();
-    getProduitCaracteristique();
-    getProduitAllCaracteristiques();
-    getProduitAvisStats();
-    getProduitAvis();
   }
 
   @override
@@ -383,7 +363,7 @@ class _DetailProduitState extends State<DetailProduit> {
           Stack(
             children: [
               CarouselDetailProduit(
-                currentProduit: produit,
+                currentProduit: widget.produit,
                 getCurrentIndex: (int currentIndex) {
                   // print('current index' + currentIndex.toString());
                 },
@@ -478,7 +458,9 @@ class _DetailProduitState extends State<DetailProduit> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [CustomTextCollapse(label: "${produit.description}")],
+                children: [
+                  CustomTextCollapse(label: "${widget.produit.description}"),
+                ],
               ),
             ),
           ],
@@ -771,7 +753,10 @@ class _DetailProduitState extends State<DetailProduit> {
                         );
                       },
                     )
-                  : CustomPageRoute(SendMessage(produit: produit), context);
+                  : CustomPageRoute(
+                      SendMessage(produit: widget.produit),
+                      context,
+                    );
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -1013,7 +998,7 @@ class _DetailProduitState extends State<DetailProduit> {
                   ],
                 ),
                 // Rate
-                CustomRateStars(produit: produit),
+                CustomRateStars(produit: widget.produit),
               ],
             ),
             SizedBox(
@@ -1150,7 +1135,7 @@ class _DetailProduitState extends State<DetailProduit> {
             'Avis (${produitAvisStats.isNotEmpty ? produitAvisStats[0].totaux_avis : 0})',
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
-          CustomRateStars(produit: produit),
+          CustomRateStars(produit: widget.produit),
         ],
       ),
     );
