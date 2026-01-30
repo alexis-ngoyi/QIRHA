@@ -6,8 +6,8 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
-import 'package:qirha/functions/money_format.dart';
-import 'package:qirha/model/commandes.dart';
+import 'package:qirha/functions/util_functions.dart';
+import 'package:qirha/model/all_model.dart';
 
 import 'package:qirha/widgets/carousel_detail_produit.dart';
 import 'package:qirha/widgets/cart_widget.dart';
@@ -21,10 +21,6 @@ import 'package:qirha/widgets/reactive_icon_widget.dart';
 import 'package:qirha/widgets/text_collapse_widget.dart';
 import 'package:qirha/main/bazard/bazard_home.dart';
 import 'package:qirha/main/categorie/send_message_produit.dart';
-import 'package:qirha/model/produit.dart';
-import 'package:qirha/model/produit_avis.dart';
-import 'package:qirha/model/produit_caracteristique_model.dart';
-import 'package:qirha/model/produit_stats.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 

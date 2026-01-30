@@ -5,8 +5,7 @@ import 'package:qirha/api/services.dart';
 
 import 'package:qirha/main/categorie/produit_of_categorie_of_groupe.dart';
 import 'package:qirha/main/categorie/produit_par_groupe.dart';
-import 'package:qirha/model/categorie.dart';
-import 'package:qirha/model/main_categorie_model.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
 
@@ -20,8 +19,8 @@ class SousCategorieSection extends StatefulWidget {
 
 class _SousCategorieSectionState extends State<SousCategorieSection> {
   List<GroupeCategorieModel> categorieGroupes = <GroupeCategorieModel>[];
-  late String main_categorie_id =
-      widget.main_categorie.main_categorie_id.toString();
+  late String main_categorie_id = widget.main_categorie.main_categorie_id
+      .toString();
 
   getMainCategorieGroupes(String id) async {
     // Reset
@@ -35,22 +34,27 @@ class _SousCategorieSectionState extends State<SousCategorieSection> {
       var groupe_id = groupe['groupe_id'];
       List<CategorieModel> categoriesList = [];
 
-      var categories =
-          await ApiServices().getCategoriesOfGroupe(groupe_id.toString());
+      var categories = await ApiServices().getCategoriesOfGroupe(
+        groupe_id.toString(),
+      );
 
       categories.forEach((categorie) {
-        categoriesList.add(CategorieModel(
+        categoriesList.add(
+          CategorieModel(
             libelle: categorie['nom_categorie'],
             categorie_id: categorie['categorie_id'].toString(),
-            img: categorie['image_categorie']));
+            img: categorie['image_categorie'],
+          ),
+        );
       });
 
       setState(() {
         categorieGroupes.add(
           GroupeCategorieModel(
-              id: groupe['groupe_id'].toString(),
-              groupe: groupe['nom_groupe'],
-              categorie: categoriesList),
+            id: groupe['groupe_id'].toString(),
+            groupe: groupe['nom_groupe'],
+            categorie: categoriesList,
+          ),
         );
       });
     });
@@ -76,11 +80,14 @@ class _SousCategorieSectionState extends State<SousCategorieSection> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        child: boxGroupeCategorie(context, groupe: categorieGroupes));
+      child: boxGroupeCategorie(context, groupe: categorieGroupes),
+    );
   }
 
-  Column boxGroupeCategorie(BuildContext context,
-      {required List<GroupeCategorieModel> groupe}) {
+  Column boxGroupeCategorie(
+    BuildContext context, {
+    required List<GroupeCategorieModel> groupe,
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,25 +102,32 @@ class _SousCategorieSectionState extends State<SousCategorieSection> {
                 alignment: WrapAlignment.start,
                 children: [
                   customCardCategorie(
-                      image: categorie_default,
-                      title: 'Tout',
-                      press: () => {
-                            CustomPageRoute(
-                                ProduitParGroupe(
-                                    groupe: groupe[i], typeView: 'DEFAULT'),
-                                context)
-                          }),
+                    image: categorie_default,
+                    title: 'Tout',
+                    press: () => {
+                      CustomPageRoute(
+                        ProduitParGroupe(
+                          groupe: groupe[i],
+                          typeView: 'DEFAULT',
+                        ),
+                        context,
+                      ),
+                    },
+                  ),
                   for (var j = 0; j < groupe[i].categorie!.length; j++)
                     customCardCategorie(
-                        image: default_image,
-                        title: groupe[i].categorie![j].libelle as String,
-                        press: () => CustomPageRoute(
-                            ProduitOfCategorieOfGroupe(
-                                typeView: 'DEFAULT',
-                                categorie: groupe[i].categorie![j]),
-                            context)),
+                      image: default_image,
+                      title: groupe[i].categorie![j].libelle as String,
+                      press: () => CustomPageRoute(
+                        ProduitOfCategorieOfGroupe(
+                          typeView: 'DEFAULT',
+                          categorie: groupe[i].categorie![j],
+                        ),
+                        context,
+                      ),
+                    ),
                 ],
-              )
+              ),
             ],
           ),
       ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qirha/api/services.dart';
 
 import 'package:qirha/widgets/produit_image_viewer.dart';
-import 'package:qirha/model/produit.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
@@ -26,8 +26,9 @@ class _CustomImageScrollHorizontalState
     setState(() {
       isLoading = true;
     });
-    var gallery = await ApiServices()
-        .getProduitGallery(widget.produit.produit_id as String);
+    var gallery = await ApiServices().getProduitGallery(
+      widget.produit.produit_id as String,
+    );
 
     print(gallery);
 
@@ -59,22 +60,25 @@ class _CustomImageScrollHorizontalState
             Container(
               margin: const EdgeInsets.all(3.0),
               child: MyShimmerWidget(
-                  width: MediaQuery.of(context).size.width / 2 - 50,
-                  height: 150),
+                width: MediaQuery.of(context).size.width / 2 - 50,
+                height: 150,
+              ),
             ),
           if (isLoading)
             Container(
               margin: const EdgeInsets.all(3.0),
               child: MyShimmerWidget(
-                  width: MediaQuery.of(context).size.width / 2 - 50,
-                  height: 150),
+                width: MediaQuery.of(context).size.width / 2 - 50,
+                height: 150,
+              ),
             ),
           if (isLoading)
             Container(
               margin: const EdgeInsets.all(3.0),
               child: MyShimmerWidget(
-                  width: MediaQuery.of(context).size.width / 2 - 50,
-                  height: 150),
+                width: MediaQuery.of(context).size.width / 2 - 50,
+                height: 150,
+              ),
             ),
           if (isLoading == false)
             for (var i = 0; i < produitGallery.length; i++)
@@ -87,7 +91,9 @@ class _CustomImageScrollHorizontalState
                     width: MediaQuery.of(context).size.width / 2 - 50,
                     height: 150,
                     decoration: BoxDecoration(
-                        color: GREY, borderRadius: BorderRadius.circular(4)),
+                      color: GREY,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                     child: FadeInImage.assetNetwork(
                       placeholder: placeholder,
                       image: produitGallery[i],

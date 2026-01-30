@@ -2,12 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:qirha/functions/money_format.dart';
-import 'package:qirha/model/categorie.dart';
-import 'package:qirha/model/main_categorie_model.dart';
+import 'package:qirha/functions/util_functions.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:qirha/api/services.dart';
-import 'package:qirha/model/produit.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 

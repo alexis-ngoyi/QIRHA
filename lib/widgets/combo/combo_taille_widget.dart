@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qirha/model/taille_produit_model.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 

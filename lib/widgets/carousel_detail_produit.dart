@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:qirha/api/services.dart';
 
 import 'package:qirha/widgets/produit_image_viewer.dart';
-import 'package:qirha/model/photo_gallery_produit_model.dart';
-import 'package:qirha/model/produit.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';

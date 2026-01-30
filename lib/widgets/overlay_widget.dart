@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:qirha/model/model_produit_couleur.dart';
-import 'package:qirha/model/taille_produit_model.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:qirha/widgets/combo/combo_couleur_widget.dart';

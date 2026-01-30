@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:qirha/api/services.dart';
-import 'package:qirha/functions/format_color.dart';
-import 'package:qirha/model/model_produit_couleur.dart';
-import 'package:qirha/model/taille_produit_model.dart';
-import 'package:qirha/model/type_produit_model.dart';
+import 'package:qirha/functions/util_functions.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:qirha/widgets/overlay_widget.dart';

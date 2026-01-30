@@ -1,7 +1,7 @@
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:qirha/functions/money_format.dart';
+import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/images.dart';

@@ -14,8 +14,7 @@ import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/main/tabs/tabLayout.dart';
-import 'package:qirha/model/main_categorie_model.dart';
-
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/widgets/image_scanner_simulator.dart';
 import 'package:qirha/main/bottom_nav/tab_categorie.dart';
 import 'package:qirha/main/bottom_nav/tab_mes_commandes.dart';

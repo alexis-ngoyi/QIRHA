@@ -6,10 +6,9 @@ import 'package:qirha/api/services.dart';
 
 import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/widgets/image_svg.dart';
-import 'package:qirha/functions/money_format.dart';
-import 'package:qirha/functions/status_commande.dart';
+import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/main/commandes/moyen_de_paiement_commandes.dart';
-import 'package:qirha/model/commandes.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/constantes.dart';
 import 'package:qirha/res/images.dart';

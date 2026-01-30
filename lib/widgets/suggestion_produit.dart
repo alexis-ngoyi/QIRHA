@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:qirha/api/services.dart';
-import 'package:qirha/model/produit.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/utils.dart';
 
 class SuggestionProduitWidget extends StatefulWidget {

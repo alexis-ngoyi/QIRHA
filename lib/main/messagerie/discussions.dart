@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/main/messagerie/discussions_open.dart';
-import 'package:qirha/model/discussion.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';

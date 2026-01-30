@@ -4,7 +4,7 @@ import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/widgets/combo/custom_button.dart';
 import 'package:qirha/widgets/input/text_input_widget.dart';
 import 'package:qirha/main/search.dart';
-import 'package:qirha/model/produit.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 

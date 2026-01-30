@@ -9,8 +9,7 @@ import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/main/search.dart';
-import 'package:qirha/model/categorie.dart';
-import 'package:qirha/model/produit.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 

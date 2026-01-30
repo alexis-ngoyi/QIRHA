@@ -10,10 +10,10 @@ import 'package:qirha/widgets/combo/custom_button.dart';
 import 'package:qirha/widgets/need_to_login.dart';
 
 import 'package:qirha/widgets/suggestion_produit.dart';
-import 'package:qirha/functions/money_format.dart';
+import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/main/commandes/confirmation_commande.dart';
 import 'package:qirha/main/search.dart';
-import 'package:qirha/model/commandes.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/widgets/custom_counter_cart.dart';
 import 'package:qirha/res/images.dart';

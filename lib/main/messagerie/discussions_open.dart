@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/widgets/cart_widget.dart';
-import 'package:qirha/model/discussion.dart';
-import 'package:qirha/model/message.dart';
+import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/emoji.dart';
 import 'package:qirha/res/images.dart';

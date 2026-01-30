@@ -1,14 +1,14 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:dio/dio.dart';
-import 'package:qirha/functions/full_date.dart';
-import 'package:qirha/model/commandes.dart';
+import 'package:qirha/functions/util_functions.dart';
+import 'package:qirha/model/all_model.dart';
 
 class ApiServices {
   Dio dio = Dio(
     BaseOptions(
       baseUrl: 'http://192.168.0.104:5000/api/v1',
-      connectTimeout: const Duration(seconds: 40),
-      receiveTimeout: const Duration(seconds: 40),
+      connectTimeout: const Duration(seconds: 60),
+      receiveTimeout: const Duration(seconds: 60),
     ),
   );
 

@@ -11,8 +11,7 @@ import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/main/search.dart';
 
 // Model
-import 'package:qirha/model/categorie.dart';
-import 'package:qirha/model/produit.dart';
+import 'package:qirha/model/all_model.dart';
 
 // Res
 import 'package:qirha/res/colors.dart';
