@@ -52,9 +52,12 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
       setState(() {
         cartProduit = articles;
 
-        // tmp +=
-        //     double.parse(article['prix'].toString()) *
-        //     int.parse(article['quantite'].toString());
+        tmp += article['est_en_promo'] == true
+            ? (article['prix_unitaire'] * article['quantite'] -
+                  article['prix_unitaire'] *
+                      article['quantite'] *
+                      article['pourcentage_reduction'])
+            : article['prix_unitaire'] * article['quantite'];
       });
     });
 
@@ -307,14 +310,62 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                   horizontal: 8.0,
                   vertical: 4,
                 ),
-                child: Container(
-                  color: WHITE,
-                  padding: EdgeInsets.all(8),
-                  child: cartTileItem(article: cartProduit[index]),
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: WHITE,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(
+                          color: cartProduit[index]['est_en_promo'] == true
+                              ? PRIMARY.withAlpha(80)
+                              : WHITE,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(8),
+                      child: cartTileItem(article: cartProduit[index]),
+                    ),
+
+                    // badge
+                    if (cartProduit[index]['est_en_promo'] == true)
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(0),
+                            topLeft: Radius.circular(5),
+                            bottomLeft: Radius.circular(0),
+                            bottomRight: Radius.circular(5),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(color: PRIMARY),
+                            padding: EdgeInsets.all(5),
+                            child: Row(
+                              children: [
+                                HeroIcon(
+                                  HeroIcons.bolt,
+                                  size: 12,
+                                  color: WHITE,
+                                ),
+                                espacementWidget(width: 5),
+                                customText(
+                                  '- ${((cartProduit[index]['pourcentage_reduction'] ?? 0) * 100).toStringAsFixed(0)}%',
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    color: WHITE,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             espacementWidget(height: 20),
-            // const SuggestionProduitWidget(),
           ],
         ),
       ),
@@ -324,87 +375,98 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
   GestureDetector cartTileItem({required Map<String, dynamic> article}) {
     return GestureDetector(
       onLongPress: () => deletePanierItem(article),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Stack(
         children: [
-          roundedImageContainer(
-            image: article['photo_cover'].toString().isEmpty
-                ? demoPic
-                : article['photo_cover'].toString(),
-            width: 50,
-            height: 60,
-          ),
-          espacementWidget(width: 8),
-          Container(
-            width: MediaQuery.of(context).size.width - 100,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  child: customText(
-                    article['nom_produit'].toString(),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 5,
-                    style: TextStyle(fontSize: 12, color: DARK),
-                  ),
-                ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              roundedImageContainer(
+                image: article['photo_cover'].toString().isEmpty
+                    ? demoPic
+                    : article['photo_cover'].toString(),
+                width: 50,
+                height: 60,
+              ),
+              espacementWidget(width: 8),
+              Container(
+                width: MediaQuery.of(context).size.width - 100,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      child: customText(
+                        article['nom_produit'].toString(),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
+                        style: TextStyle(fontSize: 12, color: DARK),
+                      ),
+                    ),
 
-                espacementWidget(height: 2),
-                SizedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      customText(
-                        formatMoney(article['prix_unitaire'].toString()),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    espacementWidget(height: 2),
+                    SizedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          customText(
+                            formatMoney(
+                              (article['est_en_promo'] == true
+                                      ? (article['prix_unitaire'] -
+                                            article['prix_unitaire'] *
+                                                article['pourcentage_reduction'])
+                                      : article['prix_unitaire'])
+                                  .toString(),
+                            ),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          espacementWidget(width: 10),
+                          CustomizableCounter(
+                            padding: 10,
+                            count: article['quantite'],
+                            step: 1,
+                            minCount: 1,
+                            maxCount: article['quantite_en_stock'],
+                            incrementIcon: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                            decrementIcon: const Icon(
+                              Icons.remove,
+                              color: Colors.white,
+                            ),
+                            onCountChange: (count) {
+                              setState(() {
+                                article['quantite'] = count;
+                              });
+                              updatePrixTotalPanier();
+                            },
+                            onIncrement: (count) {
+                              setState(() {
+                                article['quantite'] = count;
+                              });
+                              updatePrixTotalPanier();
+                            },
+                            onDecrement: (count) {
+                              setState(() {
+                                article['quantite'] = count;
+                              });
+                              updatePrixTotalPanier();
+                            },
+                          ),
+                        ],
                       ),
-                      espacementWidget(width: 10),
-                      CustomizableCounter(
-                        padding: 10,
-                        count: article['quantite'],
-                        step: 1,
-                        minCount: 1,
-                        maxCount: article['quantite_en_stock'],
-                        incrementIcon: const Icon(
-                          Icons.add,
-                          color: Colors.white,
-                        ),
-                        decrementIcon: const Icon(
-                          Icons.remove,
-                          color: Colors.white,
-                        ),
-                        onCountChange: (count) {
-                          setState(() {
-                            article['quantite'] = count;
-                          });
-                          updatePrixTotalPanier();
-                        },
-                        onIncrement: (count) {
-                          setState(() {
-                            article['quantite'] = count;
-                          });
-                          updatePrixTotalPanier();
-                        },
-                        onDecrement: (count) {
-                          setState(() {
-                            article['quantite'] = count;
-                          });
-                          updatePrixTotalPanier();
-                        },
-                      ),
-                    ],
-                  ),
+                    ),
+                    customText(
+                      "Total restant : ${article['quantite_en_stock']} articles",
+                      style: TextStyle(fontSize: 9, color: PRIMARY),
+                    ),
+                  ],
                 ),
-                customText(
-                  "Total restant : ${article['quantite_en_stock']} articles",
-                  style: TextStyle(fontSize: 9, color: PRIMARY),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
