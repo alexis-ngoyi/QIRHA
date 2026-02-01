@@ -343,15 +343,10 @@ class ApiServices {
     }
   }
 
-  deletePanierItem(String? utilisateur_id, AddPanierModel panierItem) async {
+  deletePanierItem(String? utilisateur_id, panierItem) async {
     try {
       Object data = {
-        // 'taille_id': panierItem.taille_id,
-        // 'couleur_id': panierItem.couleur_id,
-        // 'produit_id': panierItem.produit_id,
-        // 'utilisateur_id': panierItem.utilisateur_id,
-        // 'quantite': panierItem.quantite,
-        // 'image_id': panierItem.image_id,
+        'panier_utilisateur_id': panierItem['panier_utilisateur_id'],
       };
       Response response = await dio.post(
         '/delete-one/panier-utilisateur/$utilisateur_id',

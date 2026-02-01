@@ -41,8 +41,6 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
       cartProduit = [];
     });
 
-    var utilisateur_id = 1; // prefs.getString('utilisateur_id');
-
     double tmp = 0;
 
     var articles = await ApiServices().getPanierUtilisateur(
@@ -164,8 +162,6 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
       cartProduit.remove(article);
     });
 
-    var utilisateur_id = prefs.getString('utilisateur_id');
-
     AddPanierModel panierItem = AddPanierModel(
       // couleur_id: article.couleur_id,
       // quantite: article.quantite,
@@ -199,7 +195,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
   @override
   void initState() {
     super.initState();
-    utilisateur_id = "1"; //prefs.getString('utilisateur_id');
+    utilisateur_id = prefs.getString('utilisateur_id');
     authGuard();
 
     getPanierUtilisateur();
@@ -220,85 +216,84 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
       color: WHITE,
       child: Scaffold(
         backgroundColor: GREY,
-        body:
-            // needToLogin == false
-            //     ?
-            Stack(
-              children: [
-                Column(
-                  children: [
-                    espacementWidget(height: 40),
-                    panierAppBar(),
+        body: needToLogin == false
+            ? Stack(
+                children: [
+                  Column(
+                    children: [
+                      espacementWidget(height: 40),
+                      panierAppBar(),
 
-                    if (cartProduit.isNotEmpty) ...[
-                      notEmptyCart(),
-                    ] else
-                      emptyCart(),
-                  ],
-                ),
+                      if (cartProduit.isNotEmpty) ...[
+                        notEmptyCart(),
+                      ] else
+                        emptyCart(),
+                    ],
+                  ),
 
-                if (cartProduit.isNotEmpty)
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      height: 90,
-                      decoration: BoxDecoration(
-                        color: WHITE,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          topRight: Radius.circular(8),
+                  if (cartProduit.isNotEmpty)
+                    Positioned(
+                      bottom: 0,
+                      child: Container(
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: WHITE,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8),
+                            topRight: Radius.circular(8),
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      width: MediaQuery.of(context).size.width,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                customText(
-                                  'TOTAL :',
-                                  style: const TextStyle(fontSize: 10),
-                                ),
-                                customText(
-                                  formatMoney(prixTotalPanier.toString()),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontWeight: FontWeight.bold,
+                        padding: const EdgeInsets.all(10),
+                        width: MediaQuery.of(context).size.width,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  customText(
+                                    'TOTAL :',
+                                    style: const TextStyle(fontSize: 10),
                                   ),
-                                ),
-                              ],
-                            ),
-                            espacementWidget(height: 10),
-                            SizedBox(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width,
-                              child: MyButtonWidget(
-                                onPressed: () => {
-                                  // CustomPageRoute(
-                                  //   ConfirmationCommandeProduit(
-                                  //     panier: cartProduit,
-                                  //     sousTotal: prixTotalPanier,
-                                  //   ),
-                                  //   context,
-                                  // ),
-                                  submitCommande(),
-                                },
-                                label: 'VALIDER LE PANIER',
-                                bgColor: PRIMARY,
-                                labelColor: WHITE,
+                                  customText(
+                                    formatMoney(prixTotalPanier.toString()),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                              espacementWidget(height: 10),
+                              SizedBox(
+                                height: 40,
+                                width: MediaQuery.of(context).size.width,
+                                child: MyButtonWidget(
+                                  onPressed: () => {
+                                    // CustomPageRoute(
+                                    //   ConfirmationCommandeProduit(
+                                    //     panier: cartProduit,
+                                    //     sousTotal: prixTotalPanier,
+                                    //   ),
+                                    //   context,
+                                    // ),
+                                    submitCommande(),
+                                  },
+                                  label: 'VALIDER LE PANIER',
+                                  bgColor: PRIMARY,
+                                  labelColor: WHITE,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-        // : NeedToLogin(),
+                ],
+              )
+            : NeedToLogin(),
       ),
     );
   }
