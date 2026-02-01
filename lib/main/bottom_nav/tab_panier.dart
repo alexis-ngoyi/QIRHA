@@ -157,31 +157,12 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
   }
 
   // delete panier item
-  deletePanierItem(Map<String, dynamic> article) async {
-    setState(() {
-      cartProduit.remove(article);
-    });
-
-    AddPanierModel panierItem = AddPanierModel(
-      // couleur_id: article.couleur_id,
-      // quantite: article.quantite,
-      // image_id: article.image_id,
-      // produit_id: article.produit_id,
-      // taille_id: article.taille_id,
-      // utilisateur_id: utilisateur_id,
-    );
-
-    var reponse = await ApiServices().deletePanierItem(
-      utilisateur_id,
-      panierItem,
-    );
+  deletePanierItem(article) async {
+    var reponse = await ApiServices().deletePanierItem(utilisateur_id, article);
 
     print("DELETE FROM PANIER REPONSE : $reponse");
 
     await onRefreshPanierContent();
-
-    // close loader
-    // SmartDialog.dismiss();
   }
 
   Future<void> onRefreshPanierContent() async {
