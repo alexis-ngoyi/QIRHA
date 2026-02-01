@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
+import 'package:qirha/res/alert_dialog.dart';
 import 'package:qirha/res/constantes.dart';
 import 'package:qirha/res/loading_process.dart';
 import 'package:qirha/widgets/combo/custom_button.dart';
@@ -18,6 +19,7 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/widgets/custom_counter_cart.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
+import 'package:quickalert/quickalert.dart';
 
 class TabPanierScreen extends StatefulWidget {
   TabPanierScreen({super.key, required this.canReturn});
@@ -134,6 +136,24 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
     );
 
     print("CREER COMMANDE : $reponse");
+
+    if (reponse['status'] == 'error') {
+      CustomAlertDialog.showCustomAlert(
+        context: context,
+        title: 'Oops...',
+        message: reponse['message'],
+        icon: Icons.error,
+        iconColor: Colors.red,
+      );
+    } else {
+      CustomAlertDialog.showCustomAlert(
+        context: context,
+        title: 'Operation reussie...',
+        message: reponse['message'],
+        icon: Icons.error,
+        iconColor: Colors.green,
+      );
+    }
 
     LoadingProcess.dismissLoading();
   }
