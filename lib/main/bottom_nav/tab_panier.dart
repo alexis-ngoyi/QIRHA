@@ -92,7 +92,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
       quantite: article['quantite'],
       produit_id: article['produit_id'].toString(),
       utilisateur_id: utilisateur_id.toString(),
-      photo_cover: '',
+      photo_cover: article['photo_cover'].toString(),
       prix_produit_id: article['prix_produit_id'].toString(),
     );
 
@@ -122,6 +122,20 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
       }
       timer.cancel();
     });
+  }
+
+  submitCommande() async {
+    LoadingProcess.showLoading(text: 'Creation de la commande en cours ...');
+
+    var reponse = await ApiServices().createCommande(
+      utilisateur_id: utilisateur_id.toString(),
+      montant_total: prixTotalPanier,
+      panierItems: cartProduit,
+    );
+
+    print("CREER COMMANDE : $reponse");
+
+    LoadingProcess.dismissLoading();
   }
 
   // delete panier item
@@ -250,9 +264,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                                   //   ),
                                   //   context,
                                   // ),
-                                  LoadingProcess.showLoading(
-                                    text: 'Operation en cours ...',
-                                  ),
+                                  submitCommande(),
                                 },
                                 label: 'VALIDER LE PANIER',
                                 bgColor: PRIMARY,

@@ -366,6 +366,38 @@ class ApiServices {
     }
   }
 
+  createCommande({
+    String? utilisateur_id,
+    double? montant_total,
+    panierItems,
+  }) async {
+    try {
+      var panier = [];
+
+      // formatage liste des articles
+      panierItems.forEach((item) {
+        panier.add({
+          'produit_id': item['produit_id'],
+          'photo_cover': item['photo_cover'],
+          'quantite': item['quantite'],
+          'prix_produit_id': item['prix_produit_id'],
+        });
+      });
+
+      // objet de la commande
+      Object data = {
+        'utilisateur_id': utilisateur_id,
+        'montant_total': montant_total,
+        'panier': panier,
+      };
+      Response response = await dio.post('/commandes/create', data: data);
+      return response.data;
+    } catch (error) {
+      print("EXCEPTION [createCommande] (/commandes/create) : $error");
+      return [];
+    }
+  }
+
   enregisterCommande(
     String? utilisateur_id,
     double prixTotal,

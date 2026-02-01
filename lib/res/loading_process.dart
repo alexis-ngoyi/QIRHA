@@ -81,6 +81,7 @@ class _CustomLoadingState extends State<CustomLoading>
         alignment: Alignment.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+
           children: [
             RotationTransition(
               alignment: Alignment.center,
@@ -91,6 +92,8 @@ class _CustomLoadingState extends State<CustomLoading>
               margin: const EdgeInsets.only(top: 20),
               child: customCenterText(
                 widget.text,
+                maxLines: 3,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13, color: DARK),
               ),
             ),
