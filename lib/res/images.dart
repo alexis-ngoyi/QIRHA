@@ -16,12 +16,9 @@ const String mtn_logo = 'assets/mtn.png';
 const String airtel_logo = 'assets/airtel.jpg';
 const String img_bg = 'assets/bg.jpg';
 
-const livraison_a_domicile =
-    'http://api.tekissa.net/static/assets/livraison_a_domicile.png';
-const expedition_exterieur =
-    'http://api.tekissa.net/static/assets/expedition_exterieur.png';
-const homme_marchant =
-    'http://api.tekissa.net/static/assets/homme_marchant.png';
+const livraison_a_domicile = 'assets/livraison_a_domicile.png';
+const expedition_exterieur = 'assets/expedition_exterieur.png';
+const homme_marchant = 'assets/homme_marchant.png';
 const security = 'assets/security.png';
 const money_hand = 'assets/money_hand.png';
 const mastercard = "assets/mastercard.png";

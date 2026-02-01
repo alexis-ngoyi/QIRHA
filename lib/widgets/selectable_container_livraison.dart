@@ -76,10 +76,12 @@ class _SelectableContainerLivraisonState
                           SizedBox(
                             width: 100,
                             height: 100,
-                            child: customNetWorkImage(
-                              image: livraisonsList[i].$1,
-                              radius: 10,
-                              fit: BoxFit.contain,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.asset(
+                                livraisonsList[i].$1,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                           Column(

@@ -7,11 +7,14 @@
         "Caracteristique",
         "Caracteristiques",
         "Categorie",
+        "Commande",
         "espacement",
         "heroicons",
         "Produit",
         "Produits",
         "qirha",
+        "quantite",
+        "reponse",
         "utilisateur"
     ]
 }

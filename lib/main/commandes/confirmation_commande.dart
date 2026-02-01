@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
+import 'package:qirha/res/constantes.dart';
 import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/widgets/combo/custom_button.dart';
 import 'package:qirha/widgets/expandable_widget.dart';
@@ -9,7 +10,7 @@ import 'package:qirha/widgets/selectable_container_livraison.dart';
 import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/main/parametres/qui_sommes_nous.dart';
 import 'package:qirha/main/commandes/moyen_de_paiement_commandes.dart';
-import 'package:qirha/model/all_model.dart';
+
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
@@ -20,7 +21,7 @@ class ConfirmationCommandeProduit extends StatefulWidget {
     required this.panier,
     required this.sousTotal,
   });
-  final List<ArticlesCommandeModel> panier;
+  final panier;
   final double sousTotal;
 
   @override
@@ -118,8 +119,6 @@ class _ConfirmationCommandeProduitState
                 // fin
                 espacementWidget(height: 10),
                 articleDeLaCommande(),
-                espacementWidget(height: 10),
-                resumeCommande(),
               ],
             ),
           ),
@@ -223,131 +222,6 @@ class _ConfirmationCommandeProduitState
     );
   }
 
-  Container resumeCommande() {
-    return Container(
-      color: WHITE,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              HeroIcon(HeroIcons.newspaper, size: 14, color: DARK),
-              espacementWidget(width: 7),
-              customText(
-                "Resume de la commande",
-                style: TextStyle(
-                  color: DARK,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          espacementWidget(height: 8),
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: customText(
-                      'Sous-total',
-                      style: TextStyle(color: LIGHT, fontSize: 13),
-                    ),
-                  ),
-                  Container(
-                    child: customText(
-                      formatMoney(widget.sousTotal.toString()),
-                      style: TextStyle(color: LIGHT, fontSize: 11),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: customText(
-                      "Frais d'expedition",
-                      style: TextStyle(color: LIGHT, fontSize: 13),
-                    ),
-                  ),
-                  Container(
-                    child: customText(
-                      '1 000 XAF',
-                      style: TextStyle(color: LIGHT, fontSize: 11),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: customText(
-                      "Assurance d'expedition",
-                      style: TextStyle(color: LIGHT, fontSize: 13),
-                    ),
-                  ),
-                  Container(
-                    child: customText(
-                      '1 000 XAF',
-                      style: TextStyle(color: LIGHT, fontSize: 11),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: customText(
-                      "Taxes",
-                      style: TextStyle(color: LIGHT, fontSize: 13),
-                    ),
-                  ),
-                  Container(
-                    child: customText(
-                      '40 XAF',
-                      style: TextStyle(color: LIGHT, fontSize: 11),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: customText(
-                      "Total",
-                      style: TextStyle(color: LIGHT, fontSize: 13),
-                    ),
-                  ),
-                  Container(
-                    child: customText(
-                      formatMoney(
-                        (double.parse("2040") +
-                                double.parse(widget.sousTotal.toString()))
-                            .toString(),
-                      ),
-                      style: TextStyle(
-                        color: DARK,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          espacementWidget(height: 200),
-        ],
-      ),
-    );
-  }
-
   Container articleDeLaCommande() {
     return Container(
       color: WHITE,
@@ -362,7 +236,7 @@ class _ConfirmationCommandeProduitState
               HeroIcon(HeroIcons.paperClip, size: 14, color: DARK),
               espacementWidget(width: 7),
               customText(
-                "Vos articles",
+                "Vos articles  (${widget.panier.length})",
                 style: TextStyle(
                   color: DARK,
                   fontSize: 13,
@@ -377,11 +251,11 @@ class _ConfirmationCommandeProduitState
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "Date d'arrivee prevue : ",
+                  text: "Date d'arrivee prevue :",
                   style: TextStyle(fontSize: 13, color: LIGHT),
                 ),
                 TextSpan(
-                  text: "2023-11-20 ~ 2023-11-25",
+                  text: " 3 jours",
                   style: TextStyle(
                     fontSize: 11,
                     color: PRIMARY,
@@ -391,15 +265,6 @@ class _ConfirmationCommandeProduitState
               ],
             ),
           ),
-          for (var index = 0; index < widget.panier.length; index++)
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                articleItem(article: widget.panier[index]),
-                if (index < widget.panier.length - 1) lightDivider(),
-              ],
-            ),
         ],
       ),
     );
@@ -634,84 +499,6 @@ class _ConfirmationCommandeProduitState
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Container articleItem({required ArticlesCommandeModel article}) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          roundedImageContainer(
-            image: article.photo_cover.toString(),
-            width: 75,
-            height: 75,
-          ),
-          espacementWidget(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 200,
-                child: customText(
-                  article.nom_produit.toString(),
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  maxLines: 1,
-                  style: TextStyle(fontSize: 13, color: DARK),
-                ),
-              ),
-              espacementWidget(height: 5),
-              Container(
-                padding: const EdgeInsets.all(3),
-                margin: const EdgeInsets.symmetric(vertical: 2),
-                decoration: BoxDecoration(
-                  color: GREY,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Row(
-                  children: [
-                    customText(
-                      '${article.nom_couleur}; ${article.code_taille}',
-                      style: const TextStyle(
-                        fontSize: 11,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    espacementWidget(width: 5),
-                    const HeroIcon(HeroIcons.chevronDown, size: 12),
-                  ],
-                ),
-              ),
-              espacementWidget(height: 7),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  customText(
-                    formatMoney(article.prix_unitaire.toString()),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  espacementWidget(width: 10),
-                  const HeroIcon(HeroIcons.xMark, size: 11),
-                  customText(
-                    article.quantite.toString(),
-                    style: TextStyle(fontSize: 13, color: LIGHT),
-                  ),
-                ],
-              ),
-              customText(
-                "Total restant : ${article.quantite_en_stock} articles",
-                style: TextStyle(fontSize: 9, color: PRIMARY),
-              ),
-            ],
           ),
         ],
       ),

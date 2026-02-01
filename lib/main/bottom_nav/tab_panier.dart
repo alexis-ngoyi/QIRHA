@@ -7,12 +7,11 @@ import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/res/constantes.dart';
+import 'package:qirha/res/loading_process.dart';
 import 'package:qirha/widgets/combo/custom_button.dart';
 import 'package:qirha/widgets/need_to_login.dart';
 
-import 'package:qirha/widgets/suggestion_produit.dart';
 import 'package:qirha/functions/util_functions.dart';
-import 'package:qirha/main/commandes/confirmation_commande.dart';
 import 'package:qirha/main/recherche/search.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
@@ -73,14 +72,33 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
 
     // calculate new prix
     for (var index = 0; index < cartProduit.length; index++) {
-      tmp +=
-          double.parse(cartProduit[index]['prix_unitaire'].toString()) *
-          double.parse(cartProduit[index]['quantite'].toString());
+      tmp += cartProduit[index]['est_en_promo'] == true
+          ? (cartProduit[index]['prix_unitaire'] *
+                    cartProduit[index]['quantite'] -
+                cartProduit[index]['prix_unitaire'] *
+                    cartProduit[index]['quantite'] *
+                    cartProduit[index]['pourcentage_reduction'])
+          : cartProduit[index]['prix_unitaire'] *
+                cartProduit[index]['quantite'];
     }
 
     setState(() {
       prixTotalPanier = tmp;
     });
+  }
+
+  updateQuantite(article) async {
+    AddPanierModel panierItem = AddPanierModel(
+      quantite: article['quantite'],
+      produit_id: article['produit_id'].toString(),
+      utilisateur_id: utilisateur_id.toString(),
+      photo_cover: '',
+      prix_produit_id: article['prix_produit_id'].toString(),
+    );
+
+    var reponse = await ApiServices().addPanierItem(utilisateur_id, panierItem);
+
+    print(reponse);
   }
 
   late String? utilisateur_id;
@@ -178,123 +196,78 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                     espacementWidget(height: 40),
                     panierAppBar(),
 
-                    // if (cartProduit.isNotEmpty)
-                    notEmptyCart(),
-                    //  else emptyCart(),
+                    if (cartProduit.isNotEmpty) ...[
+                      notEmptyCart(),
+                    ] else
+                      emptyCart(),
                   ],
                 ),
 
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    color: WHITE,
-                    height: 110,
-                    padding: const EdgeInsets.all(20),
-                    width: MediaQuery.of(context).size.width,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              customText(
-                                'TOTAL :',
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              customText(
-                                formatMoney(prixTotalPanier.toString()),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  overflow: TextOverflow.ellipsis,
-                                  fontWeight: FontWeight.bold,
+                if (cartProduit.isNotEmpty)
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      height: 90,
+                      decoration: BoxDecoration(
+                        color: WHITE,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8),
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      width: MediaQuery.of(context).size.width,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                customText(
+                                  'TOTAL :',
+                                  style: const TextStyle(fontSize: 10),
                                 ),
-                              ),
-                            ],
-                          ),
-                          espacementWidget(height: 10),
-                          SizedBox(
-                            height: 40,
-                            width: MediaQuery.of(context).size.width,
-                            child: MyButtonWidget(
-                              onPressed: () => {
-                                // CustomPageRoute(
-                                //   ConfirmationCommandeProduit(
-                                //     panier: cartProduit,
-                                //     sousTotal: prixTotalPanier,
-                                //   ),
-                                //   context,
-                                // )
-                              },
-                              label: 'VALIDER LE PANIER',
-                              bgColor: PRIMARY,
-                              labelColor: WHITE,
+                                customText(
+                                  formatMoney(prixTotalPanier.toString()),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                            espacementWidget(height: 10),
+                            SizedBox(
+                              height: 40,
+                              width: MediaQuery.of(context).size.width,
+                              child: MyButtonWidget(
+                                onPressed: () => {
+                                  // CustomPageRoute(
+                                  //   ConfirmationCommandeProduit(
+                                  //     panier: cartProduit,
+                                  //     sousTotal: prixTotalPanier,
+                                  //   ),
+                                  //   context,
+                                  // ),
+                                  LoadingProcess.showLoading(
+                                    text: 'Operation en cours ...',
+                                  ),
+                                },
+                                label: 'VALIDER LE PANIER',
+                                bgColor: PRIMARY,
+                                labelColor: WHITE,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
         // : NeedToLogin(),
       ),
-    );
-  }
-
-  Column moyenDePayment(BuildContext context) {
-    return Column(
-      children: [
-        customText(
-          'Payez avec avec les moyens de paiement locaux suivants :',
-          softWrap: true,
-          maxLines: 2,
-          style: const TextStyle(fontSize: 11),
-        ),
-        espacementWidget(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              // onTap: () => CustomPageRoute(
-              //   ConfirmationCommandeProduit(
-              //     panier: cartProduit,
-              //     sousTotal: prixTotalPanier,
-              //   ),
-              //   context,
-              // ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  mtn_logo,
-                  width: 100,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            espacementWidget(width: 10),
-            GestureDetector(
-              // onTap: () => CustomPageRoute(
-              //   ConfirmationCommandeProduit(
-              //     panier: cartProduit,
-              //     sousTotal: prixTotalPanier,
-              //   ),
-              //   context,
-              // ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  airtel_logo,
-                  width: 100,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -323,7 +296,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                         ),
                       ),
                       padding: EdgeInsets.all(8),
-                      child: cartTileItem(article: cartProduit[index]),
+                      child: panierItem(article: cartProduit[index]),
                     ),
 
                     // badge
@@ -372,7 +345,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
     );
   }
 
-  GestureDetector cartTileItem({required Map<String, dynamic> article}) {
+  GestureDetector panierItem({required Map<String, dynamic> article}) {
     return GestureDetector(
       onLongPress: () => deletePanierItem(article),
       child: Stack(
@@ -400,6 +373,30 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                         maxLines: 5,
                         style: TextStyle(fontSize: 12, color: DARK),
                       ),
+                    ),
+
+                    Row(
+                      children: [
+                        for (
+                          var i = 0;
+                          i <
+                              article['attributs_produit_caracteristiques']
+                                  .length;
+                          i++
+                        )
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            margin: EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: PRIMARY.withAlpha(20),
+                              border: Border.all(width: .5),
+                            ),
+                            child: customText(
+                              "${article['attributs_produit_caracteristiques'][i]['contenu_text']}",
+                              style: TextStyle(fontSize: 9, color: PRIMARY),
+                            ),
+                          ),
+                      ],
                     ),
 
                     espacementWidget(height: 2),
@@ -442,18 +439,21 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                                 article['quantite'] = count;
                               });
                               updatePrixTotalPanier();
+                              updateQuantite(article);
                             },
                             onIncrement: (count) {
                               setState(() {
                                 article['quantite'] = count;
                               });
                               updatePrixTotalPanier();
+                              updateQuantite(article);
                             },
                             onDecrement: (count) {
                               setState(() {
                                 article['quantite'] = count;
                               });
                               updatePrixTotalPanier();
+                              updateQuantite(article);
                             },
                           ),
                         ],
@@ -546,7 +546,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                     widget.canReturn
                         ? HeroIcons.chevronLeft
                         : HeroIcons.shoppingCart,
-                    size: 25,
+                    size: 20,
                   ),
                 ),
                 espacementWidget(width: 10),
@@ -555,7 +555,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                       ? 'Panier'
                       : 'Panier (${cartProduit.length})',
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -571,7 +571,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                       HeroIcon(HeroIcons.mapPin, size: 12, color: WHITE),
                       espacementWidget(width: 5),
                       customText(
-                        'Livraison partout au congo',
+                        'Congo RC',
                         style: TextStyle(fontSize: 9, color: WHITE),
                       ),
                     ],
@@ -579,12 +579,26 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                 ),
               ],
             ),
-            GestureDetector(
-              onTap: () => CustomPageRoute(const SearchBarScreen(), context),
-              child: const Padding(
-                padding: EdgeInsets.all(4.0),
-                child: HeroIcon(HeroIcons.magnifyingGlass, size: 25),
-              ),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () =>
+                      CustomPageRoute(const SearchBarScreen(), context),
+                  child: const Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: HeroIcon(HeroIcons.magnifyingGlass, size: 25),
+                  ),
+                ),
+
+                espacementWidget(width: 20),
+                GestureDetector(
+                  onTap: () => {},
+                  child: const Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: HeroIcon(HeroIcons.trash, size: 25),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

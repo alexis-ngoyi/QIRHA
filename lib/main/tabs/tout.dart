@@ -2,17 +2,16 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/functions/util_functions.dart';
-import 'package:qirha/res/custom_loading.dart';
 import 'package:qirha/main/produits/all_produit_bazard.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:qirha/res/images.dart';
+import 'package:qirha/res/loading_process.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -147,21 +146,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
     authGuard();
     // start loading
     //----------------------------------------
-    var maskWidget = Opacity(
-      opacity: 1,
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: WHITE,
-      ),
-    );
-    SmartDialog.showLoading(
-      maskWidget: maskWidget,
-      clickMaskDismiss: false,
-      backDismiss: false,
-      animationType: SmartAnimationType.scale,
-      builder: (_) => CustomLoading(type: 1),
-    );
+    LoadingProcess.showLoading(text: 'Chargement');
     //----------------------------------------
 
     _timer = Timer.periodic(const Duration(seconds: 1), _onTimerTick);
@@ -173,7 +158,7 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
     getProduits();
 
     // close loading
-    SmartDialog.dismiss();
+    LoadingProcess.dismissLoading();
   }
 
   @override
