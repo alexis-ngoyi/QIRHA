@@ -15,15 +15,15 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/constantes.dart';
 import 'package:qirha/res/utils.dart';
 
-class CommandeStatus extends StatefulWidget {
-  const CommandeStatus({super.key, required this.status});
+class CommandeTabView extends StatefulWidget {
+  const CommandeTabView({super.key, required this.status});
   final String status;
 
   @override
-  State<CommandeStatus> createState() => _CommandeStatusState();
+  State<CommandeTabView> createState() => _CommandeTabViewState();
 }
 
-class _CommandeStatusState extends State<CommandeStatus> {
+class _CommandeTabViewState extends State<CommandeTabView> {
   final List<CommandeModel> ListCommandes = [];
   bool isLoading = true;
   bool needLogin = true;

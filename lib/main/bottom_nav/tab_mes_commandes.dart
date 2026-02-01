@@ -4,15 +4,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:qirha/api/shared_preferences.dart';
-import 'package:qirha/main/commandes/commande_status.dart';
+import 'package:qirha/main/commandes/commande_tabview.dart';
 import 'package:qirha/main/commandes/toutes.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:qirha/widgets/need_to_login.dart';
 
 class TabMesCommandesScreen extends StatefulWidget {
-  const TabMesCommandesScreen(
-      {super.key, required this.initialIndex, required this.canReturn});
+  const TabMesCommandesScreen({
+    super.key,
+    required this.initialIndex,
+    required this.canReturn,
+  });
   final bool canReturn;
   final int initialIndex;
 
@@ -26,40 +29,24 @@ class _TabMesCommandesScreenState extends State<TabMesCommandesScreen>
 
   final List<Widget> tabViews = const <Widget>[
     MesCommandesTabTout(),
-    CommandeStatus(status: "1"), //  PAYE | VALIDE
-    CommandeStatus(status: "5"), // NON PAYE
-    CommandeStatus(status: "3"), // EN ATTENTE
-    CommandeStatus(status: "6"), // EN PREPARATION
-    CommandeStatus(status: "4"), // EXPEDIE
-    CommandeStatus(status: "2"), // SUPPRIME
-    Center()
+    CommandeTabView(status: "1"), //  PAYE | VALIDE
+    CommandeTabView(status: "5"), // NON PAYE
+    CommandeTabView(status: "3"), // EN ATTENTE
+    CommandeTabView(status: "6"), // EN PREPARATION
+    CommandeTabView(status: "4"), // EXPEDIE
+    CommandeTabView(status: "2"), // SUPPRIME
+    Center(),
   ];
 
   final List<Tab> tabs = <Tab>[
-    const Tab(
-      text: 'Toutes',
-    ),
-    const Tab(
-      text: 'Validée',
-    ),
-    const Tab(
-      text: 'Non payée',
-    ),
-    const Tab(
-      text: 'Attente',
-    ),
-    const Tab(
-      text: 'Préparation',
-    ),
-    const Tab(
-      text: 'Expediée',
-    ),
-    const Tab(
-      text: 'Supprimée',
-    ),
-    const Tab(
-      text: 'Donner un avis',
-    ),
+    const Tab(text: 'Toutes'),
+    const Tab(text: 'Validée'),
+    const Tab(text: 'Non payée'),
+    const Tab(text: 'Attente'),
+    const Tab(text: 'Préparation'),
+    const Tab(text: 'Expediée'),
+    const Tab(text: 'Supprimée'),
+    const Tab(text: 'Donner un avis'),
   ];
 
   late String? utilisateur_id;
@@ -87,10 +74,13 @@ class _TabMesCommandesScreenState extends State<TabMesCommandesScreen>
   @override
   void initState() {
     super.initState();
-    utilisateur_id = prefs.getString('utilisateur_id');
+    utilisateur_id = '1'; // prefs.getString('utilisateur_id');
     authGuard();
     _tabController = TabController(
-        initialIndex: widget.initialIndex, length: tabs.length, vsync: this);
+      initialIndex: widget.initialIndex,
+      length: tabs.length,
+      vsync: this,
+    );
   }
 
   @override
@@ -102,27 +92,32 @@ class _TabMesCommandesScreenState extends State<TabMesCommandesScreen>
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _tabController.animateTo(widget.initialIndex));
+      (_) => _tabController.animateTo(widget.initialIndex),
+    );
     return needToLogin == false
         ? DefaultTabController(
             length: tabs.length,
             child: Scaffold(
-                backgroundColor: GREY,
-                appBar: MesCommandesAppBar(context,
-                    canReturn: widget.canReturn,
-                    tabs: tabs,
-                    controller: _tabController),
-                body: IconTheme(
-                    data: const IconThemeData(color: Colors.black),
-                    child: TabBarView(
-                        controller: _tabController, children: tabViews))),
+              backgroundColor: GREY,
+              appBar: MesCommandesAppBar(
+                context,
+                canReturn: widget.canReturn,
+                tabs: tabs,
+                controller: _tabController,
+              ),
+              body: IconTheme(
+                data: const IconThemeData(color: Colors.black),
+                child: TabBarView(
+                  controller: _tabController,
+                  children: tabViews,
+                ),
+              ),
+            ),
           )
         : (needToLogin == true
-            ? const Scaffold(body: NeedToLogin())
-            : const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ));
+              ? const Scaffold(body: NeedToLogin())
+              : const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                ));
   }
 }
