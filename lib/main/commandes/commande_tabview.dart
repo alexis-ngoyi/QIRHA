@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
+import 'package:qirha/res/images.dart';
 import 'package:qirha/widgets/empty/no_commande.dart';
+import 'package:qirha/widgets/image_svg.dart';
 import 'package:qirha/widgets/need_to_login.dart';
 import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/main/commandes/detail_commande.dart';
@@ -14,6 +16,7 @@ import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/constantes.dart';
 import 'package:qirha/res/utils.dart';
+import 'package:qirha/widgets/text_collapse_widget.dart';
 
 class CommandeTabView extends StatefulWidget {
   const CommandeTabView({super.key, required this.status});
@@ -26,8 +29,8 @@ class CommandeTabView extends StatefulWidget {
 class _CommandeTabViewState extends State<CommandeTabView> {
   final List<CommandeModel> ListCommandes = [];
   bool isLoading = true;
-  bool needLogin = true;
-  late String? utilisateur_id = prefs.getString('utilisateur_id');
+  late bool needLogin;
+  late String? utilisateur_id;
 
   getCommandes() async {
     // load view
@@ -43,12 +46,13 @@ class _CommandeTabViewState extends State<CommandeTabView> {
           ListCommandes.add(
             CommandeModel(
               commande_id: commande['commande_id'],
+              utilisateur_id: commande['utilisateur_id'],
+              nom_utilisateur: commande['nom_utilisateur'],
               date_commande: commande['date_commande'],
-              montant_total: commande['montant_total'],
-              nom_utilisateur: commande['utilisateur']['nom_utilisateur'],
+              montant_total: parseDouble(commande['montant_total'].toString()),
               status: commande['status'],
-              utilisateur_id: commande['utilisateur']['utilisateur_id']
-                  .toString(),
+              accepte_la_livraison: commande['accepte_la_livraison'],
+              code_commande: commande['code_commande'],
             ),
           );
         });
@@ -68,14 +72,12 @@ class _CommandeTabViewState extends State<CommandeTabView> {
 
     // Set up a periodic timer
     main_timer = Timer.periodic(intervalDuration, (timer) async {
-      if (utilisateur_id == null) {
-        setState(() {
-          needLogin = true;
-          isLoading = false;
-        });
-      } else {
-        getCommandes();
-      }
+      setState(() {
+        needLogin = utilisateur_id == null ? true : false;
+      });
+
+      if (!needLogin) getCommandes();
+
       timer.cancel();
     });
   }
@@ -83,6 +85,8 @@ class _CommandeTabViewState extends State<CommandeTabView> {
   @override
   void initState() {
     super.initState();
+    needLogin = true;
+    utilisateur_id = '1'; //prefs.getString('utilisateur_id');
 
     authGuard();
   }
@@ -97,70 +101,47 @@ class _CommandeTabViewState extends State<CommandeTabView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: GREY,
-      body: isLoading == false
-          ? Column(
-              children: [
-                needLogin == false
-                    ? SingleChildScrollView(
-                        child: ListCommandes.isNotEmpty
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  espacementWidget(height: 8),
-                                  for (
-                                    var index = 0;
-                                    index < ListCommandes.length;
-                                    index++
-                                  )
-                                    GestureDetector(
-                                      onTap: () => CustomPageRoute(
-                                        DetailCommandeProduit(
-                                          commande: ListCommandes[index],
-                                        ),
-                                        context,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: commandeItem(
-                                          context,
-                                          commande: ListCommandes[index],
-                                        ),
-                                      ),
-                                    ),
-                                  espacementWidget(height: 5),
-                                  Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Container(
-                                      color: WHITE,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                        vertical: 15,
-                                      ),
-                                      width: MediaQuery.of(context).size.width,
-                                      child: customCenterText(
-                                        'Je ne trouve pas ma commande',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: DARK,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  espacementWidget(height: 10),
-                                ],
-                              )
-                            : const Center(child: NoCommandeWidget()),
-                      )
-                    : (needLogin == true
-                          ? const Scaffold(body: NeedToLogin())
-                          : const Scaffold(
-                              body: Center(child: CircularProgressIndicator()),
-                            )),
-              ],
-            )
-          : const Scaffold(body: Center(child: CircularProgressIndicator())),
+      body: SingleChildScrollView(
+        child: ListCommandes.isNotEmpty
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  espacementWidget(height: 8),
+                  for (var index = 0; index < ListCommandes.length; index++)
+                    GestureDetector(
+                      onTap: () => CustomPageRoute(
+                        DetailCommandeProduit(commande: ListCommandes[index]),
+                        context,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: commandeItem(
+                          context,
+                          commande: ListCommandes[index],
+                        ),
+                      ),
+                    ),
+
+                  espacementWidget(height: 10),
+                ],
+              )
+            : Container(
+                child: Center(
+                  child: Column(
+                    children: [
+                      // MySvgImageWidget(asset: empty, height: 130, width: 130),
+                      espacementWidget(height: 200),
+                      Text(
+                        'Aucunes commandes ...',
+                        style: TextStyle(fontSize: 12),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+      ),
     );
   }
 
@@ -184,7 +165,7 @@ class _CommandeTabViewState extends State<CommandeTabView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   customText(
-                    'Commande #$prefixCodeCommande${commande.commande_id}',
+                    'Commande : ${commande.code_commande}',
                     style: const TextStyle(fontSize: 11),
                   ),
                   Row(

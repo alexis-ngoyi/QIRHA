@@ -30,4 +30,5 @@ const categorie_default = 'http://api.tekissa.net/static/assets/all.png';
 
 const livraison_svg = 'assets/livraison.svg';
 const need_to_login = 'assets/need_login.svg';
+const empty = 'assets/empty.svg';
 const pin_circle = 'assets/pin-circle.png';

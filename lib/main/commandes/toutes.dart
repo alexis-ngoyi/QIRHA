@@ -8,7 +8,6 @@ import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/main/commandes/detail_commande.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
-import 'package:qirha/res/constantes.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:qirha/widgets/empty/no_commande.dart';
 
@@ -26,36 +25,26 @@ class _MesCommandesTabToutState extends State<MesCommandesTabTout> {
 
   getCommandes() async {
     setState(() {
-      isLoading = true;
       ListCommandes = [];
     });
 
     var commandes = await ApiServices().getCommandes(utilisateur_id);
 
-    print(commandes.length);
-
-    if (commandes != Null) {
-      commandes.forEach((commande) {
-        setState(() {
-          ListCommandes.add(
-            CommandeModel(
-              commande_id: commande['commande_id'],
-              date_commande: commande['date_commande'],
-              montant_total: commande['montant_total'],
-              nom_utilisateur: commande['utilisateur']['nom_utilisateur'],
-              status: commande['status'],
-              utilisateur_id: commande['utilisateur']['utilisateur_id']
-                  .toString(),
-            ),
-          );
-        });
+    commandes.forEach((commande) {
+      setState(() {
+        ListCommandes.add(
+          CommandeModel(
+            commande_id: commande['commande_id'],
+            utilisateur_id: commande['utilisateur_id'],
+            nom_utilisateur: commande['nom_utilisateur'],
+            date_commande: commande['date_commande'],
+            montant_total: parseDouble(commande['montant_total']),
+            status: commande['status'],
+            accepte_la_livraison: commande['accepte_la_livraison'],
+            code_commande: commande['code_commande'],
+          ),
+        );
       });
-    } else {
-      // print("utilisateur_id commande null :$utilisateur_id");
-    }
-
-    setState(() {
-      isLoading = false;
     });
   }
 
@@ -63,7 +52,7 @@ class _MesCommandesTabToutState extends State<MesCommandesTabTout> {
   void initState() {
     super.initState();
     // get utilisateur_id
-    utilisateur_id = prefs.getString('utilisateur_id');
+    utilisateur_id = '1'; //prefs.getString('utilisateur_id');
 
     getCommandes();
   }
@@ -76,66 +65,61 @@ class _MesCommandesTabToutState extends State<MesCommandesTabTout> {
       },
       child: Scaffold(
         backgroundColor: GREY,
-        body: isLoading == false
-            ? SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SingleChildScrollView(
-                      child: ListCommandes.isNotEmpty
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                espacementWidget(height: 8),
-                                for (
-                                  var index = 0;
-                                  index < ListCommandes.length;
-                                  index++
-                                )
-                                  GestureDetector(
-                                    onTap: () => CustomPageRoute(
-                                      DetailCommandeProduit(
-                                        commande: ListCommandes[index],
-                                      ),
-                                      context,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: commandeItem(
-                                        context,
-                                        commande: ListCommandes[index],
-                                      ),
-                                    ),
-                                  ),
-                                espacementWidget(height: 5),
-                                Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Container(
-                                    color: WHITE,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 15,
-                                    ),
-                                    width: MediaQuery.of(context).size.width,
-                                    child: customCenterText(
-                                      'Je ne trouve pas ma commande',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: DARK,
-                                      ),
-                                    ),
-                                  ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SingleChildScrollView(
+                child: ListCommandes.isNotEmpty
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          espacementWidget(height: 8),
+                          for (
+                            var index = 0;
+                            index < ListCommandes.length;
+                            index++
+                          )
+                            GestureDetector(
+                              onTap: () => CustomPageRoute(
+                                DetailCommandeProduit(
+                                  commande: ListCommandes[index],
                                 ),
-                                espacementWidget(height: 10),
-                              ],
-                            )
-                          : const Center(child: NoCommandeWidget()),
-                    ),
-                  ],
-                ),
-              )
-            : Center(child: CircularProgressIndicator()),
+                                context,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: commandeItem(
+                                  context,
+                                  commande: ListCommandes[index],
+                                ),
+                              ),
+                            ),
+                          espacementWidget(height: 5),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Container(
+                              color: WHITE,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 15,
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                              child: customCenterText(
+                                'Je ne trouve pas ma commande ?',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 13, color: DARK),
+                              ),
+                            ),
+                          ),
+                          espacementWidget(height: 10),
+                        ],
+                      )
+                    : const Center(child: NoCommandeWidget()),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -160,7 +144,7 @@ class _MesCommandesTabToutState extends State<MesCommandesTabTout> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   customText(
-                    'Commande #$prefixCodeCommande${commande.commande_id}',
+                    'Commande #${commande.code_commande}',
                     style: const TextStyle(fontSize: 11),
                   ),
                   Row(

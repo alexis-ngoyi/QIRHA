@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MySvgImageWidget extends StatefulWidget {
-  const MySvgImageWidget(
-      {super.key, required this.asset, this.width = 90, this.height = 100});
+  const MySvgImageWidget({
+    super.key,
+    required this.asset,
+    this.width = 90,
+    this.height = 100,
+  });
   final String asset;
   final double width;
   final double height;

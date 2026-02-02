@@ -55,19 +55,10 @@ String statusCommande(String status) {
       return "Validée";
 
     case "2":
-      return "Supprimée";
+      return "Annulée";
 
     case "3":
-      return "En attente de paiement";
-
-    case "4":
-      return "Expediée";
-
-    case "5":
-      return "Non payée";
-
-    case "6":
-      return "En preparation de livraison";
+      return "En attente";
 
     default:
       return "Non defini";

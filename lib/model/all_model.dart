@@ -38,51 +38,53 @@ class GroupeCategorieModel {
 }
 
 class CommandeModel {
+  int commande_id;
+  int utilisateur_id;
+  String nom_utilisateur;
   String? date_commande;
-  int? commande_id;
-  String? montant_total;
-  String? status;
-  String? nom_utilisateur;
-  String? utilisateur_id;
+  double? montant_total;
+  String status;
   String accepte_la_livraison;
+  String? code_commande;
 
   CommandeModel({
-    required this.date_commande,
     required this.commande_id,
+    required this.utilisateur_id,
+    required this.nom_utilisateur,
+    required this.date_commande,
     required this.montant_total,
     required this.status,
-    required this.nom_utilisateur,
-    required this.utilisateur_id,
-    this.accepte_la_livraison = "0",
+    required this.accepte_la_livraison,
+    this.code_commande,
   });
-}
 
-class ArticlesCommandeModel {
-  String? code_taille;
-  String? nom_couleur;
-  String? couleur_id;
-  String? taille_id;
-  String? image_id;
-  String? produit_id;
-  String? nom_produit;
-  String? photo_cover;
-  String? prix_unitaire;
-  String? quantite;
-  String? quantite_en_stock;
+  // Méthode pour convertir depuis JSON
+  factory CommandeModel.fromJson(Map<String, dynamic> json) {
+    return CommandeModel(
+      commande_id: json['commande_id'],
+      utilisateur_id: json['utilisateur_id'],
+      nom_utilisateur: json['nom_utilisateur'],
+      date_commande: json['date_commande'],
+      montant_total: (json['montant_total'] as num).toDouble(),
+      status: json['status'],
+      accepte_la_livraison: json['accepte_la_livraison'],
+      code_commande: json['code_commande'],
+    );
+  }
 
-  ArticlesCommandeModel({
-    required this.code_taille,
-    required this.nom_couleur,
-    required this.nom_produit,
-    required this.photo_cover,
-    required this.prix_unitaire,
-    required this.quantite,
-    required this.quantite_en_stock,
-    required this.couleur_id,
-    required this.taille_id,
-    required this.produit_id,
-    required this.image_id,
-  });
+  // Méthode pour convertir en JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'commande_id': commande_id,
+      'utilisateur_id': utilisateur_id,
+      'nom_utilisateur': nom_utilisateur,
+      'date_commande': date_commande,
+      'montant_total': montant_total,
+      'status': status,
+      'accepte_la_livraison': accepte_la_livraison,
+      'code_commande': code_commande,
+    };
+  }
 }
 
 class AddPanierModel {

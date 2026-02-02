@@ -38,30 +38,6 @@ class _ConfirmationCommandeProduitState
     1,
   );
 
-  // Enregister la commande
-  enregisterCommande() async {
-    var utilisateurId = prefs.getString('utilisateur_id');
-
-    double prixTotal =
-        (double.parse("2040") + double.parse(widget.sousTotal.toString()));
-
-    Map<String, dynamic> response = await ApiServices().enregisterCommande(
-      utilisateurId,
-      prixTotal,
-      widget.panier,
-    );
-
-    print(response);
-
-    if (response['status'] == 'success') {
-      print(response['message']);
-      // ignore: use_build_context_synchronously
-      CustomPageRoute(const MoyenDePaiementCommande(), context);
-    } else {
-      print(response['message']);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -206,8 +182,11 @@ class _ConfirmationCommandeProduitState
                     child: Expanded(
                       flex: 1,
                       child: MyButtonWidget(
-                        onPressed: () => enregisterCommande(),
-                        label: 'ENREGISTER LA COMMANDE',
+                        onPressed: () => CustomPageRoute(
+                          const MoyenDePaiementCommande(),
+                          context,
+                        ),
+                        label: 'PAYER LA COMMANDE',
                         bgColor: PRIMARY,
                         labelColor: WHITE,
                       ),

@@ -3,14 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
+import 'package:qirha/res/constantes.dart';
 
 import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/widgets/image_svg.dart';
 import 'package:qirha/functions/util_functions.dart';
-import 'package:qirha/main/commandes/moyen_de_paiement_commandes.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
-import 'package:qirha/res/constantes.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
 
@@ -23,7 +22,7 @@ class DetailCommandeProduit extends StatefulWidget {
 }
 
 class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
-  List<ArticlesCommandeModel> ListArtclesCommande = [];
+  var ArticleCommandeList = [];
   bool isLoading = true;
 
   getArticlesCommande() async {
@@ -37,26 +36,8 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
 
     articles.forEach((article) {
       setState(() {
-        ListArtclesCommande.add(
-          ArticlesCommandeModel(
-            code_taille: article['code_taille'],
-            nom_couleur: article['nom_couleur'],
-            nom_produit: article['nom_produit'],
-            produit_id: article['produit_id'].toString(),
-            photo_cover: article['photo_cover'],
-            couleur_id: article['couleur_id'].toString(),
-            image_id: article['image_id'].toString(),
-            taille_id: article['taille_id'].toString(),
-            prix_unitaire: article['prix_unitaire'],
-            quantite: article['quantite'].toString(),
-            quantite_en_stock: article['quantite_en_stock'].toString(),
-          ),
-        );
+        ArticleCommandeList.add(article);
       });
-    });
-
-    setState(() {
-      isLoading = false;
     });
   }
 
@@ -89,105 +70,59 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
           espacementWidget(width: 10),
         ],
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                espacementWidget(height: 10),
-                identificationCommande(),
-                if (widget.commande.accepte_la_livraison == "1")
-                  espacementWidget(height: 10),
-                if (widget.commande.accepte_la_livraison == "1")
-                  adresseLivraison(),
-                espacementWidget(height: 10),
-                articleDeLaCommande(),
-                espacementWidget(height: 10),
-                resumeCommande(),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              color: WHITE,
-              height: 140,
-              padding: const EdgeInsets.all(20),
-              width: MediaQuery.of(context).size.width,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        customText(
-                          'TOTAL :',
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                        Container(
-                          child: customText(
-                            formatMoney(
-                              (double.parse("2040") +
-                                      double.parse(
-                                        widget.commande.montant_total
-                                            .toString(),
-                                      ))
-                                  .toString(),
-                            ),
-                            style: TextStyle(
-                              color: GREEN,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    customDivider(),
-                    Column(
-                      children: [
-                        customText(
-                          "Guarrantissons vos paiements en toute securite",
-                          softWrap: true,
-                          maxLines: 2,
-                          style: const TextStyle(fontSize: 10),
-                        ),
-                        espacementWidget(height: 5),
-                        GestureDetector(
-                          onTap: () => CustomPageRoute(
-                            const MoyenDePaiementCommande(),
-                            context,
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 4,
-                              horizontal: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Colors.black.withOpacity(.08),
-                              ),
-                              color: PRIMARY,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Center(
-                              child: customText(
-                                'VALIDER LA COMMANDE',
-                                style: TextStyle(color: WHITE, fontSize: 12),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            espacementWidget(height: 10),
+            identificationCommande(),
+
+            espacementWidget(height: 10),
+            articleDeLaCommande(),
+
+            espacementWidget(height: 10),
+            resumeCommande(),
+
+            espacementWidget(height: 10),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: Colors.black.withOpacity(.08),
+                ),
+                color: const Color.fromARGB(118, 33, 148, 8),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Center(
+                child: customText(
+                  'Payer la commande',
+                  style: TextStyle(color: WHITE, fontSize: 12),
                 ),
               ),
             ),
-          ),
-        ],
+
+            espacementWidget(height: 30),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: Colors.black.withOpacity(.08),
+                ),
+                color: const Color.fromARGB(118, 244, 67, 54),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Center(
+                child: customText(
+                  'Annuler la commande',
+                  style: TextStyle(color: WHITE, fontSize: 12),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -233,40 +168,7 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: customText(
-                      "Frais d'expedition",
-                      style: TextStyle(color: LIGHT, fontSize: 13),
-                    ),
-                  ),
-                  Container(
-                    child: customText(
-                      '1 000,00 XAF',
-                      style: TextStyle(color: LIGHT, fontSize: 11),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: customText(
-                      "Assurance d'expedition",
-                      style: TextStyle(color: LIGHT, fontSize: 13),
-                    ),
-                  ),
-                  Container(
-                    child: customText(
-                      '1 000,00 XAF',
-                      style: TextStyle(color: LIGHT, fontSize: 11),
-                    ),
-                  ),
-                ],
-              ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -278,7 +180,7 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
                   ),
                   Container(
                     child: customText(
-                      '40,00 XAF',
+                      '0,00 XAF',
                       style: TextStyle(color: LIGHT, fontSize: 11),
                     ),
                   ),
@@ -296,11 +198,9 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
                   Container(
                     child: customText(
                       formatMoney(
-                        (double.parse("2040") +
-                                double.parse(
-                                  widget.commande.montant_total.toString(),
-                                ))
-                            .toString(),
+                        (double.parse(
+                          widget.commande.montant_total.toString(),
+                        )).toString(),
                       ),
                       style: TextStyle(
                         color: DARK,
@@ -313,46 +213,6 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
               ),
             ],
           ),
-          espacementWidget(height: 10),
-          lightDivider(),
-          espacementWidget(height: 10),
-          Container(
-            padding: const EdgeInsets.all(10.0),
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1,
-                color: Colors.black.withOpacity(.08),
-              ),
-              color: const Color.fromARGB(118, 244, 67, 54),
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Center(
-              child: customText(
-                'Annuler la commande',
-                style: TextStyle(color: WHITE, fontSize: 12),
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10.0),
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1,
-                color: Colors.black.withOpacity(.08),
-              ),
-              color: WHITE,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Center(
-              child: customText(
-                'Service client',
-                style: TextStyle(color: DARK, fontSize: 12),
-              ),
-            ),
-          ),
-          espacementWidget(height: 150),
         ],
       ),
     );
@@ -395,19 +255,59 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
                   style: TextStyle(fontSize: 13, color: LIGHT),
                 ),
                 TextSpan(
-                  text: "2023-11-20 ~ 2023-11-25",
+                  text: "3 Jours depuis la validation",
                   style: TextStyle(fontSize: 11, color: DARK),
                 ),
               ],
             ),
           ),
-          for (var index = 0; index < ListArtclesCommande.length; index++)
+          for (var index = 0; index < ArticleCommandeList.length; index++)
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                articleItem(article: ListArtclesCommande[index]),
-                if (index < ListArtclesCommande.length - 1) lightDivider(),
+                Stack(
+                  children: [
+                    articleItem(article: ArticleCommandeList[index]),
+                    // badge
+                    if (ArticleCommandeList[index]['est_en_promo'] == true)
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(0),
+                            topLeft: Radius.circular(5),
+                            bottomLeft: Radius.circular(0),
+                            bottomRight: Radius.circular(5),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(color: PRIMARY),
+                            padding: EdgeInsets.all(5),
+                            child: Row(
+                              children: [
+                                HeroIcon(
+                                  HeroIcons.bolt,
+                                  size: 12,
+                                  color: WHITE,
+                                ),
+                                espacementWidget(width: 5),
+                                customText(
+                                  '- ${((ArticleCommandeList[index]['pourcentage_reduction'] ?? 0) * 100).toStringAsFixed(0)}%',
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    color: WHITE,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                if (index < ArticleCommandeList.length - 1) lightDivider(),
               ],
             ),
         ],
@@ -415,63 +315,16 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
     );
   }
 
-  Container adresseLivraison() {
-    return Container(
-      color: WHITE,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              customText(
-                'Adresse de Livraison',
-                style: TextStyle(
-                  color: DARK,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Row(
-                children: [
-                  HeroIcon(HeroIcons.pencilSquare, size: 14, color: PRIMARY),
-                  espacementWidget(width: 7),
-                  customText(
-                    "Modifier l'adresse",
-                    style: TextStyle(color: PRIMARY, fontSize: 11),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          espacementWidget(height: 10),
-          RichText(
-            textAlign: TextAlign.start,
-            text: TextSpan(
-              //style for all textspan
-              children: [
-                TextSpan(
-                  text:
-                      "Alexis Ngoyi ,  +242069500886 , 19 rue Niari , Q. La poudriere , Arr. 4 Moungali , Ref # Arret de bus 1er Arret  ",
-                  style: TextStyle(fontSize: 11, color: LIGHT),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Container articleItem({required ArticlesCommandeModel article}) {
+  Container articleItem({required article}) {
     return Container(
       padding: const EdgeInsets.all(8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           roundedImageContainer(
-            image: article.photo_cover.toString(),
+            image: article['photo_cover'].toString().isNotEmpty
+                ? article['photo_cover'].toString()
+                : demoPic,
             width: 75,
             height: 75,
           ),
@@ -482,33 +335,11 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
               SizedBox(
                 width: 200,
                 child: customText(
-                  article.nom_produit.toString(),
+                  article['nom_produit'].toString(),
                   overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  maxLines: 1,
-                  style: TextStyle(fontSize: 13, color: DARK),
-                ),
-              ),
-              espacementWidget(height: 5),
-              Container(
-                padding: const EdgeInsets.all(3),
-                margin: const EdgeInsets.symmetric(vertical: 2),
-                decoration: BoxDecoration(
-                  color: GREY,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Row(
-                  children: [
-                    customText(
-                      '${article.nom_couleur}; ${article.code_taille}',
-                      style: const TextStyle(
-                        fontSize: 11,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    espacementWidget(width: 5),
-                    const HeroIcon(HeroIcons.chevronDown, size: 12),
-                  ],
+                  softWrap: true,
+                  maxLines: 3,
+                  style: TextStyle(fontSize: 12, color: DARK),
                 ),
               ),
               espacementWidget(height: 7),
@@ -516,9 +347,16 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   customText(
-                    formatMoney(article.prix_unitaire.toString()),
+                    formatMoney(
+                      (article['est_en_promo'] == true
+                              ? (article['prix_unitaire'] -
+                                    article['prix_unitaire'] *
+                                        article['pourcentage_reduction'])
+                              : article['prix_unitaire'])
+                          .toString(),
+                    ),
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.bold,
                     ),
@@ -526,14 +364,10 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
                   espacementWidget(width: 10),
                   const HeroIcon(HeroIcons.xMark, size: 11),
                   customText(
-                    article.quantite.toString(),
-                    style: TextStyle(fontSize: 13, color: LIGHT),
+                    article['quantite'].toString(),
+                    style: TextStyle(fontSize: 10, color: LIGHT),
                   ),
                 ],
-              ),
-              customText(
-                "Total restant : ${article.quantite_en_stock} articles",
-                style: TextStyle(fontSize: 9, color: PRIMARY),
               ),
             ],
           ),
@@ -560,15 +394,14 @@ class _DetailCommandeProduitState extends State<DetailCommandeProduit> {
                 child: Row(
                   children: [
                     customText(
-                      '$prefixCodeCommande${widget.commande.commande_id}',
+                      '${widget.commande.code_commande}',
                       style: TextStyle(color: DARK, fontSize: 11),
                     ),
                     espacementWidget(width: 10),
                     GestureDetector(
                       onTap: () => copyToClipBoard(
                         context,
-                        text:
-                            '$prefixCodeCommande${widget.commande.commande_id}',
+                        text: '${widget.commande.code_commande}',
                         msg: "Le code de la commande a été copié",
                       ),
                       child: HeroIcon(

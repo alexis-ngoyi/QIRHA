@@ -29,24 +29,16 @@ class _TabMesCommandesScreenState extends State<TabMesCommandesScreen>
 
   final List<Widget> tabViews = const <Widget>[
     MesCommandesTabTout(),
-    CommandeTabView(status: "1"), //  PAYE | VALIDE
-    CommandeTabView(status: "5"), // NON PAYE
     CommandeTabView(status: "3"), // EN ATTENTE
-    CommandeTabView(status: "6"), // EN PREPARATION
-    CommandeTabView(status: "4"), // EXPEDIE
-    CommandeTabView(status: "2"), // SUPPRIME
-    Center(),
+    CommandeTabView(status: "1"), //  PAYE
+    CommandeTabView(status: "2"), // Annule
   ];
 
   final List<Tab> tabs = <Tab>[
     const Tab(text: 'Toutes'),
-    const Tab(text: 'Validée'),
-    const Tab(text: 'Non payée'),
-    const Tab(text: 'Attente'),
-    const Tab(text: 'Préparation'),
-    const Tab(text: 'Expediée'),
-    const Tab(text: 'Supprimée'),
-    const Tab(text: 'Donner un avis'),
+    const Tab(text: 'En Attente'),
+    const Tab(text: 'Payée'),
+    const Tab(text: 'Annulée'),
   ];
 
   late String? utilisateur_id;
@@ -114,10 +106,6 @@ class _TabMesCommandesScreenState extends State<TabMesCommandesScreen>
               ),
             ),
           )
-        : (needToLogin == true
-              ? const Scaffold(body: NeedToLogin())
-              : const Scaffold(
-                  body: Center(child: CircularProgressIndicator()),
-                ));
+        : Scaffold(body: NeedToLogin());
   }
 }

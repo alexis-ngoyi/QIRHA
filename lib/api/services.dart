@@ -282,6 +282,7 @@ class ApiServices {
 
   getArticlesCommande(String? commande_id) async {
     try {
+      print('commande_id $commande_id');
       Response response = await dio.post('/articles-commande/$commande_id');
       return response.data;
     } catch (error) {
@@ -389,46 +390,6 @@ class ApiServices {
       return response.data;
     } catch (error) {
       print("EXCEPTION [createCommande] (/commandes/create) : $error");
-      return [];
-    }
-  }
-
-  enregisterCommande(
-    String? utilisateur_id,
-    double prixTotal,
-    List<ArticlesCommandeModel> panierArticles,
-  ) async {
-    try {
-      var articles = panierArticles
-          .map(
-            (e) => {
-              'produit_id': e.produit_id,
-              'photo_cover': e.image_id,
-              'quantite': e.quantite,
-              'prix_unitaire': e.prix_unitaire,
-              'taille_id': e.taille_id,
-              'couleur_id': e.couleur_id,
-            },
-          )
-          .toList();
-
-      Object data = {
-        'utilisateur_id': utilisateur_id,
-        'date_commande': getFullDateString(),
-        'accepte_la_livraison': "0",
-        'montant_total': "$prixTotal",
-        'articles': articles,
-      };
-
-      Response response = await dio.post(
-        '/enregistrement-commande-complete/$utilisateur_id',
-        data: data,
-      );
-      return response.data;
-    } catch (error) {
-      print(
-        "EXCEPTION [enregisterCommande] (/enregistrement-commande-complete/$utilisateur_id) : $error",
-      );
       return [];
     }
   }
