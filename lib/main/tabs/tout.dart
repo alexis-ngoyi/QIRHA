@@ -6,6 +6,8 @@ import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/functions/util_functions.dart';
+import 'package:qirha/main/bottom_nav/tab_mes_commandes.dart';
+import 'package:qirha/main/compte/favoris.dart';
 import 'package:qirha/main/produits/all_produit_bazard.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
@@ -431,21 +433,32 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
           HeroIcons.heart,
           'Mes favoris',
           Colors.black,
+          () {
+            CustomPageRoute(CompteFavoris(), context);
+          },
         ),
         FonctionnaliteAccessRapideItem(
           HeroIcons.truck,
           'Mes comandes',
           Colors.black,
+          () {
+            CustomPageRoute(
+              TabMesCommandesScreen(initialIndex: 0, canReturn: true),
+              context,
+            );
+          },
         ),
         FonctionnaliteAccessRapideItem(
           HeroIcons.gift,
           'Faire un Cadeau',
           Colors.black,
+          () {},
         ),
         FonctionnaliteAccessRapideItem(
           HeroIcons.users,
           'Parrainez un ami',
           Colors.black,
+          () {},
         ),
       ],
     );

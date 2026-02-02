@@ -26,7 +26,6 @@ import 'package:qirha/res/miss_permissions.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:qirha/widgets/camera_gallery_preview.dart';
 import 'package:qirha/main/tabs/tout.dart';
-import 'package:qirha/widgets/need_to_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 List<CameraDescription> _cameras = [];

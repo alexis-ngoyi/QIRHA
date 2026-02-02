@@ -953,42 +953,49 @@ Container BazardRapidItem(
   );
 }
 
-Padding FonctionnaliteAccessRapideItem(
+FonctionnaliteAccessRapideItem(
   HeroIcons icon,
   String text,
   Color color,
+  void Function()? press,
 ) {
-  return Padding(
-    padding: const EdgeInsets.all(3.0),
-    child: SizedBox(
-      width: 160,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          height: 50,
-          decoration: BoxDecoration(color: WHITE),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: GREY,
+  return GestureDetector(
+    onTap: press,
+    child: Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: SizedBox(
+        width: 160,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(color: WHITE),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: GREY,
+                      ),
+                      child: HeroIcon(icon, size: 15, color: color),
                     ),
-                    child: HeroIcon(icon, size: 15, color: color),
-                  ),
-                  espacementWidget(width: 10),
-                  customText(
-                    text,
-                    softWrap: true,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: color, fontSize: 11),
-                  ),
-                ],
+                    espacementWidget(width: 10),
+                    customText(
+                      text,
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: color, fontSize: 11),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
