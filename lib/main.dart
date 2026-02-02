@@ -26,6 +26,7 @@ import 'package:qirha/res/miss_permissions.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:qirha/widgets/camera_gallery_preview.dart';
 import 'package:qirha/main/tabs/tout.dart';
+import 'package:qirha/widgets/need_to_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 List<CameraDescription> _cameras = [];
@@ -90,14 +91,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int nbCommandes = 0;
   int totalCart = 0;
   bool isLogged = false;
+  late String? utilisateur_id;
 
-  late List<Widget> tabBottomNav = [
-    const Center(),
-    const TabCategorieScreen(),
-    const TabMesCommandesScreen(initialIndex: 0, canReturn: false),
-    TabPanierScreen(canReturn: false),
-    const TabMonCompteScreen(),
-  ];
+  late List<Widget> tabBottomNav;
 
   void _onTabTapped(int int) {
     setState(() {
@@ -200,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
         BottomNavigationBarItem(
           icon: Badge(
             isLabelVisible: isLogged,
-            backgroundColor: const Color.fromARGB(255, 0, 43, 153),
+            backgroundColor: PRIMARY,
             label: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 1),
               child: Text(
@@ -223,6 +219,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
+    utilisateur_id = prefs.getString('utilisateur_id');
+
+    tabBottomNav = [
+      const Center(),
+      const TabCategorieScreen(),
+      const TabMesCommandesScreen(initialIndex: 0, canReturn: false),
+      TabPanierScreen(canReturn: false),
+      const TabMonCompteScreen(),
+    ];
+
     getMainCategorie();
     refreshBottomNavItems();
     checkIf1stUsage();
