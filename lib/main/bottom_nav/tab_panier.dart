@@ -19,7 +19,6 @@ import 'package:qirha/res/colors.dart';
 import 'package:qirha/widgets/custom_counter_cart.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
-import 'package:quickalert/quickalert.dart';
 
 class TabPanierScreen extends StatefulWidget {
   TabPanierScreen({super.key, required this.canReturn});
@@ -254,7 +253,7 @@ class _TabPanierScreenState extends State<TabPanierScreen> {
                                 child: MyButtonWidget(
                                   onPressed: () => {
                                     // CustomPageRoute(
-                                    //   ConfirmationCommandeProduit(
+                                    //   PaiementCommandePage(
                                     //     panier: cartProduit,
                                     //     sousTotal: prixTotalPanier,
                                     //   ),
