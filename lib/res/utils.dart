@@ -750,7 +750,7 @@ GestureDetector customCardCategorie({
             padding: const EdgeInsets.all(6.0),
             child: FadeInImage.assetNetwork(
               placeholder: placeholder,
-              image: image,
+              image: image.isNotEmpty ? image : demoPic,
               fit: BoxFit.contain,
             ),
           ),

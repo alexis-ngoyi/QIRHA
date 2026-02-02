@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qirha/res/colors.dart';
+import 'package:qirha/res/constantes.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
 
@@ -28,23 +29,29 @@ class _NoCategorieWidgetState extends State<NoCategorieWidget> {
                 padding: const EdgeInsets.all(6.0),
                 child: FadeInImage.assetNetwork(
                   placeholder: placeholder,
-                  image: categorie_default,
+                  image: demoPic,
                   fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
           espacementWidget(height: 10),
-          customCenterText('Aucune categorie',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 16, color: DARK, fontWeight: FontWeight.bold)),
+          customCenterText(
+            'Aucune categorie',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: DARK,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           espacementWidget(height: 20),
           customCenterText(
-              "L'equipe Qirha travaille sans relache pour vous garantir une meilleure experience ",
-              maxLines: 4,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: DARK, fontSize: 12)),
+            "L'equipe Qirha travaille sans relache pour vous garantir une meilleure experience ",
+            maxLines: 4,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: DARK, fontSize: 12),
+          ),
           espacementWidget(height: 10),
         ],
       ),

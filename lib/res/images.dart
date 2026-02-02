@@ -25,9 +25,6 @@ const mastercard = "assets/mastercard.png";
 const visa = "assets/visa.jpg";
 const congo_rc = "assets/congo_rc.jpeg";
 
-const default_image = 'http://api.tekissa.net/static/assets/AppIcon/app.png';
-const categorie_default = 'http://api.tekissa.net/static/assets/all.png';
-
 const livraison_svg = 'assets/livraison.svg';
 const need_to_login = 'assets/need_login.svg';
 const empty = 'assets/empty.svg';

@@ -3,12 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:qirha/functions/util_functions.dart';
+import 'package:qirha/res/constantes.dart';
 
 import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:qirha/api/services.dart';
-import 'package:qirha/widgets/filter_widget.dart';
 import 'package:qirha/widgets/cart_widget.dart';
-import 'package:qirha/main/produits/produit_of_categorie_of_groupe.dart';
+import 'package:qirha/main/produits/produit_par_categorie.dart';
 import 'package:qirha/main/recherche/search.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
@@ -53,14 +54,15 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
             status: produit['status'],
             description: produit['description'],
             est_en_promo: produit['est_en_promo'],
-            taux_reduction: (produit['taux_reduction'] as num?)?.toDouble(),
-            prix_promo: (produit['prix_promo'] as num?)?.toDouble(),
-            prix_minimum: (produit['prix_minimum'] as num?)?.toDouble(),
+            taux_reduction: parseDouble(produit['taux_reduction']),
+            prix_promo: parseDouble(produit['prix_promo']),
+            prix_minimum: parseDouble(produit['prix_minimum']),
             cree_le: produit['cree_le'],
             date_fin: produit['date_fin'],
             fournisseur_id: produit['fournisseur_id'].toString(),
             nom_fournisseur: produit['nom_fournisseur'],
             produit_id: produit['produit_id'].toString(),
+            prix_produit_id: produit['prix_produit_id'].toString(),
           ),
         );
       });
@@ -148,7 +150,7 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
                         header: Container(
                           width: MediaQuery.of(context).size.width,
                           color: WHITE,
-                          child: Column(children: [MyFilterWidget()]),
+                          child: Column(children: []),
                         ),
                         content: Column(
                           children: [
@@ -212,15 +214,11 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
             )
               groupeCategorieItems(
                 index: 1,
-                img:
-                    widget.groupe.categorie![index].img.toString().isEmpty ||
-                        widget.groupe.categorie![index].img == null
-                    ? categorie_default
-                    : widget.groupe.categorie![index].img.toString(),
+                img: demoPic,
                 text: widget.groupe.categorie![index].libelle.toString(),
                 press: () => {
                   CustomPageRoute(
-                    ProduitOfCategorieOfGroupe(
+                    ProduitParCategorie(
                       typeView: 'DEFAULT',
                       categorie: widget.groupe.categorie![index],
                     ),
@@ -260,8 +258,8 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
                   width: 30,
                   height: 30,
                   child: FadeInImage.assetNetwork(
-                    placeholder: placeholder,
-                    image: img,
+                    placeholder: demoPic,
+                    image: demoPic,
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -302,11 +300,11 @@ class _ProduitParGroupeState extends State<ProduitParGroupe>
             ),
             espacementWidget(width: 20),
             customText(
-              currentTitle.length > 23
-                  ? '${currentTitle.substring(0, 23)}...'
+              currentTitle.length > 20
+                  ? '${currentTitle.substring(0, 20)}...'
                   : currentTitle,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: DARK,
               ),

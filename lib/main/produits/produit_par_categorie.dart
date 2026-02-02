@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:qirha/widgets/filter_widget.dart';
 
 import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:qirha/api/services.dart';
@@ -13,8 +12,8 @@ import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
-class ProduitOfCategorieOfGroupe extends StatefulWidget {
-  const ProduitOfCategorieOfGroupe({
+class ProduitParCategorie extends StatefulWidget {
+  const ProduitParCategorie({
     super.key,
     required this.categorie,
     required this.typeView,
@@ -22,11 +21,10 @@ class ProduitOfCategorieOfGroupe extends StatefulWidget {
   final CategorieModel categorie;
   final String typeView; //[HOT | DEFAULT]
   @override
-  State<ProduitOfCategorieOfGroupe> createState() =>
-      _ProduitOfCategorieOfGroupeState();
+  State<ProduitParCategorie> createState() => _ProduitParCategorieState();
 }
 
-class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
+class _ProduitParCategorieState extends State<ProduitParCategorie>
     with TickerProviderStateMixin {
   final ScrollController _mainScrollController = ScrollController();
   double currentScrollPosition = 0;
@@ -131,7 +129,7 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
                     vertical: 13,
                     horizontal: 10,
                   ),
-                  child: appBarProduitOfCategorieOfGroupe(context),
+                  child: appBarProduitParCategorie(context),
                 ),
               ),
               Expanded(
@@ -145,7 +143,7 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
                         header: Container(
                           width: MediaQuery.of(context).size.width,
                           color: WHITE,
-                          child: Column(children: [MyFilterWidget(top: 120)]),
+                          child: Column(children: []),
                         ),
                         content: Column(
                           children: [
@@ -192,7 +190,7 @@ class _ProduitOfCategorieOfGroupeState extends State<ProduitOfCategorieOfGroupe>
   ////         WIDGET FUNCTION SIDE                  ///
   //////////////////////////////////////////////////////
 
-  Row appBarProduitOfCategorieOfGroupe(BuildContext context) {
+  Row appBarProduitParCategorie(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
