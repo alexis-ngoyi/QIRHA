@@ -2,8 +2,6 @@ import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:qirha/api/services.dart';
-import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/widgets/cart_widget.dart';
 import 'package:qirha/widgets/combo/custom_button.dart';
 import 'package:qirha/functions/util_functions.dart';

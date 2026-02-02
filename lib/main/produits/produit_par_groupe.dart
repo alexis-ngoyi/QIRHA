@@ -13,7 +13,6 @@ import 'package:qirha/main/produits/produit_par_categorie.dart';
 import 'package:qirha/main/recherche/search.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
-import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
 
 class ProduitParGroupe extends StatefulWidget {

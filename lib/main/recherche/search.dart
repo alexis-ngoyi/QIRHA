@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:qirha/widgets/suggestion_produit.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/utils.dart';
 
@@ -232,7 +231,6 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
           ),
         ),
         espacementWidget(height: 30),
-        const SuggestionProduitWidget(),
       ],
     );
   }

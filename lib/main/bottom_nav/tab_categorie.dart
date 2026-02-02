@@ -7,7 +7,6 @@ import 'package:qirha/main/produits/produit_par_groupe.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/constantes.dart';
-import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
 import 'package:qirha/widgets/empty/no_categories.dart';
 

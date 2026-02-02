@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:dio/dio.dart';
-import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/model/all_model.dart';
 
 class ApiServices {

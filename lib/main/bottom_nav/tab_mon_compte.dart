@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/widgets/need_to_login.dart';
-import 'package:qirha/widgets/suggestion_produit.dart';
 import 'package:qirha/main/compte/favoris.dart';
 import 'package:qirha/main/compte/historique.dart';
 import 'package:qirha/main/parametres/parametres.dart';
@@ -113,7 +112,6 @@ class _TabMonCompteScreenState extends State<TabMonCompteScreen> {
             espacementWidget(height: 10),
             nosServicesView(context),
             espacementWidget(height: 40),
-            const SuggestionProduitWidget(),
           ],
         ),
       ),

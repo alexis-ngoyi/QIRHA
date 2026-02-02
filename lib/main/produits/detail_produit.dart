@@ -4,7 +4,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
-import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/loading_process.dart';

@@ -6,17 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
-import 'package:qirha/res/images.dart';
-import 'package:qirha/widgets/empty/no_commande.dart';
-import 'package:qirha/widgets/image_svg.dart';
-import 'package:qirha/widgets/need_to_login.dart';
+
 import 'package:qirha/functions/util_functions.dart';
 import 'package:qirha/main/commandes/detail_commande.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
-import 'package:qirha/res/constantes.dart';
 import 'package:qirha/res/utils.dart';
-import 'package:qirha/widgets/text_collapse_widget.dart';
 
 class CommandeTabView extends StatefulWidget {
   const CommandeTabView({super.key, required this.status});

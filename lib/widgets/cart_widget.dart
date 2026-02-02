@@ -25,8 +25,7 @@ class _MyCartWidgetState extends State<MyCartWidget> {
   bool isLogged = false;
 
   loadCart() async {
-    var utilisateur_id = 1;
-    // prefs.getString('utilisateur_id');
+    var utilisateur_id = prefs.getString('utilisateur_id');
 
     // Define the interval duration in milliseconds
     const intervalDuration = Duration(seconds: 1);

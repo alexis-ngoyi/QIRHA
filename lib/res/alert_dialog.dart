@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:qirha/res/colors.dart';
 
 class CustomAlertDialog {
   static void showCustomAlert({
