@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
+import 'package:qirha/res/alert_dialog.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/utils.dart';
@@ -34,10 +36,25 @@ class _AuthentificationScreenState extends State<AuthentificationScreen> {
 
   //login
   loginProcess(BuildContext context) {
-    prefs.setString('utilisateur_id', "1");
-
-    Navigator.of(context).popAndPushNamed('/');
+    if (emailControllerLogin.text.isNotEmpty &&
+        passwordControllerLogin.text.isNotEmpty) {
+      // Trigger login
+      ApiServices().loginUser(
+        context,
+        prefs,
+        login: emailControllerLogin.text,
+        password: passwordControllerLogin.text,
+      );
+    } else {
+      CustomAlertDialog.showCustomAlert(
+        context: context,
+        title: 'Erreur',
+        message: 'Veuillez remplir tous les champs',
+      );
+    }
   }
+
+  createAccountProcess(BuildContext context) {}
 
   @override
   void initState() {
@@ -153,7 +170,7 @@ class _AuthentificationScreenState extends State<AuthentificationScreen> {
                 child: Expanded(
                   flex: 1,
                   child: MyButtonWidget(
-                    onPressed: () => loginProcess(context),
+                    onPressed: () => createAccountProcess(context),
                     label: 'CREER MON COMPTE',
                     bgColor: PRIMARY,
                     labelColor: WHITE,

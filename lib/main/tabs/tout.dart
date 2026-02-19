@@ -12,6 +12,7 @@ import 'package:qirha/main/produits/all_produit_bazard.dart';
 import 'package:qirha/model/all_model.dart';
 import 'package:qirha/res/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:qirha/res/constantes.dart';
 import 'package:qirha/res/images.dart';
 import 'package:qirha/res/loading_process.dart';
 import 'package:qirha/res/utils.dart';
@@ -26,17 +27,6 @@ class ToutTabScreen extends StatefulWidget {
 }
 
 class _ToutTabScreenState extends State<ToutTabScreen> {
-  final List<MainCarouselModel> imageList = <MainCarouselModel>[
-    MainCarouselModel(img: banner_1),
-    MainCarouselModel(img: banner_3),
-    MainCarouselModel(img: banner_4),
-    MainCarouselModel(img: banner_5),
-  ];
-
-  int _currentCarouselBannerIndex = 0;
-
-  final CarouselSliderController _controllerSlider = CarouselSliderController();
-
   late String? utilisateur_id;
 
   Future<void> _handleRefresh() async {}
@@ -176,26 +166,67 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
     if (_totalDurationInSeconds > 0) _formatDuration(_totalDurationInSeconds);
 
     return Scaffold(
-      backgroundColor: GREY,
+      backgroundColor: Colors.transparent,
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
         backgroundColor: PRIMARY,
         triggerMode: RefreshIndicatorTriggerMode.onEdge,
-        color: WHITE,
+        // color: WHITE,
         child: Stack(
           children: [
             SingleChildScrollView(
               child: Column(
                 children: [
-                  Stack(
-                    children: [
-                      BannerCarouselSlider(),
-                      Positioned(
-                        top: 0,
-                        right: 10,
-                        child: BannerCarouselIndicator(context),
-                      ),
-                    ],
+                  SizedBox(height: 160),
+
+                  Container(
+                    height: 255,
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(color: WHITE),
+                    child: GridView.builder(
+                      scrollDirection: Axis.horizontal,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                          ),
+                      itemCount: 45,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            height: 80,
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadiusGeometry.circular(
+                                    20,
+                                  ),
+                                  child: SizedBox(
+                                    height: 60,
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder: placeholder,
+                                      image: demoPic,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(3),
+                                  child: customCenterText(
+                                    'T-shirt',
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    softWrap: true,
+                                    style: TextStyle(fontSize: 11, color: DARK),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
 
                   MainScreenContent(context),
@@ -242,12 +273,6 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
   Stack StackedQuickBar(BuildContext context) {
     return Stack(
       children: [
-        // Container(
-        //   margin: const EdgeInsets.only(bottom: 5),
-        //   height: 10,
-        //   width: double.infinity,
-        //   decoration: BoxDecoration(color: GREY),
-        // ),
         Container(
           margin: const EdgeInsets.symmetric(vertical: 7),
           child: SingleChildScrollView(
@@ -463,79 +488,4 @@ class _ToutTabScreenState extends State<ToutTabScreen> {
       ],
     );
   }
-
-  // BANNER CAROUSEL
-
-  Row BannerCarouselIndicator(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: imageList.asMap().entries.map((entry) {
-        return GestureDetector(
-          onTap: () => _controllerSlider.animateToPage(entry.key),
-          child: Container(
-            width: 8.0,
-            height: 8.0,
-            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color:
-                  (Theme.of(context).brightness == Brightness.dark
-                          ? WHITE
-                          : PRIMARY)
-                      .withOpacity(
-                        _currentCarouselBannerIndex == entry.key ? 0.9 : 0.4,
-                      ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  CarouselSlider BannerCarouselSlider() {
-    return CarouselSlider(
-      carouselController: _controllerSlider,
-      items: imageList.map((image) {
-        return Builder(
-          builder: (BuildContext context) {
-            return GestureDetector(
-              onTap: () {
-                // action au clic
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 3.0,
-                  vertical: 3,
-                ), // espace entre images
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    image.img as String,
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      }).toList(),
-      options: CarouselOptions(
-        autoPlay: true,
-        enlargeCenterPage: false,
-        viewportFraction:
-            0.99, // chaque image occupe 99% → pour laisser la prochaine image charger rapidement dans les 0.1% restant
-        enableInfiniteScroll: true,
-        autoPlayCurve: Curves.easeInOut,
-        autoPlayAnimationDuration: const Duration(milliseconds: 800),
-        onPageChanged: (index, reason) {
-          setState(() {
-            _currentCarouselBannerIndex = index;
-          });
-        },
-      ),
-    );
-  }
-
-  // fin
 }

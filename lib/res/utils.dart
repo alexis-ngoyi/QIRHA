@@ -579,27 +579,13 @@ Column customCouleurWidget() {
   );
 }
 
-AppBar MyAppBar(BuildContext context, {required List<Widget> tabs}) {
+AppBar MyAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: GREY,
-    bottom: PreferredSize(
-      preferredSize: const Size.fromHeight(48),
-      child: Container(
-        color: WHITE,
-        height: 48,
-        child: Scrollbar(
-          child: TabBar(
-            isScrollable: true,
-            tabs: tabs,
-            labelStyle: const TextStyle(fontSize: 13),
-            tabAlignment: TabAlignment.start,
-          ),
-        ),
-      ),
-    ),
+    backgroundColor: Colors.transparent,
+
     leading: GestureDetector(
       onTap: () => CustomPageRoute(const MessagerieScreen(), context),
-      child: const HeroIcon(HeroIcons.envelope, size: 25),
+      child: HeroIcon(HeroIcons.envelope, size: 25, color: WHITE),
     ),
     title: ClipRRect(
       borderRadius: BorderRadius.circular(8),
@@ -630,10 +616,10 @@ AppBar MyAppBar(BuildContext context, {required List<Widget> tabs}) {
               children: [
                 GestureDetector(
                   onTap: () => checkPermissionAndOpenCanera(context),
-                  child: const SizedBox(
+                  child: SizedBox(
                     width: 50,
                     height: 40,
-                    child: HeroIcon(HeroIcons.camera, size: 20),
+                    child: HeroIcon(HeroIcons.camera, size: 20, color: PRIMARY),
                   ),
                 ),
                 GestureDetector(
@@ -643,11 +629,18 @@ AppBar MyAppBar(BuildContext context, {required List<Widget> tabs}) {
                   child: Container(
                     width: 50,
                     height: 40,
-                    decoration: BoxDecoration(color: PRIMARY),
-                    child: HeroIcon(
-                      HeroIcons.magnifyingGlass,
-                      size: 20,
-                      color: WHITE,
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(color: Colors.transparent),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: PRIMARY,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: HeroIcon(
+                        HeroIcons.magnifyingGlass,
+                        size: 20,
+                        color: WHITE,
+                      ),
                     ),
                   ),
                 ),
@@ -660,10 +653,10 @@ AppBar MyAppBar(BuildContext context, {required List<Widget> tabs}) {
     actions: [
       GestureDetector(
         onTap: () {},
-        child: const HeroIcon(HeroIcons.heart, size: 25),
+        child: HeroIcon(HeroIcons.heart, size: 25, color: WHITE),
       ),
       espacementWidget(width: 14),
-      MyCartWidget(size: 25, color: DARK),
+      MyCartWidget(size: 25, color: WHITE),
       espacementWidget(width: 10),
     ],
   );

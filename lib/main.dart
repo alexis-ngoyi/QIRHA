@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:glass/glass.dart';
@@ -15,6 +17,7 @@ import 'package:qirha/api/services.dart';
 import 'package:qirha/api/shared_preferences.dart';
 import 'package:qirha/main/tabs/tabLayout.dart';
 import 'package:qirha/model/all_model.dart';
+import 'package:qirha/res/images.dart';
 import 'package:qirha/widgets/image_scanner_simulator.dart';
 import 'package:qirha/main/bottom_nav/tab_categorie.dart';
 import 'package:qirha/main/bottom_nav/tab_mes_commandes.dart';
@@ -69,7 +72,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: PRIMARY),
         useMaterial3: true,
-        fontFamily: 'Lato',
+        fontFamily: 'Roboto', // 'Lato',
       ),
       home: const HeroIconTheme(
         style: HeroIconStyle.outline,
@@ -86,6 +89,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<MainCarouselModel> imageList = <MainCarouselModel>[
+    MainCarouselModel(img: banner_1),
+    MainCarouselModel(img: banner_3),
+    MainCarouselModel(img: banner_4),
+    MainCarouselModel(img: banner_5),
+  ];
+
+  int _currentCarouselBannerIndex = 0;
+
+  final CarouselSliderController _controllerSlider = CarouselSliderController();
+
   int _currentIndex = 0;
   int nbCommandes = 0;
   int totalCart = 0;
@@ -257,8 +271,8 @@ class _MyHomePageState extends State<MyHomePage> {
           return shouldPop!;
         },
         child: Scaffold(
-          backgroundColor: GREY,
-          appBar: _currentIndex == 0 ? MyAppBar(context, tabs: tabs) : null,
+          // backgroundColor: GREY,
+          // appBar: _currentIndex == 0 ? MyAppBar(context, tabs: tabs) : null,
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,
             onTap: _onTabTapped,
@@ -266,16 +280,131 @@ class _MyHomePageState extends State<MyHomePage> {
             type: BottomNavigationBarType.fixed,
             selectedFontSize: 12,
           ),
-          body: IconTheme(
-            data: const IconThemeData(color: Colors.black),
-            child: _currentIndex == 0
-                ? TabBarView(children: tabViews)
-                : tabBottomNav[_currentIndex],
+          body: Stack(
+            children: [
+              Stack(
+                children: [
+                  BannerCarouselSlider(),
+                  Positioned(
+                    top: 0,
+                    right: 10,
+                    child: BannerCarouselIndicator(context),
+                  ),
+                ],
+              ),
+
+              IconTheme(
+                data: const IconThemeData(color: Colors.black),
+                child: _currentIndex == 0
+                    ? Column(
+                        children: [
+                          MyAppBar(context),
+                          Container(
+                            color: Colors.transparent,
+                            height: 40,
+                            child: Scrollbar(
+                              child: TabBar(
+                                isScrollable: true,
+                                tabs: tabs,
+
+                                labelStyle: TextStyle(
+                                  fontSize: 13,
+                                  color: WHITE,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                unselectedLabelColor: WHITE.withAlpha(210),
+                                tabAlignment: TabAlignment.start,
+                                dividerColor: Colors.transparent,
+                              ),
+                            ),
+                          ),
+                          Expanded(child: TabBarView(children: tabViews)),
+                        ],
+                      )
+                    : tabBottomNav[_currentIndex],
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+
+  // BANNER CAROUSEL
+
+  Row BannerCarouselIndicator(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: imageList.asMap().entries.map((entry) {
+        return GestureDetector(
+          onTap: () => _controllerSlider.animateToPage(entry.key),
+          child: Container(
+            width: 8.0,
+            height: 8.0,
+            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color:
+                  (Theme.of(context).brightness == Brightness.dark
+                          ? WHITE
+                          : PRIMARY)
+                      .withOpacity(
+                        _currentCarouselBannerIndex == entry.key ? 0.9 : 0.4,
+                      ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  CarouselSlider BannerCarouselSlider() {
+    return CarouselSlider(
+      carouselController: _controllerSlider,
+      items: imageList.map((image) {
+        return Builder(
+          builder: (BuildContext context) {
+            return GestureDetector(
+              onTap: () {
+                // action au clic
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 0,
+                  vertical: 0,
+                ), // espace entre images
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(0),
+                  child: Image.asset(
+                    image.img as String,
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      }).toList(),
+      options: CarouselOptions(
+        autoPlay: true,
+        enlargeCenterPage: false,
+        aspectRatio: 1.3,
+        viewportFraction:
+            0.99, // chaque image occupe 99% → pour laisser la prochaine image charger rapidement dans les 0.1% restant
+        enableInfiniteScroll: true,
+        autoPlayCurve: Curves.easeInOut,
+        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+        onPageChanged: (index, reason) {
+          setState(() {
+            _currentCarouselBannerIndex = index;
+          });
+        },
+      ),
+    );
+  }
+
+  // fin
 }
 
 class SearchWithCamera extends StatefulWidget {

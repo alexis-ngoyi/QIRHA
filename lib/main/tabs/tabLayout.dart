@@ -109,7 +109,7 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GREY,
+      backgroundColor: Colors.transparent,
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
         backgroundColor: PRIMARY,
@@ -126,6 +126,7 @@ class _TabLayoutState extends State<TabLayout> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 160),
                     StickyHeader(
                       header: Container(
                         width: MediaQuery.of(context).size.width,

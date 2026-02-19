@@ -1,6 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:qirha/model/all_model.dart';
+import 'package:qirha/res/alert_dialog.dart';
 
 class ApiServices {
   Dio dio = Dio(
@@ -11,16 +13,38 @@ class ApiServices {
     ),
   );
 
-  loginUser(String login, String password) async {
+  loginUser(
+    BuildContext context,
+    prefs, {
+    required String login,
+    required String password,
+  }) async {
     try {
       Map<String, dynamic> jsonData = {
         "login": login,
         "mot_de_passe": password,
       };
-      Response response = await dio.post('/login', data: jsonData);
-      return response.data;
+      Response response = await dio.post('/user/login', data: jsonData);
+
+      if (response.data['code'] == 'success') {
+        if (response.data['status'] == '1') {
+          prefs.setString(
+            'utilisateur_id',
+            response.data['utilisateur_id'].toString(),
+          );
+          Navigator.of(context).popAndPushNamed('/');
+        } else {
+          print('Status :${response.data['status']} ');
+        }
+      } else {
+        CustomAlertDialog.showCustomAlert(
+          context: context,
+          title: 'Erreur',
+          message: 'Identifiants incorrectes',
+        );
+      }
     } catch (error) {
-      print("EXCEPTION [loginUser] (/login) : $error");
+      print("EXCEPTION [loginUser] (/user/login) : $error");
       return [];
     }
   }
